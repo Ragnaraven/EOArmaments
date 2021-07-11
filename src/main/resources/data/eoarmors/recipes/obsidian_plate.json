@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "eoarmors:obsidian_plate"
+  },
+  "pattern": [
+    "oo ",
+    "   ",
+    "   "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "o": {
+      "item": "minecraft:obsidian"
+    }
+  }
+}

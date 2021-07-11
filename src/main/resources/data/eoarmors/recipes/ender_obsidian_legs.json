@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "eoarmors:armor_ender_obsidian_legs"
+  },
+  "pattern": [
+    " o ",
+    "oOo",
+    " o "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "o": {
+      "item": "eoarmors:ender_obsidian_plate"
+    },
+    "O": {
+      "item": "eoarmors:armor_obsidian_legs"
+    }
+  }
+}

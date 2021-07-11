@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "eoarmors:obsidian_axe"
+  },
+  "pattern": [
+    "mm ",
+    "ms ",
+    " s "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "m": {
+      "item": "eoarmors:obsidian_plate"
+    }
+  }
+}

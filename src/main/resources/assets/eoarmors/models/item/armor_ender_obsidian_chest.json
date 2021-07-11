@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "eoarmors:items/ender_obsidian_chest"
+  }
+}

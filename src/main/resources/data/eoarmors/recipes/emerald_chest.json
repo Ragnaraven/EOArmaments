@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "eoarmors:armor_emerald_chest"
+  },
+  "pattern": [
+    "o o",
+    "ooo",
+    "ooo"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "o": {
+      "item": "minecraft:emerald"
+    }
+  }
+}

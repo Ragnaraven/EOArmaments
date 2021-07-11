@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "eoarmors:armor_emerald_feet"
+  },
+  "pattern": [
+    "   ",
+    "o o",
+    "o o"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "o": {
+      "item": "minecraft:emerald"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "eoarmors:emerald_hoe"
+  },
+  "pattern": [
+    "mm ",
+    " s ",
+    " s "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "m": {
+      "item": "minecraft:emerald"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "eoarmors:ender_obsidian_plate"
+  },
+  "pattern": [
+    "os ",
+    "sb ",
+    "   "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "b": {
+      "item": "eoarmors:block_ender_obsidian"
+    },
+    "s": {
+      "item": "minecraft:end_stone"
+    },
+    "o": {
+      "item": "eoarmors:obsidian_plate"
+    }
+  }
+}

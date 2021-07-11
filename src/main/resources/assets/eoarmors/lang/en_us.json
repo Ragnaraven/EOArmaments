@@ -1,0 +1,38 @@
+{
+  "itemGroup.EOAUniversalTab": "Ender Obsidian and Armors",
+
+  "item.eoarmors.obsidian_plate": "Obsidian Plate",
+  "item.eoarmors.ender_obsidian_plate": "Ender Obsidian Plate",
+
+  "block.eoarmors.block_ender_obsidian": "Ender Obsidian",
+
+  "item.eoarmors.armor_obsidian_head": "Obsidian Helmet",
+  "item.eoarmors.armor_obsidian_chest": "Obsidian Chest Plate",
+  "item.eoarmors.armor_obsidian_legs": "Obsidian Leggings",
+  "item.eoarmors.armor_obsidian_feet": "Obsidian Boots",
+  "item.eoarmors.obsidian_axe": "Obsidian Axe",
+  "item.eoarmors.obsidian_hoe": "Obsidian Hoe",
+  "item.eoarmors.obsidian_pickaxe": "Obsidian Pickaxe",
+  "item.eoarmors.obsidian_shovel": "Obsidian Shovel",
+  "item.eoarmors.obsidian_sword": "Obsidian Sword",
+
+  "item.eoarmors.armor_emerald_head": "Emerald Helmet",
+  "item.eoarmors.armor_emerald_chest": "Emerald Chest Plate",
+  "item.eoarmors.armor_emerald_legs": "Emerald Leggings",
+  "item.eoarmors.armor_emerald_feet": "Emerald Boots",
+  "item.eoarmors.emerald_axe": "Emerald Axe",
+  "item.eoarmors.emerald_hoe": "Emerald Hoe",
+  "item.eoarmors.emerald_pickaxe": "Emerald Pickaxe",
+  "item.eoarmors.emerald_shovel": "Emerald Shovel",
+  "item.eoarmors.emerald_sword": "Emerald Sword",
+
+  "item.eoarmors.armor_ender_obsidian_head": "Ender Obsidian Helmet",
+  "item.eoarmors.armor_ender_obsidian_chest": "Ender Obsidian Chest Plate",
+  "item.eoarmors.armor_ender_obsidian_legs": "Ender Obsidian Leggings",
+  "item.eoarmors.armor_ender_obsidian_feet": "Ender Obsidian Boots",
+  "item.eoarmors.ender_obsidian_axe": "Ender Obsidian Axe",
+  "item.eoarmors.ender_obsidian_hoe": "Ender Obsidian Hoe",
+  "item.eoarmors.ender_obsidian_pickaxe": "Ender Obsidian Pickaxe",
+  "item.eoarmors.ender_obsidian_shovel": "Ender Obsidian Shovel",
+  "item.eoarmors.ender_obsidian_sword": "Ender Obsidian Sword"
+}

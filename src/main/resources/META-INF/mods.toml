@@ -1,0 +1,16 @@
+modLoader="javafml" #mandatory
+loaderVersion="[36,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="All rights reserved"
+[[mods]] #mandatory
+modId="eoarmors" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="Ender Obsidian and Armors" #mandatory
+logoFile="icon.png" #optional
+credits="Thank you for 450 downloads on CurseForge" #optional
+authors="Ragnaraven" #optional
+description='''
+This mod adds Obsidian and Ender Obsidian as armor set with set special bonuses as end game mining tools
+
+It also adds Emerald armor and tools as a tier above diamond.
+.'''
+
