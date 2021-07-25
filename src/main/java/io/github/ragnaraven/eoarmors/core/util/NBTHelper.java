@@ -12,7 +12,7 @@ public class NBTHelper
 
 	public static void saveStackNBT(ItemStack stack, CompoundNBT nbt)
 	{
-		if (!stack.hasTag())
+		//if (!stack.hasTag())
 		{
 			stack.setTag(nbt);
 		}

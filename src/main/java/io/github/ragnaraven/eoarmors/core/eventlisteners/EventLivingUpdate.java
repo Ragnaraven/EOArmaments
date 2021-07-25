@@ -35,8 +35,9 @@ public class EventLivingUpdate
 			if (player != null)
 			{
 				NonNullList<ItemStack> main = player.inventory.items;
-				
-				if (player.getCommandSenderWorld().isClientSide())
+
+				//Added ! //
+				//if (!player.getCommandSenderWorld().isClientSide())
 				{
 					for (ItemStack stack : player.inventory.armor)
 					{

@@ -55,7 +55,7 @@ public class Experience
 	
 	public static int getExperience(CompoundNBT nbt)
 	{
-		return nbt.hasUUID("EXPERIENCE") ? nbt.getInt("EXPERIENCE") : 0;
+		return nbt.contains("EXPERIENCE") ? nbt.getInt("EXPERIENCE") : 0;
 	}
 	
 	public static void setExperience(CompoundNBT nbt, int experience)

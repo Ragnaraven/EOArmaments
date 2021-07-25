@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.Mod;
 public class EventLivingDeath
 {
 	@SubscribeEvent
-	public static void onLivingDeath(LivingDeathEvent event)
+	public void onLivingDeath(LivingDeathEvent event)
 	{
 		if (event.getSource().getDirectEntity() instanceof PlayerEntity && !(event.getSource().getDirectEntity() instanceof FakePlayer))
 		{
