@@ -1,11 +1,9 @@
 package io.github.ragnaraven.eoarmors;
 
 import io.github.ragnaraven.eoarmors.common.blocks.EOABlocks;
-import io.github.ragnaraven.eoarmors.common.commands.CommandAddLevel;
-import io.github.ragnaraven.eoarmors.common.commands.CommandRarity;
 import io.github.ragnaraven.eoarmors.common.items.EOAItems;
-import io.github.ragnaraven.eoarmors.config.Config;
 import io.github.ragnaraven.eoarmors.config.ConfigHolder;
+import io.github.ragnaraven.eoarmors.config.ServerConfig;
 import io.github.ragnaraven.eoarmors.core.eventlisteners.*;
 import io.github.ragnaraven.eoarmors.init.EOAKeyBinds;
 import io.github.ragnaraven.eoarmors.loot.EOALootRegistry;
@@ -13,14 +11,11 @@ import io.github.ragnaraven.eoarmors.network.PacketGuiAbility;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -36,6 +31,7 @@ public class EnderObsidianArmorsMod
     public static final String MODID = "eoarmors";
 	
 	public static final Random RANDOM = new Random();
+	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
 	/*
 	public static boolean BUILDCRAFT = false;
@@ -61,9 +57,6 @@ public class EnderObsidianArmorsMod
 
 		bus.addListener(this::setup);
 		bus.addListener(this::clientInit);
-		bus.addListener(this::config);
-
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
 		EOAItems.ITEMS.register(bus);
 		EOABlocks.BLOCKS.register(bus);
@@ -73,7 +66,6 @@ public class EnderObsidianArmorsMod
 		final ModLoadingContext modLoadingContext = ModLoadingContext.get();
 		modLoadingContext.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);
 		modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
-
 
 		//MinecraftForge.EVENT_BUS.register(EAOGeneral.class);
 	}
@@ -92,11 +84,5 @@ public class EnderObsidianArmorsMod
 	private void clientInit(FMLClientSetupEvent event)
 	{
 		EOAKeyBinds.init(event);
-	}
-
-	private void config(ModConfig.ModConfigEvent event)
-	{
-		if (event.getConfig().getSpec() == Config.SPEC)
-			Config.load();
 	}
 }

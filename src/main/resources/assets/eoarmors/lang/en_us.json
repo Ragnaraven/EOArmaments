@@ -111,5 +111,6 @@
   "eoarmors.misc.rarity.armorreduction": "Damage Reduction",
   "eoarmors.misc.rarity.arrowpercentage": "Arrow Shot Damage",
   "eoarmors.misc.tooltip.attackdamage": "Attack Damage",
-  "eoarmors.misc.level.leveledup": "has leveled up to level"
+  "eoarmors.misc.level.leveledup": "has leveled up to level",
+  "eoarmors.mainscreen.title": "Armor Enhancements"
 }

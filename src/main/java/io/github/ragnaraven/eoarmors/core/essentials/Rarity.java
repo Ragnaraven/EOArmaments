@@ -2,7 +2,8 @@ package io.github.ragnaraven.eoarmors.core.essentials;
 
 import java.util.Random;
 
-import io.github.ragnaraven.eoarmors.config.Config;
+import io.github.ragnaraven.eoarmors.config.ConfigHolder;
+import io.github.ragnaraven.eoarmors.config.ServerConfig;
 import io.github.ragnaraven.eoarmors.core.util.RandomCollection;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -11,12 +12,12 @@ import net.minecraft.util.text.TextFormatting;
 public enum Rarity 
 {
 	DEFAULT("", 0, 0.0, 0.0),
-	BASIC(TextFormatting.WHITE, 0xFFFFFF, Config.basicChance, Config.basicDamage),
-	UNCOMMON(TextFormatting.DARK_GREEN, 0x00AA00, Config.uncommonChance, Config.uncommonDamage),
-	RARE(TextFormatting.AQUA, 0x55FFFF, Config.rareChance, Config.rareDamage),
-	ULTRA_RARE(TextFormatting.DARK_PURPLE, 0xAA00AA, Config.ultraRareChance, Config.ultraRareDamage),
-	LEGENDARY(TextFormatting.GOLD, 0xFFAA00, Config.legendaryChance, Config.legendaryDamage),
-	ARCHAIC(TextFormatting.LIGHT_PURPLE, 0xFF55FF, Config.archaicChance, Config.archaicDamage);
+	BASIC(TextFormatting.WHITE, 0xFFFFFF, ConfigHolder.SERVER.basicChance.get(), ConfigHolder.SERVER.basicDamage.get()),
+	UNCOMMON(TextFormatting.DARK_GREEN, 0x00AA00, ConfigHolder.SERVER.uncommonChance.get(), ConfigHolder.SERVER.uncommonDamage.get()),
+	RARE(TextFormatting.AQUA, 0x55FFFF, ConfigHolder.SERVER.rareChance.get(), ConfigHolder.SERVER.rareDamage.get()),
+	ULTRA_RARE(TextFormatting.DARK_PURPLE, 0xAA00AA, ConfigHolder.SERVER.ultraRareChance.get(), ConfigHolder.SERVER.ultraRareDamage.get()),
+	LEGENDARY(TextFormatting.GOLD, 0xFFAA00, ConfigHolder.SERVER.legendaryChance.get(), ConfigHolder.SERVER.legendaryDamage.get()),
+	ARCHAIC(TextFormatting.LIGHT_PURPLE, 0xFF55FF, ConfigHolder.SERVER.archaicChance.get(), ConfigHolder.SERVER.archaicDamage.get());
 	
 	private String color;
 	private int hex;

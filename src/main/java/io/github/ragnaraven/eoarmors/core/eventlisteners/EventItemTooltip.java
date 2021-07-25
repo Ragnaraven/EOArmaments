@@ -4,7 +4,8 @@ import java.util.Collection;
 import java.util.List;
 
 import com.google.common.collect.Multimap;
-import io.github.ragnaraven.eoarmors.config.Config;
+import io.github.ragnaraven.eoarmors.config.ConfigHolder;
+import io.github.ragnaraven.eoarmors.config.ServerConfig;
 import io.github.ragnaraven.eoarmors.core.essentials.Ability;
 import io.github.ragnaraven.eoarmors.core.essentials.Experience;
 import io.github.ragnaraven.eoarmors.core.essentials.Rarity;
@@ -67,19 +68,19 @@ public class EventItemTooltip
 			// add tooltips
 
 				// level
-				if (level >= Config.maxLevel)
+				if (level >= ConfigHolder.SERVER.maxLevel.get())
 					tooltip.add(new StringTextComponent(I18n.get("eoarmors.misc.level") + ": " + TextFormatting.RED + I18n.get("eoarmors.misc.max")));
 				else
 					tooltip.add(new StringTextComponent(I18n.get("eoarmors.misc.level") + ": " + TextFormatting.WHITE + level));
 
 				// experience
-				if (level >= Config.maxLevel)
+				if (level >= ConfigHolder.SERVER.maxLevel.get())
 					tooltip.add(new StringTextComponent(I18n.get("eoarmors.misc.experience") + ": " + I18n.get("eoarmors.misc.max")));
 				else
 					tooltip.add(new StringTextComponent(I18n.get("eoarmors.misc.experience") + ": " + experience + " / " + maxExperience));
 
 				// durability
-				if (Config.showDurabilityInTooltip)
+				if (ConfigHolder.SERVER.showDurabilityInTooltip.get())
 				{
 					tooltip.add(new StringTextComponent(I18n.get("eoarmors.misc.durability") + ": " + (stack.getMaxDamage() - stack.getDamageValue()) + " / " + stack.getMaxDamage()));
 				}

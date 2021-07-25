@@ -1,6 +1,7 @@
 package io.github.ragnaraven.eoarmors.core.eventlisteners;
 
-import io.github.ragnaraven.eoarmors.config.Config;
+import io.github.ragnaraven.eoarmors.config.ConfigHolder;
+import io.github.ragnaraven.eoarmors.config.ServerConfig;
 import io.github.ragnaraven.eoarmors.core.essentials.Ability;
 import io.github.ragnaraven.eoarmors.core.essentials.Experience;
 import io.github.ragnaraven.eoarmors.core.util.EAUtils;
@@ -46,7 +47,7 @@ public class EventLivingDeath
 					{
 						if (Ability.ETHEREAL.hasAbility(nbt))
 						{
-							player.inventory.getCarried().setDamageValue((player.inventory.getCarried().getDamageValue() - (Ability.ETHEREAL.getLevel(nbt)*2)));
+							player.getMainHandItem().setDamageValue((player.getMainHandItem().getDamageValue() - (Ability.ETHEREAL.getLevel(nbt)*2)));
 						}
 						addBonusExperience(event, nbt);
 						updateLevel(player, stack, nbt);
@@ -62,7 +63,7 @@ public class EventLivingDeath
 					{
 						if (Ability.ETHEREAL.hasAbility(nbt))
 						{
-							player.inventory.getCarried().setDamageValue((player.inventory.getCarried().getDamageValue() - (Ability.ETHEREAL.getLevel(nbt)*2+1)));
+							player.getMainHandItem().setDamageValue((player.getMainHandItem().getDamageValue() - (Ability.ETHEREAL.getLevel(nbt)*2+1)));
 						}
 						addBonusExperience(event, nbt);
 						updateLevel(player, stack, nbt);
@@ -80,7 +81,7 @@ public class EventLivingDeath
 				PlayerEntity player = (PlayerEntity) arrow.getEntity();
 				if (player != null)
 				{
-					ItemStack stack = player.inventory.getCarried();
+					ItemStack stack = player.getMainHandItem();
 
 					if (stack != ItemStack.EMPTY)
 					{
@@ -104,7 +105,7 @@ public class EventLivingDeath
 	 */
 	private static void addBonusExperience(LivingDeathEvent event, CompoundNBT nbt)
 	{
-		if (Experience.getLevel(nbt) < Config.maxLevel)
+		if (Experience.getLevel(nbt) < (ConfigHolder.SERVER.maxLevel.get()))
 		{
 			if (event.getEntityLiving() != null)
 			{

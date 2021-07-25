@@ -22,7 +22,7 @@ It also adds Emerald armor and tools as a tier above diamond.
 	    versionRange="[36,)"
 	    ordering="NONE"
 	    side="BOTH"
-		
+
 [[dependencies.eoarmors]]
 	    modId="minecraft"
 	    mandatory=true

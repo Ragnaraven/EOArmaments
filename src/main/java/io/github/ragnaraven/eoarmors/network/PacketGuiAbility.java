@@ -39,7 +39,7 @@ public class PacketGuiAbility
 
 					if (player != null)
 					{
-						ItemStack stack = player.inventory.getCarried();
+						ItemStack stack = player.getMainHandItem();
 
 						if (stack != ItemStack.EMPTY)
 						{

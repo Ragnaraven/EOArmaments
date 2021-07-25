@@ -3,8 +3,9 @@ package io.github.ragnaraven.eoarmors.core.eventlisteners;
 import java.util.Collection;
 
 import com.google.common.collect.Multimap;
-import io.github.ragnaraven.eoarmors.config.Config;
 
+import io.github.ragnaraven.eoarmors.config.ConfigHolder;
+import io.github.ragnaraven.eoarmors.config.ServerConfig;
 import io.github.ragnaraven.eoarmors.core.essentials.Ability;
 import io.github.ragnaraven.eoarmors.core.essentials.Experience;
 import io.github.ragnaraven.eoarmors.core.essentials.Rarity;
@@ -131,7 +132,7 @@ public class EventLivingHurt
 	 */
 	private void updateExperience(CompoundNBT nbt, float dealedDamage)
 	{
-		if (Experience.getLevel(nbt) < Config.maxLevel)
+		if (Experience.getLevel(nbt) < ConfigHolder.SERVER.maxLevel.get())
 		{
 			Experience.setExperience(nbt, Experience.getExperience(nbt) + 1 + (int)dealedDamage/4);
 		}
@@ -175,31 +176,31 @@ public class EventLivingHurt
 		if (target != null)
 		{
 			// active
-			if (Ability.FIRE.hasAbility(nbt) && (int) (Math.random() * Config.firechance) == 0)
+			if (Ability.FIRE.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.firechance.get()) == 0)
 			{
 				double multiplier = (Ability.FIRE.getLevel(nbt) + Ability.FIRE.getLevel(nbt)*4)/4;
 				target.setRemainingFireTicks((int) (multiplier));
 			}
 			
-			if (Ability.FROST.hasAbility(nbt) && (int) (Math.random() * Config.frostchance) == 0)
+			if (Ability.FROST.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.frostchance.get()) == 0)
 			{
 				double multiplier = (Ability.FROST.getLevel(nbt) + Ability.FROST.getLevel(nbt)*4)/3;
 				target.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, (int) (20 * multiplier), 10));
 			}
 			
-			if (Ability.POISON.hasAbility(nbt) && (int) (Math.random() * Config.poisonchance) == 0)
+			if (Ability.POISON.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.poisonchance.get()) == 0)
 			{
 				double multiplier = (Ability.POISON.getLevel(nbt) + Ability.POISON.getLevel(nbt)*4)/2;
 				target.addEffect(new EffectInstance(Effects.POISON, (int) (20 * multiplier), Ability.POISON.getLevel(nbt)));
 			}
 			
-			if (Ability.INNATE.hasAbility(nbt) && (int) (Math.random() * Config.innatechance) == 0)
+			if (Ability.INNATE.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.innatechance.get()) == 0)
 			{
 				double multiplier = (Ability.INNATE.getLevel(nbt) + Ability.INNATE.getLevel(nbt)*4)/3;
 				target.addEffect(new EffectInstance(Effects.WITHER, (int) (20 * multiplier), Ability.INNATE.getLevel(nbt)));
 			}
 
-			if (Ability.BOMBASTIC.hasAbility(nbt) && (int) (Math.random() * Config.bombasticchance) == 0)
+			if (Ability.BOMBASTIC.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.bombasticchance.get()) == 0)
 			{
 				double multiplierD = (Ability.BOMBASTIC.getLevel(nbt) + Ability.BOMBASTIC.getLevel(nbt)*4)/4;
 				float multiplier = (float)multiplierD;
@@ -211,7 +212,7 @@ public class EventLivingHurt
 					}
 			}
 			
-			if (Ability.CRITICAL_POINT.hasAbility(nbt) && (int) (Math.random() * Config.criticalpointchance) == 0)
+			if (Ability.CRITICAL_POINT.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.criticalpointchance.get()) == 0)
 			{
 				float multiplier = 0F;
 				
@@ -242,28 +243,28 @@ public class EventLivingHurt
 		if (target != null)
 		{
 			// active
-			if (Ability.MOLTEN.hasAbility(nbt) && (int) (Math.random() * Config.moltenchance) == 0 && target instanceof LivingEntity)
+			if (Ability.MOLTEN.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.moltenchance.get()) == 0 && target instanceof LivingEntity)
 			{
 				LivingEntity realTarget = (LivingEntity) target;
 				double multiplier = (Ability.MOLTEN.getLevel(nbt) + Ability.MOLTEN.getLevel(nbt)*5)/4 ;
 				realTarget.setRemainingFireTicks((int) (multiplier));
 			}
 			
-			if (Ability.FROZEN.hasAbility(nbt) && (int) (Math.random() * Config.frozenchance) == 0 && target instanceof LivingEntity)
+			if (Ability.FROZEN.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.frozenchance.get()) == 0 && target instanceof LivingEntity)
 			{
 				LivingEntity realTarget = (LivingEntity) target;
 				double multiplier = (Ability.FROZEN.getLevel(nbt) + Ability.FROZEN.getLevel(nbt)*5)/6 ;
 				realTarget.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, (int) (20 * multiplier), 10));
 			}
 			
-			if (Ability.TOXIC.hasAbility(nbt) && (int) (Math.random() * Config.toxicchance) == 0 && target instanceof LivingEntity)
+			if (Ability.TOXIC.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.toxicchance.get()) == 0 && target instanceof LivingEntity)
 			{
 				LivingEntity realTarget = (LivingEntity) target;
 				double multiplier = (Ability.TOXIC.getLevel(nbt) + Ability.TOXIC.getLevel(nbt)*4)/4 ;
 				realTarget.addEffect(new EffectInstance(Effects.POISON, (int) (20 * multiplier), Ability.TOXIC.getLevel(nbt)));
 			}
 			
-			if (Ability.ADRENALINE.hasAbility(nbt) && (int) (Math.random() * Config.adrenalinechance) == 0)
+			if (Ability.ADRENALINE.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.adrenalinechance.get()) == 0)
 			{
 				double multiplier = (Ability.ADRENALINE.getLevel(nbt) + Ability.ADRENALINE.getLevel(nbt)*5)/3 ;
 				player.addEffect(new EffectInstance(Effects.REGENERATION, (int) (20 * (multiplier)), Ability.ADRENALINE.getLevel(nbt)));
@@ -276,7 +277,7 @@ public class EventLivingHurt
 					player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 20 * 7, 0));
 			}
 			
-			if (Ability.HARDENED.hasAbility(nbt) && (int) (Math.random() * Config.hardenedchance) == 0)
+			if (Ability.HARDENED.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.hardenedchance.get()) == 0)
 			{
 				event.setAmount(0F);
 			}

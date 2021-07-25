@@ -1,7 +1,7 @@
 package io.github.ragnaraven.eoarmors.core.essentials;
 
-import io.github.ragnaraven.eoarmors.config.Config;
-
+import io.github.ragnaraven.eoarmors.config.ConfigHolder;
+import io.github.ragnaraven.eoarmors.config.ServerConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -16,7 +16,7 @@ public class Experience
 	{
 		int newLevel = currentLevel;
 		
-		while (currentLevel < Config.CONFIG.maxLevel.get() && experience >= Experience.getMaxLevelExp(currentLevel))
+		while (currentLevel < ConfigHolder.SERVER.maxLevel.get() && experience >= Experience.getMaxLevelExp(currentLevel))
 		{
 			newLevel = currentLevel + 1;
 			currentLevel++;
@@ -34,7 +34,7 @@ public class Experience
 	
 	public static boolean canLevelUp(CompoundNBT nbt)
 	{
-		return getLevel(nbt) < Config.CONFIG.maxLevel.get();
+		return getLevel(nbt) < ConfigHolder.SERVER.maxLevel.get();
 	}
 	
 	public static void setLevel(CompoundNBT nbt, int level)
@@ -71,9 +71,9 @@ public class Experience
 	
 	public static int getMaxLevelExp(int level)
 	{
-		int maxLevelExp=Config.CONFIG.level1Experience.get();
+		int maxLevelExp = ConfigHolder.SERVER.level1Experience.get();
 		for(int i=1; i<level; i++)
-			maxLevelExp *= Config.CONFIG.experienceMultiplier.get();
+			maxLevelExp *= ConfigHolder.SERVER.experienceMultiplier.get();
 		return maxLevelExp;
 	}
 	

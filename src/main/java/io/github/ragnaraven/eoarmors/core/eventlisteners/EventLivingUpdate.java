@@ -2,7 +2,11 @@ package io.github.ragnaraven.eoarmors.core.eventlisteners;
 
 import java.util.Random;
 
-import io.github.ragnaraven.eoarmors.config.Config;
+import io.github.ragnaraven.eoarmors.config.ConfigHolder;
+import io.github.ragnaraven.eoarmors.config.ServerConfig;
+import io.github.ragnaraven.eoarmors.core.essentials.Ability;
+import io.github.ragnaraven.eoarmors.core.essentials.Experience;
+import io.github.ragnaraven.eoarmors.core.essentials.Rarity;
 import io.github.ragnaraven.eoarmors.core.util.EAUtils;
 import io.github.ragnaraven.eoarmors.core.util.NBTHelper;
 
@@ -63,15 +67,15 @@ public class EventLivingUpdate
 									if (!Experience.isEnabled(nbt)) {
 										boolean okay = true;
 
-										for (int j = 0; j < Config.itemBlacklist.size(); j++) {
-											if (Config.itemBlacklist.get(j).equals(stack.getItem().getRegistryName().getPath()))
+										for (int j = 0; j < ConfigHolder.SERVER.itemBlacklist.get().size(); j++) {
+											if (ConfigHolder.SERVER.itemBlacklist.get().get(j).equals(stack.getItem().getRegistryName().getPath()))
 												okay = false;
 										}
 
-										if (Config.itemWhitelist.size() != 0) {
+										if (ConfigHolder.SERVER.itemWhitelist.get().size() != 0) {
 											okay = false;
-											for (int k = 0; k < Config.itemWhitelist.size(); k++)
-												if (Config.itemWhitelist.get(k).equals(stack.getItem().getRegistryName().getPath()))
+											for (int k = 0; k < ConfigHolder.SERVER.itemWhitelist.get().size(); k++)
+												if (ConfigHolder.SERVER.itemWhitelist.get().get(k).equals(stack.getItem().getRegistryName().getPath()))
 													okay = true;
 										}
 
