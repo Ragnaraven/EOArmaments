@@ -1,15 +1,31 @@
 package io.github.ragnaraven.eoarmors;
 
 import io.github.ragnaraven.eoarmors.common.blocks.EOABlocks;
+import io.github.ragnaraven.eoarmors.common.commands.CommandAddLevel;
+import io.github.ragnaraven.eoarmors.common.commands.CommandRarity;
 import io.github.ragnaraven.eoarmors.common.items.EOAItems;
+import io.github.ragnaraven.eoarmors.config.Config;
 import io.github.ragnaraven.eoarmors.config.ConfigHolder;
+import io.github.ragnaraven.eoarmors.core.eventlisteners.*;
+import io.github.ragnaraven.eoarmors.init.EOAKeyBinds;
 import io.github.ragnaraven.eoarmors.loot.EOALootRegistry;
+import io.github.ragnaraven.eoarmors.network.PacketGuiAbility;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 
@@ -30,9 +46,24 @@ public class EnderObsidianArmorsMod
 	public static boolean REFINED_IRON = false;
 	 */
 
+	//FROM EA
+	private static final String PROTOCOL_VERSION = "1.0";
+	public static SimpleChannel network = NetworkRegistry.ChannelBuilder
+			.named(new ResourceLocation(MODID, "networking"))
+			.clientAcceptedVersions(PROTOCOL_VERSION::equals)
+			.serverAcceptedVersions(PROTOCOL_VERSION::equals)
+			.networkProtocolVersion(() -> PROTOCOL_VERSION)
+			.simpleChannel();
+
+
 	public EnderObsidianArmorsMod() {
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+
 		bus.addListener(this::setup);
+		bus.addListener(this::clientInit);
+		bus.addListener(this::config);
+
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
 		EOAItems.ITEMS.register(bus);
 		EOABlocks.BLOCKS.register(bus);
@@ -47,8 +78,25 @@ public class EnderObsidianArmorsMod
 		//MinecraftForge.EVENT_BUS.register(EAOGeneral.class);
 	}
 
-	private void setup(final FMLCommonSetupEvent event)
+	private void setup(FMLCommonSetupEvent event)
 	{
+		MinecraftForge.EVENT_BUS.register(new EventItemTooltip());
+		MinecraftForge.EVENT_BUS.register(new EventLivingUpdate());
+		MinecraftForge.EVENT_BUS.register(new EventInput());
+		MinecraftForge.EVENT_BUS.register(new EventLivingHurt());
+		MinecraftForge.EVENT_BUS.register(new EventLivingDeath());
 
+		network.registerMessage(0, PacketGuiAbility.class, PacketGuiAbility::encode, PacketGuiAbility::decode, PacketGuiAbility::handle);
+	}
+
+	private void clientInit(FMLClientSetupEvent event)
+	{
+		EOAKeyBinds.init(event);
+	}
+
+	private void config(ModConfig.ModConfigEvent event)
+	{
+		if (event.getConfig().getSpec() == Config.SPEC)
+			Config.load();
 	}
 }
