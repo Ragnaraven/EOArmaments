@@ -4,11 +4,11 @@ license="All rights reserved"
 [[mods]] #mandatory
 modId="eoarmors" 
 version="${file.jarVersion}" 
-displayName="Ender Obsidian Armors"
+displayName="Ender Obsidian Armaments"
 logoFile="icon.png" 
 credits="EnhancedArmaments: TheXFactor117, JanneSoon. Thank you for 550 downloads on CurseForge!"
-issueTrackerURL="https://github.com/Ragnaraven/EOArmors/issues"
-updateJSONURL="https://www.curseforge.com/minecraft/mc-mods/ender-obsidian-armors/files"
+issueTrackerURL="https://github.com/Ragnaraven/EOArmaments/issues"
+updateJSONURL="https://www.curseforge.com/minecraft/mc-mods/ender-obsidian-armaments/files"
 authors="Ragnaraven" 
 description='''
 This mod adds Obsidian and Ender Obsidian as armor set with set special bonuses as end game mining tools
