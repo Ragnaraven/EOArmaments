@@ -3,9 +3,9 @@
     "item": "eoarmors:armor_ender_obsidian_chest"
   },
   "pattern": [
-    "ooo",
+    " o ",
     "oOo",
-    "ooo"
+    " o "
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
