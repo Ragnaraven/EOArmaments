@@ -1,7 +1,6 @@
 package io.github.ragnaraven.eoarmors.core.eventlisteners;
 
 import io.github.ragnaraven.eoarmors.config.ConfigHolder;
-import io.github.ragnaraven.eoarmors.config.ServerConfig;
 import io.github.ragnaraven.eoarmors.core.essentials.Ability;
 import io.github.ragnaraven.eoarmors.core.essentials.Experience;
 import io.github.ragnaraven.eoarmors.core.util.EAUtils;

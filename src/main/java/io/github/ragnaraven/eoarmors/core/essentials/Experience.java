@@ -21,7 +21,7 @@ public class Experience
 			newLevel = currentLevel + 1;
 			currentLevel++;
 			Experience.setAbilityTokens(nbt, Experience.getAbilityTokens(nbt) + 1);
-			player.sendMessage(new StringTextComponent(stack.getDisplayName().getString() + TextFormatting.GRAY + " " + new TranslationTextComponent("enhancedarmaments.misc.level.leveledup").getString() + " " + TextFormatting.GOLD + "" + newLevel + TextFormatting.GRAY + "!"), Util.NIL_UUID);
+			player.sendMessage(new StringTextComponent(stack.getDisplayName().getString() + TextFormatting.GRAY + " " + new TranslationTextComponent("eoarmors.misc.level.leveledup").getString() + " " + TextFormatting.GOLD + "" + newLevel + TextFormatting.GRAY + "!"), Util.NIL_UUID);
 		}
 		
 		return newLevel;

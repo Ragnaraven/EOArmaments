@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class EventInput
 {
+	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
 	public void onKeyPress(InputUpdateEvent event)
 	{

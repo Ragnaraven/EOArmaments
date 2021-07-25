@@ -3,6 +3,7 @@ package io.github.ragnaraven.eoarmors.common.commands;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.github.ragnaraven.eoarmors.core.essentials.Rarity;
 import io.github.ragnaraven.eoarmors.core.util.EAUtils;
 import io.github.ragnaraven.eoarmors.core.util.NBTHelper;
@@ -28,12 +29,13 @@ public class CommandRarity
 	@SubscribeEvent
 	public static void registerEvent (RegisterCommandsEvent event)
 	{
-		CommandDispatcher<CommandSource> dispatcher = event.getDispatcher();
-
-		dispatcher.register(Commands.literal("changerarity")
+		LiteralArgumentBuilder<CommandSource> changerarity = Commands.literal("changerarity")
 				.requires(cmd -> cmd.hasPermission(3))
-				.then(Commands.argument("rarityid", IntegerArgumentType.integer()))
-				.executes(cmd -> changeRarity(cmd.getSource(), cmd.getSource().getPlayerOrException(), IntegerArgumentType.getInteger(cmd, "rarityid"))));
+				.then(Commands.argument("rarityid", IntegerArgumentType.integer())
+					.executes(cmd -> changeRarity(cmd.getSource(), cmd.getSource().getPlayerOrException(), IntegerArgumentType.getInteger(cmd, "rarityid")))
+				);
+
+		event.getDispatcher().register(changerarity);
 	}
 	
 	public static int changeRarity(CommandSource src, PlayerEntity player, int rarityid)

@@ -29,7 +29,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
-
 public class GuiAbilitySelection extends Screen
 {
 	private Button[] weaponAbilities;
@@ -143,7 +142,7 @@ public class GuiAbilitySelection extends Screen
 			}
 		}
 	}
-	
+
 	@OnlyIn(Dist.CLIENT)
 	private void actionPerformed(Button button)
 	{
@@ -749,11 +748,9 @@ public class GuiAbilitySelection extends Screen
 		}
 	}
 
-
-	//TODO: PAUSING? CHECK HERE!
-	/*@Override
-	public boolean doesGuiPauseGame()
+	@Override
+	public boolean isPauseScreen()
 	{
 		return false;
-	}*/
+	}
 }

@@ -3,7 +3,6 @@ package io.github.ragnaraven.eoarmors.core.essentials;
 import java.util.ArrayList;
 
 import io.github.ragnaraven.eoarmors.config.ConfigHolder;
-import io.github.ragnaraven.eoarmors.config.ServerConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TextFormatting;
@@ -178,11 +177,11 @@ public enum Ability
 	public String getName(CompoundNBT nbt)
 	{
 		if (getLevel(nbt) == 2)
-			return new TranslationTextComponent("enhancedarmaments.ability." + this.toString()).getString() + " II";
+			return new TranslationTextComponent("eoarmors.ability." + this.toString()).getString() + " II";
 		else if (getLevel(nbt) == 3)
-			return new TranslationTextComponent("enhancedarmaments.ability." + this.toString()).getString() + " III";
+			return new TranslationTextComponent("eoarmors.ability." + this.toString()).getString() + " III";
 		else
-			return new TranslationTextComponent("enhancedarmaments.ability." + this.toString()).getString();
+			return new TranslationTextComponent("eoarmors.ability." + this.toString()).getString();
 	}
 	
 	public String getType()
@@ -192,7 +191,7 @@ public enum Ability
 	
 	public String getTypeName()
 	{
-		return new TranslationTextComponent("enhancedarmaments.ability.type." + type.toString()).getString(); 
+		return new TranslationTextComponent("eoarmors.ability.type." + type.toString()).getString(); 
 	}
 	
 	public String getCategory()
