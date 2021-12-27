@@ -13,28 +13,19 @@ import io.github.ragnaraven.eoarmors.network.PacketGuiAbility;
 import io.github.ragnaraven.eoarmors.core.util.EAUtils;
 import io.github.ragnaraven.eoarmors.core.util.NBTHelper;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.gui.GuiUtils;
-import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 public class GuiAbilitySelection extends Screen
 {
 	private Button[] weaponAbilities;
 	private Button[] armorAbilities;
 
-	public GuiAbilitySelection(ITextComponent textComponent)
+	public GuiAbilitySelection(TextComponent textComponent)
 	{
 		super(textComponent);
 	}
@@ -49,7 +40,7 @@ public class GuiAbilitySelection extends Screen
 	    
 	    if (player != null)
 	    {
-	    	ItemStack stack = player.getMainHandItem();;
+	    	ItemStack stack = player.getMainHandItem();
 	    	
 	    	if (stack != ItemStack.EMPTY)
 	    	{

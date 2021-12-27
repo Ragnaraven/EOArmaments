@@ -1,7 +1,6 @@
 {
     "pack": {
-        "description": "Ender Obsidian Armaments resources",
-        "pack_format": 6,
-        "_comment": "I have no idea, at all, what this does lol."
+        "description": "examplemod resources",
+        "pack_format": 8
     }
 }
