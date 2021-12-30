@@ -1,6 +1,7 @@
 package io.github.ragnaraven.eoarmors.common.items.tools;
 
 import io.github.ragnaraven.eoarmors.EnderObsidianArmorsMod;
+import io.github.ragnaraven.eoarmors.client.render.particles.ParticleEffects;
 import io.github.ragnaraven.eoarmors.core.util.EOAHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -138,9 +139,8 @@ public class EnderObsidianSword extends SwordItem
 				double d8 = y + (entity.getY() - y) * d6 + EnderObsidianArmorsMod.RANDOM.nextDouble() * (double) entity.getBbHeight();
 				double d9 = z + (entity.getZ() - z) * d6 + (EnderObsidianArmorsMod.RANDOM.nextDouble() - 0.5D) * (double) entity.getBbHeight() * 2.0D;
 				
-				/*for(j = 0; j < 10; j++)
-					ParticleEffects.spawnEnderObsidianParticles(entity, d7, d8, d9, f, f1, f2);*/
-				//entity.worldObj.spawnParticle("portal", d7, d8, d9, (double)f, (double)f1, (double)f2);
+				for(j = 0; j < 10; j++)
+					ParticleEffects.spawnEnderObsidianParticles(entity, d7, d8, d9, f, f1, f2);
 			}
 		}
 		

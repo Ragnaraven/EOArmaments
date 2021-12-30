@@ -1,6 +1,7 @@
 package io.github.ragnaraven.eoarmors.core.eventlisteners;
 
 import io.github.ragnaraven.eoarmors.EnderObsidianArmorsMod;
+import io.github.ragnaraven.eoarmors.client.render.particles.ParticleEffects;
 import io.github.ragnaraven.eoarmors.common.blocks.EOABlocks;
 import io.github.ragnaraven.eoarmors.core.util.RangedInt;
 import net.minecraft.core.BlockPos;
@@ -84,8 +85,8 @@ public class EOAEnderObsidianEventHandler
 	{
 		world.setBlockAndUpdate(pos, EOABlocks.ENDER_OBSIDIAN.get().defaultBlockState());
 		
-		/*if(!world.isClientSide())
+		if(world.isClientSide())
 			for(int i = 0; i < 5; i++)
-				ParticleEffects.spawnEnderObsidianSpawnParticles(world, pos.getX(), pos.getY(), pos.getZ());*/
+				ParticleEffects.spawnEnderObsidianSpawnParticles(world, pos.getX(), pos.getY(), pos.getZ());
 	}
 }

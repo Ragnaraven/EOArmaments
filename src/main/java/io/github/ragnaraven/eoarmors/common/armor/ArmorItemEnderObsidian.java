@@ -1,6 +1,7 @@
 package io.github.ragnaraven.eoarmors.common.armor;
 
 import io.github.ragnaraven.eoarmors.EnderObsidianArmorsMod;
+import io.github.ragnaraven.eoarmors.client.render.particles.ParticleEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -55,8 +56,8 @@ public class ArmorItemEnderObsidian extends ModArmorItem
 		if(!player.getCommandSenderWorld().isClientSide())
 		{
 			//Occasional Ender particles
-			/*if(EnderObsidianArmorsMod.RANDOM.nextInt(5) == 0)
-				.spawnEnderObsidianParticles(player, 1);*/
+			if(EnderObsidianArmorsMod.RANDOM.nextInt(5) == 0)
+				ParticleEffects.spawnEnderObsidianParticles(player, 1);
 		}
 	}
 

@@ -1,6 +1,7 @@
 package io.github.ragnaraven.eoarmors.core.eventlisteners;
 
 import io.github.ragnaraven.eoarmors.EnderObsidianArmorsMod;
+import io.github.ragnaraven.eoarmors.client.render.particles.ParticleEffects;
 import io.github.ragnaraven.eoarmors.common.blocks.EOABlocks;
 import io.github.ragnaraven.eoarmors.common.items.EOAItems;
 import io.github.ragnaraven.eoarmors.config.ConfigHolder;
@@ -286,9 +287,8 @@ public class EOABlockBreakEventHandler
 								player.getMainHandItem().setDamageValue(player.getMainHandItem().getDamageValue() + multiplier * FORTUNE_EFFECT_EXTRA_PICK_HURT);
 
 								//Spawn particles for a magical effect.
-								/*if (!world.isClientSide())
-									for (int i = 0; i < 15; i++)
-										ParticleEffects.spawnEnderObsidianSpawnParticles(world, player.getX(), player.getY(), player.getZ());*/
+								for (int i = 0; i < 15; i++)
+									ParticleEffects.spawnEnderObsidianSpawnParticles(player.level, player.getX(), player.getY(), player.getZ());
 							}
 						}
 						else //If here, they were unlucky, lets see if they are even less lucky

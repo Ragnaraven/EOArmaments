@@ -1,5 +1,6 @@
 package io.github.ragnaraven.eoarmors.common.blocks;
 
+import io.github.ragnaraven.eoarmors.client.render.particles.ParticleEffects;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,7 +20,7 @@ public class EnderObsidian extends BlockBase
 	@OnlyIn(Dist.CLIENT)
 	public void randomDisplayTick(Level world, int x, int y, int z, Random random)
 	{
-		/*if (random.nextInt(3) == 0)
-			ParticleEffects.spawnEnderObsidianBlockParticles(world, x, y, z);*/
+		if (random.nextInt(3) == 0)
+			ParticleEffects.spawnEnderObsidianBlockParticles(world, x, y, z);
 	}
 }
