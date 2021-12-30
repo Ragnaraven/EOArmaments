@@ -3,8 +3,8 @@ package io.github.ragnaraven.eoarmors.core.util;
 import io.github.ragnaraven.eoarmors.common.items.EOAItems;
 import io.github.ragnaraven.eoarmors.common.armor.ArmorItemEnderObsidian;
 import io.github.ragnaraven.eoarmors.common.armor.ArmorItemObsidian;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public class EOAHelpers {
 
@@ -15,7 +15,7 @@ public class EOAHelpers {
     public static final int LEVEL_ENDER_OBSIDIAN = 1;
 
     /**Check for NULL before calling**/
-    public static int CHECK_ARMOR (PlayerEntity player)
+    public static int CHECK_ARMOR (Player player)
     {
         int initArmor = -1;
         int armor = -1; //0 is obsidian, 1 is enderObsidian
@@ -24,11 +24,11 @@ public class EOAHelpers {
         {
             if(initArmor != armor)
                 return -1;
-            else if (player.inventory.armor.get(i) == ItemStack.EMPTY)
+            else if (player.getInventory().armor.get(i) == ItemStack.EMPTY)
                 return -1;
-            else if (player.inventory.armor.get(i).getItem() instanceof ArmorItemObsidian)
+            else if (player.getInventory().armor.get(i).getItem() instanceof ArmorItemObsidian)
                 armor = LEVEL_OBSIDIAN;
-            else if (player.inventory.armor.get(i).getItem() instanceof ArmorItemEnderObsidian)
+            else if (player.getInventory().armor.get(i).getItem() instanceof ArmorItemEnderObsidian)
                 armor = LEVEL_ENDER_OBSIDIAN;
             else
                 return -1;
@@ -40,7 +40,7 @@ public class EOAHelpers {
         return armor;
     }
 
-    public static int CHECK_PICK (PlayerEntity player)
+    public static int CHECK_PICK (Player player)
     {
         int pick = -1; //0 is obsidian, 1 is enderObsidian
 
@@ -53,7 +53,7 @@ public class EOAHelpers {
     }
 
     /**BE SURE TO CHECK FOR NULL CURRENTITEM*/
-    public static boolean CHECK_PICK_AGAINST_SET (int armor, PlayerEntity player)
+    public static boolean CHECK_PICK_AGAINST_SET (int armor, Player player)
     {
         if (armor == LEVEL_OBSIDIAN)
             return player.getMainHandItem().getItem() == EOAItems.OBSIDIAN_PICKAXE.get();
@@ -64,7 +64,7 @@ public class EOAHelpers {
     }
 
     /**BE SURE TO CHECK FOR NULL CURRENTITEM*/
-    public static boolean CHECK_ARMOR_SET_AGAINST_HELD_TOOLS (int armor, PlayerEntity player)
+    public static boolean CHECK_ARMOR_SET_AGAINST_HELD_TOOLS (int armor, Player player)
     {
         if (armor == 0)
             return player.getMainHandItem().getItem() == EOAItems.OBSIDIAN_AXE.get()

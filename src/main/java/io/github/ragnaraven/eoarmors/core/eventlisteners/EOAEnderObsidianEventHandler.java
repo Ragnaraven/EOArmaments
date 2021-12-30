@@ -2,20 +2,17 @@ package io.github.ragnaraven.eoarmors.core.eventlisteners;
 
 import io.github.ragnaraven.eoarmors.EnderObsidianArmorsMod;
 import io.github.ragnaraven.eoarmors.common.blocks.EOABlocks;
-import io.github.ragnaraven.eoarmors.client.render.particles.ParticleEffects;
 import io.github.ragnaraven.eoarmors.core.util.RangedInt;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.world.DimensionRenderInfo;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Dimension;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fluids.capability.wrappers.BlockWrapper;
 import net.minecraftforge.fml.common.Mod;
+
+import java.awt.*;
+
 
 /**
  * Created by Ragnaraven on 9/22/2017 at 12:37 PM.
@@ -36,12 +33,12 @@ public class EOAEnderObsidianEventHandler
 	public static void enderObsidianSpawnWaterEventCheck(BlockEvent.NeighborNotifyEvent event)
 	{
 		Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
-		World world = (World) event.getWorld();
+		Level world = (Level) event.getWorld();
 		BlockPos pos = event.getPos();
 		
 		//Only in the end should any of this happen
 		//if(world.dimension().location().equals(DimensionType.END_LOCATION.location()))
-		if(world.dimension().location().equals(Dimension.END.location()))
+		if(world.dimension().equals(Level.END))
 		{
 			//Checking for the chance here because it will save some processing I.E. it wont check surrounding BLOCKS.
 			if(shouldSpawnEnderObsidian())
@@ -61,7 +58,7 @@ public class EOAEnderObsidianEventHandler
 		return CHANCE_SPAWN_ENDER_OBSIDIAN_EVENT.get() != 0 && EnderObsidianArmorsMod.RANDOM.nextInt(CHANCE_SPAWN_ENDER_OBSIDIAN_EVENT.max) < CHANCE_SPAWN_ENDER_OBSIDIAN_EVENT.get();
 	}
 	
-	public static void trySpawnEnderObsidianWaterEvent(World world, BlockPos pos)
+	public static void trySpawnEnderObsidianWaterEvent(Level world, BlockPos pos)
 	{
 		if(isValidLavaSourceBlock(world, pos.below()) //Down
 			|| isValidLavaSourceBlock(world, pos.north()) //North
@@ -73,7 +70,7 @@ public class EOAEnderObsidianEventHandler
 		}
 	}
 
-	public static boolean isValidLavaSourceBlock (World world, BlockPos pos)
+	public static boolean isValidLavaSourceBlock (Level world, BlockPos pos)
 	{
 		//If it is a lava source block.
 		//Strangely, source BLOCKS are turned into flowing BLOCKS when there is a physics update. Therefore the LEVEL = 0 check
@@ -83,12 +80,12 @@ public class EOAEnderObsidianEventHandler
 				|| (world.getBlockState(pos).getBlock() == Blocks.LAVA);// && world.getBlockState(pos).getValue(BlockWrapper.LiquidContainerBlockWrapper.LEVEL) == 0); //Is lava flowing at level 0
 	}
 
-	public static void spawnEnderObsidian(World world, BlockPos pos)
+	public static void spawnEnderObsidian(Level world, BlockPos pos)
 	{
 		world.setBlockAndUpdate(pos, EOABlocks.ENDER_OBSIDIAN.get().defaultBlockState());
 		
-		if(!world.isClientSide())
+		/*if(!world.isClientSide())
 			for(int i = 0; i < 5; i++)
-				ParticleEffects.spawnEnderObsidianSpawnParticles(world, pos.getX(), pos.getY(), pos.getZ());
+				ParticleEffects.spawnEnderObsidianSpawnParticles(world, pos.getX(), pos.getY(), pos.getZ());*/
 	}
 }

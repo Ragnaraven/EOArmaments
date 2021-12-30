@@ -1,33 +1,29 @@
 package io.github.ragnaraven.eoarmors.core.eventlisteners;
 
-import java.util.Collection;
-
 import com.google.common.collect.Multimap;
-
 import io.github.ragnaraven.eoarmors.config.ConfigHolder;
-import io.github.ragnaraven.eoarmors.config.ServerConfig;
 import io.github.ragnaraven.eoarmors.core.essentials.Ability;
 import io.github.ragnaraven.eoarmors.core.essentials.Experience;
 import io.github.ragnaraven.eoarmors.core.essentials.Rarity;
 import io.github.ragnaraven.eoarmors.core.util.EAUtils;
 import io.github.ragnaraven.eoarmors.core.util.NBTHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -35,26 +31,28 @@ import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Collection;
+
 @Mod.EventBusSubscriber
 public class EventLivingHurt
 {
 	//this needs to be a player capability or this will be really random in Multiplayer!
-	public static Hand bowfriendlyhand;
+	public static InteractionHand bowfriendlyhand;
 	
 	@SubscribeEvent
 	public void onArrowHit(ProjectileImpactEvent event)
 	{
-		if(event.getEntity() instanceof ArrowEntity)
+		if(event.getEntity() instanceof Arrow)
 		{
 			//TODO: CRASH CHECK? ERROR CHECK? WHO IS shootingEntity now??????
-			//if(EAUtils.getEntityByUniqueId(((ArrowEntity)event.getEntity()).shootingEntity) instanceof PlayerEntity && EAUtils.getEntityByUniqueId(((ArrowEntity)event.getEntity()).shootingEntity) != null)
-			if(((ArrowEntity)event.getEntity()).getOwner() instanceof PlayerEntity && ((ArrowEntity)event.getEntity()).getOwner() != null)
+			//if(EAUtils.getEntityByUniqueId(((ArrowEntity)event.getEntity()).shootingEntity) instanceof Player && EAUtils.getEntityByUniqueId(((ArrowEntity)event.getEntity()).shootingEntity) != null)
+			if(((Arrow)event.getEntity()).getOwner() instanceof Player && ((Arrow)event.getEntity()).getOwner() != null)
 			{
-				PlayerEntity player=(PlayerEntity) ((ArrowEntity)event.getEntity()).getOwner();
+				Player player = (Player) ((Arrow)event.getEntity()).getOwner();
 
 				//TODO: ERROR CHECK. ENTITY == NULL is that the same as a miss??
 				//if(event.getRayTraceResult().entity == null && player != null)
-				if(event.getRayTraceResult().getType() == RayTraceResult.Type.MISS && player != null)
+				if(event.getRayTraceResult().getType() == HitResult.Type.MISS && player != null)
 					bowfriendlyhand = player.getUsedItemHand();
 			}
 		}
@@ -69,9 +67,9 @@ public class EventLivingHurt
 	@SubscribeEvent
 	public void onHurt(LivingHurtEvent event)
 	{
-		if (event.getSource().getDirectEntity() instanceof PlayerEntity && !(event.getSource().getDirectEntity() instanceof FakePlayer)) //PLAYER IS ATTACKER
+		if (event.getSource().getDirectEntity() instanceof Player && !(event.getSource().getDirectEntity() instanceof FakePlayer)) //PLAYER IS ATTACKER
 		{
-			PlayerEntity player = (PlayerEntity) event.getSource().getDirectEntity();
+			Player player = (Player) event.getSource().getDirectEntity();
 			LivingEntity target = event.getEntityLiving();
 			ItemStack stack;
 			if(bowfriendlyhand == null)
@@ -81,7 +79,7 @@ public class EventLivingHurt
 			
 			if (stack != ItemStack.EMPTY && EAUtils.canEnhanceWeapon(stack.getItem()))
 			{
-				CompoundNBT nbt = NBTHelper.loadStackNBT(stack);
+				CompoundTag nbt = NBTHelper.loadStackNBT(stack);
 				
 				if (nbt != null)
 					if(nbt.contains("EA_ENABLED"))
@@ -93,18 +91,18 @@ public class EventLivingHurt
 					}
 			}
 		}
-		else if (event.getEntityLiving() instanceof PlayerEntity)
+		else if (event.getEntityLiving() instanceof Player)
 		{//PLAYER IS GETTING HURT
-			PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+			Player player = (Player) event.getEntityLiving();
 			Entity target = event.getSource().getDirectEntity();
 			
-			for (ItemStack stack : player.inventory.armor)
+			for (ItemStack stack : player.getInventory().armor)
 			{
 				if (stack != null)
 				{
 					if (EAUtils.canEnhanceArmor(stack.getItem()))	
 					{
-						CompoundNBT nbt = NBTHelper.loadStackNBT(stack);
+						CompoundTag nbt = NBTHelper.loadStackNBT(stack);
 						
 						if (nbt != null)
 							if(nbt.contains("EA_ENABLED"))
@@ -130,7 +128,7 @@ public class EventLivingHurt
 	 * Called everytime a target is hurt. Used to add experience to weapons dealing damage.
 	 * @param nbt
 	 */
-	private void updateExperience(CompoundNBT nbt, float dealedDamage)
+	private void updateExperience(CompoundTag nbt, float dealedDamage)
 	{
 		if (Experience.getLevel(nbt) < ConfigHolder.SERVER.maxLevel.get())
 		{
@@ -142,14 +140,14 @@ public class EventLivingHurt
 	 * Called everytime a target is hurt. Used to add dealing more damage or getting less damage.
 	 * @param nbt
 	 */
-	private void useRarity(LivingHurtEvent event, ItemStack stack, CompoundNBT nbt)
+	private void useRarity(LivingHurtEvent event, ItemStack stack, CompoundTag nbt)
 	{
 		Rarity rarity = Rarity.getRarity(nbt);
 		
 		if (rarity != Rarity.DEFAULT)
 			if (EAUtils.canEnhanceMelee(stack.getItem()))
 			{
-				Multimap<Attribute, AttributeModifier> map = stack.getItem().getAttributeModifiers(EquipmentSlotType.MAINHAND, stack);
+				Multimap<Attribute, AttributeModifier> map = stack.getItem().getAttributeModifiers(EquipmentSlot.MAINHAND, stack);
 				Collection<AttributeModifier> damageCollection = map.get(Attributes.ATTACK_DAMAGE);
 				AttributeModifier damageModifier = (AttributeModifier) damageCollection.toArray()[0];
 				double damage = damageModifier.getAmount();
@@ -171,7 +169,7 @@ public class EventLivingHurt
 	 * @param target
 	 * @param nbt
 	 */
-	private void useWeaponAbilities(LivingHurtEvent event, PlayerEntity player, LivingEntity target, CompoundNBT nbt)
+	private void useWeaponAbilities(LivingHurtEvent event, Player player, LivingEntity target, CompoundTag nbt)
 	{
 		if (target != null)
 		{
@@ -185,30 +183,30 @@ public class EventLivingHurt
 			if (Ability.FROST.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.frostchance.get()) == 0)
 			{
 				double multiplier = (Ability.FROST.getLevel(nbt) + Ability.FROST.getLevel(nbt)*4)/3;
-				target.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, (int) (20 * multiplier), 10));
+				target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, (int) (20 * multiplier), 10));
 			}
 			
 			if (Ability.POISON.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.poisonchance.get()) == 0)
 			{
 				double multiplier = (Ability.POISON.getLevel(nbt) + Ability.POISON.getLevel(nbt)*4)/2;
-				target.addEffect(new EffectInstance(Effects.POISON, (int) (20 * multiplier), Ability.POISON.getLevel(nbt)));
+				target.addEffect(new MobEffectInstance(MobEffects.POISON, (int) (20 * multiplier), Ability.POISON.getLevel(nbt)));
 			}
 			
 			if (Ability.INNATE.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.innatechance.get()) == 0)
 			{
 				double multiplier = (Ability.INNATE.getLevel(nbt) + Ability.INNATE.getLevel(nbt)*4)/3;
-				target.addEffect(new EffectInstance(Effects.WITHER, (int) (20 * multiplier), Ability.INNATE.getLevel(nbt)));
+				target.addEffect(new MobEffectInstance(MobEffects.WITHER, (int) (20 * multiplier), Ability.INNATE.getLevel(nbt)));
 			}
 
 			if (Ability.BOMBASTIC.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.bombasticchance.get()) == 0)
 			{
 				double multiplierD = (Ability.BOMBASTIC.getLevel(nbt) + Ability.BOMBASTIC.getLevel(nbt)*4)/4;
 				float multiplier = (float)multiplierD;
-				World world = target.getCommandSenderWorld();
+				Level world = target.getCommandSenderWorld();
 					
-					if (!(target instanceof AnimalEntity))
+					if (!(target instanceof Animal))
 					{
-						world.explode(target, target.position().x, target.position().y, target.position().z, multiplier, Explosion.Mode.BREAK);
+						world.explode(target, target.position().x, target.position().y, target.position().z, multiplier, Explosion.BlockInteraction.BREAK);
 					}
 			}
 			
@@ -227,7 +225,7 @@ public class EventLivingHurt
 			// passive
 			if (Ability.ILLUMINATION.hasAbility(nbt))
 			{
-				target.addEffect(new EffectInstance(Effects.WEAKNESS, (20 * 5), Ability.ILLUMINATION.getLevel(nbt)));
+				target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, (20 * 5), Ability.ILLUMINATION.getLevel(nbt)));
 			}
 			
 			if (Ability.BLOODTHIRST.hasAbility(nbt))
@@ -238,7 +236,7 @@ public class EventLivingHurt
 		}
 	}
 	
-	private void useArmorAbilities(LivingHurtEvent event, PlayerEntity player, Entity target, CompoundNBT nbt)
+	private void useArmorAbilities(LivingHurtEvent event, Player player, Entity target, CompoundTag nbt)
 	{
 		if (target != null)
 		{
@@ -254,27 +252,27 @@ public class EventLivingHurt
 			{
 				LivingEntity realTarget = (LivingEntity) target;
 				double multiplier = (Ability.FROZEN.getLevel(nbt) + Ability.FROZEN.getLevel(nbt)*5)/6 ;
-				realTarget.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, (int) (20 * multiplier), 10));
+				realTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, (int) (20 * multiplier), 10));
 			}
 			
 			if (Ability.TOXIC.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.toxicchance.get()) == 0 && target instanceof LivingEntity)
 			{
 				LivingEntity realTarget = (LivingEntity) target;
 				double multiplier = (Ability.TOXIC.getLevel(nbt) + Ability.TOXIC.getLevel(nbt)*4)/4 ;
-				realTarget.addEffect(new EffectInstance(Effects.POISON, (int) (20 * multiplier), Ability.TOXIC.getLevel(nbt)));
+				realTarget.addEffect(new MobEffectInstance(MobEffects.POISON, (int) (20 * multiplier), Ability.TOXIC.getLevel(nbt)));
 			}
 			
 			if (Ability.ADRENALINE.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.adrenalinechance.get()) == 0)
 			{
 				double multiplier = (Ability.ADRENALINE.getLevel(nbt) + Ability.ADRENALINE.getLevel(nbt)*5)/3 ;
-				player.addEffect(new EffectInstance(Effects.REGENERATION, (int) (20 * (multiplier)), Ability.ADRENALINE.getLevel(nbt)));
+				player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, (int) (20 * (multiplier)), Ability.ADRENALINE.getLevel(nbt)));
 			}
 
 			// passive
 			if (Ability.BEASTIAL.hasAbility(nbt))
 			{
 				if (player.getHealth() <= (player.getMaxHealth() * 0.2F))
-					player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 20 * 7, 0));
+					player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 20 * 7, 0));
 			}
 			
 			if (Ability.HARDENED.hasAbility(nbt) && (int) (Math.random() * ConfigHolder.SERVER.hardenedchance.get()) == 0)
@@ -290,7 +288,7 @@ public class EventLivingHurt
 	 * @param stack
 	 * @param nbt
 	 */
-	private void updateLevel(PlayerEntity player, ItemStack stack, CompoundNBT nbt)
+	private void updateLevel(Player player, ItemStack stack, CompoundTag nbt)
 	{
 		int level = Experience.getNextLevel(player, stack, nbt, Experience.getLevel(nbt), Experience.getExperience(nbt));
 		Experience.setLevel(nbt, level);

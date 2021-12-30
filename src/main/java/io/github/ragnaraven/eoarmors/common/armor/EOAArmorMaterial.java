@@ -1,19 +1,19 @@
 package io.github.ragnaraven.eoarmors.common.armor;
 
 import io.github.ragnaraven.eoarmors.common.blocks.EOABlocks;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.sounds.SoundEvent;
 
+import javax.swing.*;
 import java.util.function.Supplier;
 
-public enum EOAArmorMaterial implements IArmorMaterial
+public enum EOAArmorMaterial implements ArmorMaterial
 {
 
     /*Materials                                                                                                                                   iron                 15           2   6  5  2               9
@@ -23,8 +23,7 @@ public enum EOAArmorMaterial implements IArmorMaterial
             */
     EMERALD("emerald",               56, new int[]{4, 9, 8, 4}, 8, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.0F, 1.0F, () -> { return Ingredient.of(Items.EMERALD); } ),
     OBSIDIAN("obsidian",             3, new int[]{4, 4, 4, 4}, 10, SoundEvents.ARMOR_EQUIP_IRON, 0.5F, 0.0F, () -> { return Ingredient.of(Items.OBSIDIAN); } ),
-    ENDER_OBSIDIAN("ender_obsidian", 3, new int[]{2, 2, 2, 2}, 15, SoundEvents.ARMOR_EQUIP_IRON, 0.5F, 0.0F, () -> { return Ingredient.of(EOABlocks.ENDER_OBSIDIAN.get()); } )
-    ;
+    ENDER_OBSIDIAN("ender_obsidian", 3, new int[]{2, 2, 2, 2}, 15, SoundEvents.ARMOR_EQUIP_IRON, 0.5F, 0.0F, () -> { return Ingredient.of(EOABlocks.ENDER_OBSIDIAN.get()); } );
 
     private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
     private final String name;
@@ -34,7 +33,7 @@ public enum EOAArmorMaterial implements IArmorMaterial
     private final SoundEvent sound;
     private final float toughness;
     private final float knockbackResistance;
-    private final LazyValue<Ingredient> repairIngredient;
+    private final Supplier<Ingredient> repairIngredient;
 
     private EOAArmorMaterial(String name, int durabilityMultiplier, int[] slotProtections, int enchantmentValue,
                              SoundEvent sound, float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient) {
@@ -45,14 +44,14 @@ public enum EOAArmorMaterial implements IArmorMaterial
         this.sound = sound;
         this.toughness = toughness;
         this.knockbackResistance = knockbackResistance;
-        this.repairIngredient = new LazyValue<>(repairIngredient);
+        this.repairIngredient = repairIngredient;
     }
 
-    public int getDurabilityForSlot(EquipmentSlotType equipmentSlotType) {
+    public int getDurabilityForSlot(EquipmentSlot equipmentSlotType) {
         return HEALTH_PER_SLOT[equipmentSlotType.getIndex()] * this.durabilityMultiplier;
     }
 
-    public int getDefenseForSlot(EquipmentSlotType equipmentSlotType) {
+    public int getDefenseForSlot(EquipmentSlot equipmentSlotType) {
         return this.slotProtections[equipmentSlotType.getIndex()];
     }
 
@@ -60,6 +59,7 @@ public enum EOAArmorMaterial implements IArmorMaterial
         return this.enchantmentValue;
     }
 
+    @Override
     public SoundEvent getEquipSound() {
         return this.sound;
     }

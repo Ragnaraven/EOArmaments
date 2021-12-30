@@ -12,20 +12,20 @@ import io.github.ragnaraven.eoarmors.core.essentials.Rarity;
 import io.github.ragnaraven.eoarmors.core.util.EAUtils;
 import io.github.ragnaraven.eoarmors.core.util.NBTHelper;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.BowItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -48,13 +48,13 @@ public class EventItemTooltip
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void addInformation(ItemTooltipEvent event)
 	{
-		List<ITextComponent> tooltip = event.getToolTip();
+		List<Component> tooltip = event.getToolTip();
 		ItemStack stack = event.getItemStack();
 		Item item = stack.getItem();
 
 		if (EAUtils.canEnhance(item))
 		{
-			CompoundNBT nbt = NBTHelper.loadStackNBT(stack);
+			CompoundTag nbt = NBTHelper.loadStackNBT(stack);
 
 			if (Experience.isEnabled(nbt))
 			{
@@ -69,28 +69,28 @@ public class EventItemTooltip
 
 				// level
 				if (level >= ConfigHolder.SERVER.maxLevel.get())
-					tooltip.add(new StringTextComponent(I18n.get("eoarmors.misc.level") + ": " + TextFormatting.RED + I18n.get("eoarmors.misc.max")));
+					tooltip.add(new TextComponent(I18n.get("eoarmors.misc.level") + ": " + ChatFormatting.RED + I18n.get("eoarmors.misc.max")));
 				else
-					tooltip.add(new StringTextComponent(I18n.get("eoarmors.misc.level") + ": " + TextFormatting.WHITE + level));
+					tooltip.add(new TextComponent(I18n.get("eoarmors.misc.level") + ": " + ChatFormatting.WHITE + level));
 
 				// experience
 				if (level >= ConfigHolder.SERVER.maxLevel.get())
-					tooltip.add(new StringTextComponent(I18n.get("eoarmors.misc.experience") + ": " + I18n.get("eoarmors.misc.max")));
+					tooltip.add(new TextComponent(I18n.get("eoarmors.misc.experience") + ": " + I18n.get("eoarmors.misc.max")));
 				else
-					tooltip.add(new StringTextComponent(I18n.get("eoarmors.misc.experience") + ": " + experience + " / " + maxExperience));
+					tooltip.add(new TextComponent(I18n.get("eoarmors.misc.experience") + ": " + experience + " / " + maxExperience));
 
 				// durability
 				if (ConfigHolder.SERVER.showDurabilityInTooltip.get())
 				{
-					tooltip.add(new StringTextComponent(I18n.get("eoarmors.misc.durability") + ": " + (stack.getMaxDamage() - stack.getDamageValue()) + " / " + stack.getMaxDamage()));
+					tooltip.add(new TextComponent(I18n.get("eoarmors.misc.durability") + ": " + (stack.getMaxDamage() - stack.getDamageValue()) + " / " + stack.getMaxDamage()));
 				}
 
 				// abilities
-				tooltip.add(new StringTextComponent(""));
+				tooltip.add(new TextComponent(""));
 				if (Screen.hasShiftDown())
 				{
-					tooltip.add(new StringTextComponent(rarity.getColor() + "" + TextFormatting.ITALIC + I18n.get("eoarmors.misc.abilities")));
-					tooltip.add(new StringTextComponent(""));
+					tooltip.add(new TextComponent(rarity.getColor() + "" + ChatFormatting.ITALIC + I18n.get("eoarmors.misc.abilities")));
+					tooltip.add(new TextComponent(""));
 
 					if (EAUtils.canEnhanceWeapon(item))
 					{
@@ -98,7 +98,7 @@ public class EventItemTooltip
 						{
 							if (ability.hasAbility(nbt))
 							{
-								tooltip.add(new TranslationTextComponent("-" + ability.getColor() + ability.getName(nbt)));
+								tooltip.add(new TranslatableComponent("-" + ability.getColor() + ability.getName(nbt)));
 							}
 						}
 					}
@@ -108,32 +108,32 @@ public class EventItemTooltip
 						{
 							if (ability.hasAbility(nbt))
 							{
-								tooltip.add(new TranslationTextComponent("-" + ability.getColor() + ability.getName(nbt)));
+								tooltip.add(new TranslatableComponent("-" + ability.getColor() + ability.getName(nbt)));
 							}
 						}
 					}
 				}
 				else
-					tooltip.add(new StringTextComponent(rarity.getColor() + "" + TextFormatting.ITALIC + I18n.get("eoarmors.misc.abilities.shift")));
+					tooltip.add(new TextComponent(rarity.getColor() + "" + ChatFormatting.ITALIC + I18n.get("eoarmors.misc.abilities.shift")));
 			}
 		}
 	}
 	
-	private void changeTooltips(List<ITextComponent> tooltip, ItemStack stack, Rarity rarity)
+	private void changeTooltips(List<Component> tooltip, ItemStack stack, Rarity rarity)
 	{
 		// rarity after the name
-		tooltip.set(0, new StringTextComponent(stack.getDisplayName().getString() + rarity.getColor() + " (" + TextFormatting.ITALIC + I18n.get("eoarmors.rarity." + rarity.getName()) + ")"));
+		tooltip.set(0, new TextComponent(stack.getDisplayName().getString() + rarity.getColor() + " (" + ChatFormatting.ITALIC + I18n.get("eoarmors.rarity." + rarity.getName()) + ")"));
 		
 		if (EAUtils.containsString(tooltip, "When in main hand:") && !(stack.getItem() instanceof BowItem))
 		{
-			Multimap<Attribute, AttributeModifier> map = stack.getItem().getAttributeModifiers(EquipmentSlotType.MAINHAND.MAINHAND, stack);
+			Multimap<Attribute, AttributeModifier> map = stack.getItem().getAttributeModifiers(EquipmentSlot.MAINHAND.MAINHAND, stack);
 			Collection<AttributeModifier> damageCollection = map.get(Attributes.ATTACK_DAMAGE);
 			AttributeModifier damageModifier = (AttributeModifier) damageCollection.toArray()[0];
 			double damage = ((damageModifier.getAmount() + 1) * rarity.getEffect()) + damageModifier.getAmount() + 1;
 			String d = String.format("%.1f", damage);
 			
 			if(rarity.getEffect() != 0)
-				tooltip.set(EAUtils.lineContainsString(tooltip, "When in main hand:") + 2, new StringTextComponent(rarity.getColor() + " " + d + TextFormatting.GRAY +" "+ I18n.get("eoarmors.misc.tooltip.attackdamage")));
+				tooltip.set(EAUtils.lineContainsString(tooltip, "When in main hand:") + 2, new TextComponent(rarity.getColor() + " " + d + ChatFormatting.GRAY +" "+ I18n.get("eoarmors.misc.tooltip.attackdamage")));
 		}
 		
 		if (EAUtils.containsString(tooltip, "When on head:") || EAUtils.containsString(tooltip, "When on body:") || EAUtils.containsString(tooltip, "When on legs:") || EAUtils.containsString(tooltip, "When on feet:"))
@@ -146,13 +146,13 @@ public class EventItemTooltip
 			if(EAUtils.containsString(tooltip, "When on legs:")) line = EAUtils.lineContainsString(tooltip, "When on legs:");
 			if(EAUtils.containsString(tooltip, "When on feet:")) line = EAUtils.lineContainsString(tooltip, "When on feet:");
 			if(percentage != 0)
-				tooltip.add(line + 1, new StringTextComponent(" " + TextFormatting.BLUE + "+" + rarity.getColor() + percentage + TextFormatting.BLUE + "% " + I18n.get("eoarmors.misc.rarity.armorreduction")));
+				tooltip.add(line + 1, new TextComponent(" " + ChatFormatting.BLUE + "+" + rarity.getColor() + percentage + ChatFormatting.BLUE + "% " + I18n.get("eoarmors.misc.rarity.armorreduction")));
 		}
 		
 		if(EAUtils.canEnhanceRanged(stack.getItem()) && rarity.getEffect() != 0)
 		{
 			String b = String.format("%.1f", rarity.getEffect()/3*100);
-			tooltip.add(1, new StringTextComponent(I18n.get("eoarmors.misc.rarity.arrowpercentage") + " " + rarity.getColor() + "+" + b + "%"));
+			tooltip.add(1, new TextComponent(I18n.get("eoarmors.misc.rarity.arrowpercentage") + " " + rarity.getColor() + "+" + b + "%"));
 		}
 	}
 }

@@ -1,18 +1,18 @@
 package io.github.ragnaraven.eoarmors.core.essentials;
 
 import io.github.ragnaraven.eoarmors.config.ConfigHolder;
-import io.github.ragnaraven.eoarmors.config.ServerConfig;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public class Experience 
 {	
-	public static int getNextLevel(PlayerEntity player, ItemStack stack, CompoundNBT nbt, int currentLevel, int experience)
+	public static int getNextLevel(Player player, ItemStack stack, CompoundTag nbt, int currentLevel, int experience)
 	{
 		int newLevel = currentLevel;
 		
@@ -21,23 +21,23 @@ public class Experience
 			newLevel = currentLevel + 1;
 			currentLevel++;
 			Experience.setAbilityTokens(nbt, Experience.getAbilityTokens(nbt) + 1);
-			player.sendMessage(new StringTextComponent(stack.getDisplayName().getString() + TextFormatting.GRAY + " " + new TranslationTextComponent("eoarmors.misc.level.leveledup").getString() + " " + TextFormatting.GOLD + "" + newLevel + TextFormatting.GRAY + "!"), Util.NIL_UUID);
+			player.sendMessage(new TextComponent(stack.getDisplayName().getString() + ChatFormatting.GRAY + " " + new TranslatableComponent("eoarmors.misc.level.leveledup").getString() + " " + ChatFormatting.GOLD + "" + newLevel + ChatFormatting.GRAY + "!"), Util.NIL_UUID);
 		}
 		
 		return newLevel;
 	}
 	
-	public static int getLevel(CompoundNBT nbt)
+	public static int getLevel(CompoundTag nbt)
 	{
 		return nbt != null ? Math.max(nbt.getInt("LEVEL"), 1) : 1;
 	}
 	
-	public static boolean canLevelUp(CompoundNBT nbt)
+	public static boolean canLevelUp(CompoundTag nbt)
 	{
 		return getLevel(nbt) < ConfigHolder.SERVER.maxLevel.get();
 	}
 	
-	public static void setLevel(CompoundNBT nbt, int level)
+	public static void setLevel(CompoundTag nbt, int level)
 	{
 		if (nbt != null)
 		{
@@ -48,17 +48,17 @@ public class Experience
 		}
 	}
 	
-	public static int getNeededExpForNextLevel(CompoundNBT nbt)
+	public static int getNeededExpForNextLevel(CompoundTag nbt)
 	{
 		return Experience.getMaxLevelExp(Experience.getLevel(nbt)) - Experience.getExperience(nbt);
 	}
 	
-	public static int getExperience(CompoundNBT nbt)
+	public static int getExperience(CompoundTag nbt)
 	{
 		return nbt.contains("EXPERIENCE") ? nbt.getInt("EXPERIENCE") : 0;
 	}
 	
-	public static void setExperience(CompoundNBT nbt, int experience)
+	public static void setExperience(CompoundTag nbt, int experience)
 	{
 		if (nbt != null)
 		{
@@ -77,7 +77,7 @@ public class Experience
 		return maxLevelExp;
 	}
 	
-	public static void setAbilityTokens(CompoundNBT nbt, int tokens)
+	public static void setAbilityTokens(CompoundTag nbt, int tokens)
 	{
 		if (nbt != null)
 		{
@@ -88,12 +88,12 @@ public class Experience
 		}
 	}
 	
-	public static int getAbilityTokens(CompoundNBT nbt)
+	public static int getAbilityTokens(CompoundTag nbt)
 	{
 		return nbt != null ? nbt.getInt("TOKENS") : 0;
 	}
 	
-	public static void enable(CompoundNBT nbt, boolean value)
+	public static void enable(CompoundTag nbt, boolean value)
 	{
 		if (nbt != null)
 		{
@@ -104,7 +104,7 @@ public class Experience
 		}
 	}
 	
-	public static boolean isEnabled(CompoundNBT nbt)
+	public static boolean isEnabled(CompoundTag nbt)
 	{
 		return nbt != null && nbt.getBoolean("EA_ENABLED");
 	}

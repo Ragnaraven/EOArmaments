@@ -1,31 +1,18 @@
 package io.github.ragnaraven.eoarmors.common.armor;
 
 import io.github.ragnaraven.eoarmors.EnderObsidianArmorsMod;
-import io.github.ragnaraven.eoarmors.common.items.EOAItems;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
-import java.util.List;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class ModArmorItem extends ArmorItem
 {
     protected String name;
 
-    public ModArmorItem(String name, IArmorMaterial armorMaterial, EquipmentSlotType equipmentSlotType, Item.Properties properties)
+    public ModArmorItem(String name, ArmorMaterial armorMaterial, EquipmentSlot equipmentSlotType, Item.Properties properties)
     {
         super(armorMaterial, equipmentSlotType, properties);
 
@@ -33,9 +20,9 @@ public class ModArmorItem extends ArmorItem
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type)
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type)
     {
-        if(slot == EquipmentSlotType.LEGS)
+        if(slot == EquipmentSlot.LEGS)
             return EnderObsidianArmorsMod.MODID + ":textures/models/armor/armor_" + name + "_layer_1.png";
         else
             return EnderObsidianArmorsMod.MODID + ":textures/models/armor/armor_" + name + "_layer_0.png";

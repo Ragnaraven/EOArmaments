@@ -6,11 +6,11 @@ import io.github.ragnaraven.eoarmors.core.essentials.Experience;
 import io.github.ragnaraven.eoarmors.core.util.EAUtils;
 import io.github.ragnaraven.eoarmors.core.util.NBTHelper;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,9 +27,9 @@ public class EventLivingDeath
 	@SubscribeEvent
 	public void onLivingDeath(LivingDeathEvent event)
 	{
-		if (event.getSource().getDirectEntity() instanceof PlayerEntity && !(event.getSource().getDirectEntity() instanceof FakePlayer))
+		if (event.getSource().getDirectEntity() instanceof Player && !(event.getSource().getDirectEntity() instanceof FakePlayer))
 		{
-			PlayerEntity player = (PlayerEntity) event.getSource().getDirectEntity();
+			Player player = (Player) event.getSource().getDirectEntity();
 			
 			ItemStack stack;
 			if(EventLivingHurt.bowfriendlyhand == null)
@@ -39,7 +39,7 @@ public class EventLivingDeath
 			
 			if (stack != ItemStack.EMPTY && EAUtils.canEnhanceMelee(stack.getItem()))
 			{
-				CompoundNBT nbt = NBTHelper.loadStackNBT(stack);
+				CompoundTag nbt = NBTHelper.loadStackNBT(stack);
 				
 				if (nbt != null)
 					if(nbt.contains("EA_ENABLED"))
@@ -55,7 +55,7 @@ public class EventLivingDeath
 			}
 			else if (stack != ItemStack.EMPTY && EAUtils.canEnhanceRanged(stack.getItem()))
 			{
-				CompoundNBT nbt = NBTHelper.loadStackNBT(stack);
+				CompoundTag nbt = NBTHelper.loadStackNBT(stack);
 
 				if (nbt != null)
 					if(nbt.contains("EA_ENABLED"))
@@ -69,22 +69,22 @@ public class EventLivingDeath
 					}
 			}
 		}
-		else if (event.getSource().getDirectEntity() instanceof ArrowEntity)
+		else if (event.getSource().getDirectEntity() instanceof Arrow)
 		{
-			ArrowEntity arrow = (ArrowEntity) event.getSource().getDirectEntity();
+			Arrow arrow = (Arrow) event.getSource().getDirectEntity();
 			
 			//TODO: ERROR CHECK
-			//if (EAUtils.getEntityByUniqueId() instanceof PlayerEntity && EAUtils.getEntityByUniqueId(arrow.shootingEntity) != null)
-			if (arrow.getEntity() instanceof PlayerEntity && arrow.getEntity() != null)
+			//if (EAUtils.getEntityByUniqueId() instanceof Player && EAUtils.getEntityByUniqueId(arrow.shootingEntity) != null)
+			if (arrow.getOwner() instanceof Player && arrow.getOwner() != null)
 			{
-				PlayerEntity player = (PlayerEntity) arrow.getEntity();
+				Player player = (Player) arrow.getOwner();
 				if (player != null)
 				{
 					ItemStack stack = player.getMainHandItem();
 
 					if (stack != ItemStack.EMPTY)
 					{
-						CompoundNBT nbt = NBTHelper.loadStackNBT(stack);
+						CompoundTag nbt = NBTHelper.loadStackNBT(stack);
 
 						if (nbt != null)
 						{
@@ -102,7 +102,7 @@ public class EventLivingDeath
 	 * @param event
 	 * @param nbt
 	 */
-	private static void addBonusExperience(LivingDeathEvent event, CompoundNBT nbt)
+	private static void addBonusExperience(LivingDeathEvent event, CompoundTag nbt)
 	{
 		if (Experience.getLevel(nbt) < (ConfigHolder.SERVER.maxLevel.get()))
 		{
@@ -128,7 +128,7 @@ public class EventLivingDeath
 	 * @param stack
 	 * @param nbt
 	 */
-	private static void updateLevel(PlayerEntity player, ItemStack stack, CompoundNBT nbt)
+	private static void updateLevel(Player player, ItemStack stack, CompoundTag nbt)
 	{
 		int level = Experience.getNextLevel(player, stack, nbt, Experience.getLevel(nbt), Experience.getExperience(nbt));
 		Experience.setLevel(nbt, level);

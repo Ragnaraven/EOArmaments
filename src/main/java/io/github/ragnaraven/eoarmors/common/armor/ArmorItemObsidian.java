@@ -1,10 +1,14 @@
 package io.github.ragnaraven.eoarmors.common.armor;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
-import net.minecraft.potion.*;
-import net.minecraft.world.World;
+import net.minecraft.client.renderer.EffectInstance;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.common.Mod;
 
 import static io.github.ragnaraven.eoarmors.core.util.EOAHelpers.CHECK_ARMOR;
@@ -16,7 +20,7 @@ import static io.github.ragnaraven.eoarmors.core.util.EOAHelpers.LEVEL_OBSIDIAN;
 @Mod.EventBusSubscriber
 public class ArmorItemObsidian extends ModArmorItem
 {
-	public ArmorItemObsidian(String name, IArmorMaterial armorMaterial, EquipmentSlotType equipmentSlotType, Item.Properties properties)
+	public ArmorItemObsidian(String name, ArmorMaterial armorMaterial, EquipmentSlot equipmentSlotType, Item.Properties properties)
 	{
 		super(name, armorMaterial, equipmentSlotType, properties);
 	}
@@ -28,7 +32,7 @@ public class ArmorItemObsidian extends ModArmorItem
 	}
 
 	@Override
-	public void onArmorTick(ItemStack stack, World world, PlayerEntity player)
+	public void onArmorTick(ItemStack stack, Level world, Player player)
 	{
 		super.onArmorTick(stack, world, player);
 
@@ -38,9 +42,9 @@ public class ArmorItemObsidian extends ModArmorItem
 			return; //-1 means no match for set.
 
 		//Fire res
-		player.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 0, 1)); //40 ticks will prevent the ability from failing
+		player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 0, 1)); //40 ticks will prevent the ability from failing
 
 		//Strength
-		player.addEffect(new EffectInstance(Effects.DAMAGE_BOOST, 0, 0)); //40 ticks will prevent the ability from failing
+		player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 0, 0)); //40 ticks will prevent the ability from failing
 	}
 }

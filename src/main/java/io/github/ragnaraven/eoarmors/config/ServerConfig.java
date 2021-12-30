@@ -2,9 +2,9 @@ package io.github.ragnaraven.eoarmors.config;
 
 import io.github.ragnaraven.eoarmors.EnderObsidianArmorsMod;
 import io.github.ragnaraven.eoarmors.core.eventlisteners.EOAEnderObsidianEventHandler;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;

@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.UUID;
 
 import io.github.ragnaraven.eoarmors.config.ConfigHolder;
-import io.github.ragnaraven.eoarmors.config.ServerConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.*;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.*;
 
 public class EAUtils
 {
@@ -72,7 +72,7 @@ public class EAUtils
 	
 	public static Entity getEntityByUniqueId(UUID uniqueId)
 	{
-		return ((ServerWorld) Minecraft.getInstance().player.getCommandSenderWorld()).getEntity(uniqueId);
+		return ((ServerLevel) Minecraft.getInstance().player.getCommandSenderWorld()).getEntity(uniqueId);
 
 		//TODO: CRASH CHECK IF SERVER WORLD FAILS?
 
@@ -85,7 +85,7 @@ public class EAUtils
 	    return null;*/
 	}
 	
-	public static boolean containsString (List<ITextComponent> tooltip, String string)
+	public static boolean containsString (List<Component> tooltip, String string)
 	{
 		if(tooltip.size() <= 0) return false;
 		
@@ -97,7 +97,7 @@ public class EAUtils
 		return false;
 	}
 	
-	public static int lineContainsString (List<ITextComponent> tooltip, String string)
+	public static int lineContainsString (List<Component> tooltip, String string)
 	{
 		if(tooltip.size() <= 0) return -1;
 		

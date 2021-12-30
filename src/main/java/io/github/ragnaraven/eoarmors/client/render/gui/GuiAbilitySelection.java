@@ -3,6 +3,7 @@ package io.github.ragnaraven.eoarmors.client.render.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.ragnaraven.eoarmors.EnderObsidianArmorsMod;
 import io.github.ragnaraven.eoarmors.config.ConfigHolder;
 import io.github.ragnaraven.eoarmors.config.ServerConfig;
@@ -13,12 +14,20 @@ import io.github.ragnaraven.eoarmors.network.PacketGuiAbility;
 import io.github.ragnaraven.eoarmors.core.util.EAUtils;
 import io.github.ragnaraven.eoarmors.core.util.NBTHelper;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.gui.GuiUtils;
+import net.minecraftforge.client.gui.widget.ExtendedButton;
 
 public class GuiAbilitySelection extends Screen
 {
@@ -30,13 +39,15 @@ public class GuiAbilitySelection extends Screen
 		super(textComponent);
 	}
 
+
+
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void init(Minecraft minecraft, int i1, int i2)
+	public void init()
 	{
-		super.init(minecraft, i1, i2);
+		super.init();
 		
-		PlayerEntity player = minecraft.player;
+		Player player = minecraft.player;
 	    
 	    if (player != null)
 	    {
@@ -47,7 +58,7 @@ public class GuiAbilitySelection extends Screen
 	    		if (EAUtils.canEnhanceWeapon(stack.getItem()))
 		    	{
 		    		weaponAbilities = new Button[Ability.WEAPON_ABILITIES_COUNT];
-		    		CompoundNBT nbt = stack.getTag();
+		    		CompoundTag nbt = stack.getTag();
 		    		
 		    		if (nbt != null)
 		    		{
@@ -57,13 +68,13 @@ public class GuiAbilitySelection extends Screen
 		    			{
 		    				if (Ability.WEAPON_ABILITIES.get(i).getType().equals("active"))
 			    			{
-		    					weaponAbilities[i] = new ExtendedButton(/*i,*/width / 2 - 215, 100 + (i * 21), 110, 20, new StringTextComponent(I18n.get("eoarmors.ability." + Ability.WEAPON_ABILITIES.get(i).getName())), this::actionPerformed);
+		    					weaponAbilities[i] = new ExtendedButton(/*i,*/width / 2 - 215, 100 + (i * 21), 110, 20, new TextComponent(I18n.get("eoarmors.ability." + Ability.WEAPON_ABILITIES.get(i).getName())), this::actionPerformed);
 		    					j++;
 			    			}
 		    				else
-		    					weaponAbilities[i] = new Button(/*i,*/ width / 2 - 100, 100 + ((i - j) * 21), 110, 20, new StringTextComponent(I18n.get("eoarmors.ability." + Ability.WEAPON_ABILITIES.get(i).getName())), this::actionPerformed);
+		    					weaponAbilities[i] = new Button(/*i,*/ width / 2 - 100, 100 + ((i - j) * 21), 110, 20, new TextComponent(I18n.get("eoarmors.ability." + Ability.WEAPON_ABILITIES.get(i).getName())), this::actionPerformed);
 		    				
-		    				addButton(weaponAbilities[i]);
+		    				addWidget(weaponAbilities[i]);
 		    				weaponAbilities[i].active = false;
 		    			}
 		    		}
@@ -71,7 +82,7 @@ public class GuiAbilitySelection extends Screen
 		    	else if (EAUtils.canEnhanceArmor(stack.getItem()))
 		    	{
 		    		armorAbilities = new Button[Ability.ARMOR_ABILITIES_COUNT];
-					CompoundNBT nbt = stack.getTag();
+					CompoundTag nbt = stack.getTag();
 
 		    		if (nbt != null)
 		    		{
@@ -81,13 +92,13 @@ public class GuiAbilitySelection extends Screen
 		    			{
 		    				if (Ability.ARMOR_ABILITIES.get(i).getType().equals("active"))
 			    			{
-		    					armorAbilities[i] = new ExtendedButton(/*i, */width / 2 - 215, 100 + (i * 21), 100, 20, new StringTextComponent(I18n.get("eoarmors.ability." + Ability.ARMOR_ABILITIES.get(i).getName())), this::actionPerformed);
+		    					armorAbilities[i] = new ExtendedButton(/*i, */width / 2 - 215, 100 + (i * 21), 100, 20, new TextComponent(I18n.get("eoarmors.ability." + Ability.ARMOR_ABILITIES.get(i).getName())), this::actionPerformed);
 		    					j++;
 			    			}
 		    				else
-		    					armorAbilities[i] = new ExtendedButton(/*i, */width / 2 - 100, 100 + ((i - j) * 21), 105, 20, new StringTextComponent(I18n.get("eoarmors.ability." + Ability.ARMOR_ABILITIES.get(i).getName())), this::actionPerformed);
-		    				
-		    				addButton(armorAbilities[i]);
+		    					armorAbilities[i] = new ExtendedButton(/*i, */width / 2 - 100, 100 + ((i - j) * 21), 105, 20, new TextComponent(I18n.get("eoarmors.ability." + Ability.ARMOR_ABILITIES.get(i).getName())), this::actionPerformed);
+
+							addWidget(armorAbilities[i]);
 		    				armorAbilities[i].active = false;
 		    			}
 		    		}
@@ -97,12 +108,12 @@ public class GuiAbilitySelection extends Screen
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
+	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks)
 	{
-		this.renderBackground(matrixStack);
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
+		this.renderBackground(poseStack);
+		super.render(poseStack, mouseX, mouseY, partialTicks);
 
-		PlayerEntity player = this.minecraft.player;
+		Player player = this.minecraft.player;
 
 		if (player != null)
 		{
@@ -112,21 +123,21 @@ public class GuiAbilitySelection extends Screen
 			{
 				if (EAUtils.canEnhance(stack.getItem()))
 				{
-					CompoundNBT nbt = NBTHelper.loadStackNBT(stack);
+					CompoundTag nbt = NBTHelper.loadStackNBT(stack);
 
 					if (nbt != null)
 					{
 						if (EAUtils.canEnhanceWeapon(stack.getItem()))
 						{
-							drawStrings(matrixStack, stack, Ability.WEAPON_ABILITIES, nbt);
+							drawStrings(poseStack, stack, Ability.WEAPON_ABILITIES, nbt);
 							displayButtons(weaponAbilities, Ability.WEAPON_ABILITIES, nbt, player);
-							drawTooltips(matrixStack, weaponAbilities, Ability.WEAPON_ABILITIES, mouseX, mouseY);
+							drawTooltips(poseStack, weaponAbilities, Ability.WEAPON_ABILITIES, mouseX, mouseY);
 						}
 						else if (EAUtils.canEnhanceArmor(stack.getItem()))
 						{
-							drawStrings(matrixStack, stack, Ability.ARMOR_ABILITIES, nbt);
+							drawStrings(poseStack, stack, Ability.ARMOR_ABILITIES, nbt);
 							displayButtons(armorAbilities, Ability.ARMOR_ABILITIES, nbt, player);
-							drawTooltips(matrixStack, armorAbilities, Ability.ARMOR_ABILITIES, mouseX, mouseY);
+							drawTooltips(poseStack, armorAbilities, Ability.ARMOR_ABILITIES, mouseX, mouseY);
 						}
 					}
 				}
@@ -137,7 +148,7 @@ public class GuiAbilitySelection extends Screen
 	@OnlyIn(Dist.CLIENT)
 	private void actionPerformed(Button button)
 	{
-		PlayerEntity player = minecraft.player;
+		Player player = minecraft.player;
 
 		if (player != null)
 		{
@@ -145,7 +156,7 @@ public class GuiAbilitySelection extends Screen
 			
 			if (stack != ItemStack.EMPTY)
 			{
-				CompoundNBT nbt = NBTHelper.loadStackNBT(stack);
+				CompoundTag nbt = NBTHelper.loadStackNBT(stack);
 				
 				if (nbt != null)
 				{
@@ -183,28 +194,28 @@ public class GuiAbilitySelection extends Screen
 	 * @param abilities
 	 * @param nbt
 	 */
-	private void drawStrings(MatrixStack matrixStack, ItemStack stack, ArrayList<Ability> abilities, CompoundNBT nbt)
+	private void drawStrings(PoseStack poseStack, ItemStack stack, ArrayList<Ability> abilities, CompoundTag nbt)
 	{
 		Rarity rarity = Rarity.getRarity(nbt);
 		
-		drawCenteredString(matrixStack, font, stack.getDisplayName().getString(), width / 2, 20, 0xFFFFFF);
-		drawString(matrixStack, font, I18n.get("eoarmors.misc.rarity") + ": ", width / 2 - 50, 40, 0xFFFFFF);
-		drawString(matrixStack, font, I18n.get("eoarmors.rarity." + rarity.getName()), width / 2 - 15, 40, rarity.getHex());
-		drawCenteredString(matrixStack, font, TextFormatting.ITALIC + I18n.get("eoarmors.misc.abilities"), width / 2 - 100, 73, 0xFFFFFF);
-		drawCenteredString(matrixStack, font, TextFormatting.GRAY + I18n.get("eoarmors.misc.abilities.tokens") + ": " + TextFormatting.DARK_GREEN + Experience.getAbilityTokens(nbt), width / 2 - 100, 86, 0xFFFFFF);
-		drawCenteredString(matrixStack, font, TextFormatting.GOLD + I18n.get("eoarmors.misc.abilities.purchased"), width / 2 + 112, 100, 0xFFFFFF);
-		drawCenteredString(matrixStack, font, TextFormatting.BOLD + I18n.get("eoarmors.ability.type.active"), width / 2 + 75, 120, 0xFFFFFF);
-		drawCenteredString(matrixStack, font, TextFormatting.BOLD + I18n.get("eoarmors.ability.type.passive"), width / 2 + 150, 120, 0xFFFFFF);
+		drawCenteredString(poseStack, font, stack.getDisplayName().getString(), width / 2, 20, 0xFFFFFF);
+		drawString(poseStack, font, I18n.get("eoarmors.misc.rarity") + ": ", width / 2 - 50, 40, 0xFFFFFF);
+		drawString(poseStack, font, I18n.get("eoarmors.rarity." + rarity.getName()), width / 2 - 15, 40, rarity.getHex());
+		drawCenteredString(poseStack, font, ChatFormatting.ITALIC + I18n.get("eoarmors.misc.abilities"), width / 2 - 100, 73, 0xFFFFFF);
+		drawCenteredString(poseStack, font, ChatFormatting.GRAY + I18n.get("eoarmors.misc.abilities.tokens") + ": " + ChatFormatting.DARK_GREEN + Experience.getAbilityTokens(nbt), width / 2 - 100, 86, 0xFFFFFF);
+		drawCenteredString(poseStack, font, ChatFormatting.GOLD + I18n.get("eoarmors.misc.abilities.purchased"), width / 2 + 112, 100, 0xFFFFFF);
+		drawCenteredString(poseStack, font, ChatFormatting.BOLD + I18n.get("eoarmors.ability.type.active"), width / 2 + 75, 120, 0xFFFFFF);
+		drawCenteredString(poseStack, font, ChatFormatting.BOLD + I18n.get("eoarmors.ability.type.passive"), width / 2 + 150, 120, 0xFFFFFF);
 		
 		if (Experience.getLevel(nbt) == ConfigHolder.SERVER.maxLevel.get())
 		{
-			drawString(matrixStack, font, I18n.get("eoarmors.misc.level") + ": " + Experience.getLevel(nbt) + TextFormatting.DARK_RED +" (" + I18n.get("eoarmors.misc.max") + ")", width / 2 - 50, 50, 0xFFFFFF);
-			drawString(matrixStack, font, I18n.get("eoarmors.misc.experience") + ": " + Experience.getExperience(nbt), width / 2 - 50, 60, 0xFFFFFF);
+			drawString(poseStack, font, I18n.get("eoarmors.misc.level") + ": " + Experience.getLevel(nbt) + ChatFormatting.DARK_RED +" (" + I18n.get("eoarmors.misc.max") + ")", width / 2 - 50, 50, 0xFFFFFF);
+			drawString(poseStack, font, I18n.get("eoarmors.misc.experience") + ": " + Experience.getExperience(nbt), width / 2 - 50, 60, 0xFFFFFF);
 		}
 		else
 		{
-			drawString(matrixStack, font, I18n.get("eoarmors.misc.level") + ": " + Experience.getLevel(nbt), width / 2 - 50, 50, 0xFFFFFF);
-			drawString(matrixStack, font, I18n.get("eoarmors.misc.experience") + ": " + Experience.getExperience(nbt) + " / " + Experience.getMaxLevelExp(Experience.getLevel(nbt)), width / 2 - 50, 60, 0xFFFFFF);
+			drawString(poseStack, font, I18n.get("eoarmors.misc.level") + ": " + Experience.getLevel(nbt), width / 2 - 50, 50, 0xFFFFFF);
+			drawString(poseStack, font, I18n.get("eoarmors.misc.experience") + ": " + Experience.getExperience(nbt) + " / " + Experience.getMaxLevelExp(Experience.getLevel(nbt)), width / 2 - 50, 60, 0xFFFFFF);
 		}
 		
 		int j = -1;
@@ -217,12 +228,12 @@ public class GuiAbilitySelection extends Screen
 				if (abilities.get(i).getType().equals("active"))
 				{
 					j++;
-					drawCenteredString(matrixStack, font, I18n.get(abilities.get(i).getName(nbt)), width / 2 + 75, 135 + (j * 12), abilities.get(i).getHex());
+					drawCenteredString(poseStack, font, I18n.get(abilities.get(i).getName(nbt)), width / 2 + 75, 135 + (j * 12), abilities.get(i).getHex());
 				}
 				else if (abilities.get(i).getType().equals("passive"))
 				{
 					k++;
-					drawCenteredString(matrixStack, font, abilities.get(i).getName(nbt), width / 2 + 150, 135 + (k * 12), abilities.get(i).getHex());
+					drawCenteredString(poseStack, font, abilities.get(i).getName(nbt), width / 2 + 150, 135 + (k * 12), abilities.get(i).getHex());
 				}
 			}
 		}
@@ -235,7 +246,7 @@ public class GuiAbilitySelection extends Screen
 	 * @param abilities
 	 * @param nbt
 	 */
-	private void displayButtons(Button[] buttons, ArrayList<Ability> abilities, CompoundNBT nbt, PlayerEntity player)
+	private void displayButtons(Button[] buttons, ArrayList<Ability> abilities, CompoundTag nbt, Player player)
 	{
 		for (int i = 0; i < buttons.length; i++)
 		{
@@ -256,21 +267,21 @@ public class GuiAbilitySelection extends Screen
 		}
 	}
 	
-	private void drawTooltips(MatrixStack matrixStack, Button[] buttons, ArrayList<Ability> abilities, int mouseX, int mouseY)
+	private void drawTooltips(PoseStack poseStack, Button[] buttons, ArrayList<Ability> abilities, int mouseX, int mouseY)
 	{
-		PlayerEntity player = this.minecraft.player;
+		Player player = this.minecraft.player;
 		ItemStack stack = player.getMainHandItem();;
-		CompoundNBT nbt = stack.getTag();
+		CompoundTag nbt = stack.getTag();
 		
 		for (int i = 0; i < buttons.length; i++)
 		{
-			if (buttons[i].isHovered())//checker.checkHover(mouseX, mouseY))
+			if (buttons[i].isHoveredOrFocused())//checker.checkHover(mouseX, mouseY))
 			{
-				List<StringTextComponent> list = new ArrayList<>();
-				list.add(new StringTextComponent(abilities.get(i).getColor() + I18n.get("eoarmors.ability." + abilities.get(i).getName()) + " (" + abilities.get(i).getTypeName() + abilities.get(i).getColor() + ")"));
-				list.add(new StringTextComponent(""));
-				list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info." + abilities.get(i).getName())));
-				list.add(new StringTextComponent(""));
+				List<TextComponent> list = new ArrayList<>();
+				list.add(new TextComponent(abilities.get(i).getColor() + I18n.get("eoarmors.ability." + abilities.get(i).getName()) + " (" + abilities.get(i).getTypeName() + abilities.get(i).getColor() + ")"));
+				list.add(new TextComponent(""));
+				list.add(new TextComponent(I18n.get("eoarmors.abilities.info." + abilities.get(i).getName())));
+				list.add(new TextComponent(""));
 				if (EAUtils.canEnhanceWeapon(stack.getItem()))
 				{
 					if (i == 0)//FIRE
@@ -284,23 +295,23 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-							list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ TextFormatting.GREEN + " + %" + c));
-							list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ TextFormatting.GREEN + " +" + nextlevelduration));
+							list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ ChatFormatting.GREEN + " + %" + c));
+							list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ ChatFormatting.GREEN + " +" + nextlevelduration));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + TextFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + ChatFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
 							}
 							else
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
 								if(!(Ability.FIRE.canUpgradeLevel(nbt)))
-									list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+									list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 							}
 						}
 					}
@@ -315,23 +326,23 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ TextFormatting.GREEN + " + %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ TextFormatting.GREEN + " +" + nextlevelduration));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ ChatFormatting.GREEN + " + %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ ChatFormatting.GREEN + " +" + nextlevelduration));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + TextFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + ChatFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
 							}
 							else
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
 								if(!(Ability.FROST.canUpgradeLevel(nbt)))
-									list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+									list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 							}
 						}
 					}
@@ -346,23 +357,23 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ TextFormatting.GREEN + " + %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ TextFormatting.GREEN + " +" + nextlevelduration));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ ChatFormatting.GREEN + " + %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ ChatFormatting.GREEN + " +" + nextlevelduration));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + TextFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + ChatFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
 							}
 							else
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
 								if(!(Ability.POISON.canUpgradeLevel(nbt)))
-									list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+									list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 							}
 						}
 					}
@@ -379,26 +390,26 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ TextFormatting.GREEN + " + %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ TextFormatting.GREEN + " +" + nextlevelduration));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.bleedingspeed")+": 0 "+ TextFormatting.GREEN + "+" + nextlevelbleedingspeed));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ ChatFormatting.GREEN + " + %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ ChatFormatting.GREEN + " +" + nextlevelduration));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.bleedingspeed")+": 0 "+ ChatFormatting.GREEN + "+" + nextlevelbleedingspeed));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + TextFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.bleedingspeed")+": "+ currentbleedingspeed + " " + TextFormatting.GREEN + "+" + (nextlevelbleedingspeed-currentbleedingspeed)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + ChatFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.bleedingspeed")+": "+ currentbleedingspeed + " " + ChatFormatting.GREEN + "+" + (nextlevelbleedingspeed-currentbleedingspeed)));
 							}
 							else
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.bleedingspeed")+": " + currentbleedingspeed));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.bleedingspeed")+": " + currentbleedingspeed));
 								if(!(Ability.INNATE.canUpgradeLevel(nbt)))
-									list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+									list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 							}
 						}
 					}
@@ -413,23 +424,23 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ TextFormatting.GREEN + " + %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.explosionintensity")+": 0 "+ TextFormatting.GREEN + "+" + nextlevelexplosionintensity));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ ChatFormatting.GREEN + " + %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.explosionintensity")+": 0 "+ ChatFormatting.GREEN + "+" + nextlevelexplosionintensity));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.explosionintensity")+": "+ currentexplosionintensity + " " + TextFormatting.GREEN + "+" + (nextlevelexplosionintensity-currentexplosionintensity)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.explosionintensity")+": "+ currentexplosionintensity + " " + ChatFormatting.GREEN + "+" + (nextlevelexplosionintensity-currentexplosionintensity)));
 							}
 							else
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.explosionintensity")+": "+ currentexplosionintensity));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.explosionintensity")+": "+ currentexplosionintensity));
 								if(!(Ability.BOMBASTIC.canUpgradeLevel(nbt)))
-									list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+									list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 							}
 						}
 					}
@@ -444,23 +455,23 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ TextFormatting.GREEN + " + %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.healthpercentage")+": %0"+ TextFormatting.GREEN + " + %" + nextleveldamage));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ ChatFormatting.GREEN + " + %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.healthpercentage")+": %0"+ ChatFormatting.GREEN + " + %" + nextleveldamage));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.healthpercentage")+": %"+ currentdamage + " " + TextFormatting.GREEN + "+ %" + (nextleveldamage-currentdamage)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.healthpercentage")+": %"+ currentdamage + " " + ChatFormatting.GREEN + "+ %" + (nextleveldamage-currentdamage)));
 							}
 							else
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.healthpercentage")+": %"+ currentdamage));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.healthpercentage")+": %"+ currentdamage));
 								if(!(Ability.CRITICAL_POINT.canUpgradeLevel(nbt)))
-									list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+									list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 							}
 						}
 					}
@@ -470,15 +481,15 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration") + ": 0 " + I18n.get("eoarmors.abilities.info.seconds") + TextFormatting.GREEN + " +" + 5.0));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration") + ": 0 " + I18n.get("eoarmors.abilities.info.seconds") + ChatFormatting.GREEN + " +" + 5.0));
 							}
 						}
 						else
 						{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration") + ": " + 5.0 + " " + I18n.get("eoarmors.abilities.info.seconds")));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration") + ": " + 5.0 + " " + I18n.get("eoarmors.abilities.info.seconds")));
 						}
 						if(!(Ability.ILLUMINATION.canUpgradeLevel(nbt)) && (!(buttons[i].active)))
-								list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max") + " " + I18n.get("eoarmors.misc.level")));
+								list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max") + " " + I18n.get("eoarmors.misc.level")));
 					}
 					if (i == 7)//ETHEREAL
 					{
@@ -489,20 +500,20 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.durability")+": 0" + TextFormatting.GREEN + " +" + 2.0));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.durability")+": 0" + ChatFormatting.GREEN + " +" + 2.0));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.durability")+": "+ currentrepair + " " + TextFormatting.GREEN + "+" + (nextlevelrepair-currentrepair)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.durability")+": "+ currentrepair + " " + ChatFormatting.GREEN + "+" + (nextlevelrepair-currentrepair)));
 							}
 							else
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.durability")+": "+ currentrepair));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.durability")+": "+ currentrepair));
 								if(!(Ability.ETHEREAL.canUpgradeLevel(nbt)))
-									list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+									list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 							}
 						}
 					}
@@ -515,20 +526,20 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-							list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.damagepercentage")+": %0"+ TextFormatting.GREEN + " + %" + nextlevelpercentage));
+							list.add(new TextComponent(I18n.get("eoarmors.abilities.info.damagepercentage")+": %0"+ ChatFormatting.GREEN + " + %" + nextlevelpercentage));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.damagepercentage")+": %"+ currentpercentage + " " + TextFormatting.GREEN + "+ %" + (nextlevelpercentage-currentpercentage)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.damagepercentage")+": %"+ currentpercentage + " " + ChatFormatting.GREEN + "+ %" + (nextlevelpercentage-currentpercentage)));
 							}
 							else
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.damagepercentage")+": %"+ currentpercentage));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.damagepercentage")+": %"+ currentpercentage));
 								if(!(Ability.BLOODTHIRST.canUpgradeLevel(nbt)))
-									list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+									list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 							}
 						}
 					}
@@ -546,23 +557,23 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ TextFormatting.GREEN + " + %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ TextFormatting.GREEN + " +" + nextlevelduration));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ ChatFormatting.GREEN + " + %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ ChatFormatting.GREEN + " +" + nextlevelduration));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + TextFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + ChatFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
 							}
 							else
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
 								if(!(Ability.MOLTEN.canUpgradeLevel(nbt)))
-									list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+									list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 							}
 						}
 					}
@@ -577,23 +588,23 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ TextFormatting.GREEN + " + %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ TextFormatting.GREEN + " +" + nextlevelduration));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ ChatFormatting.GREEN + " + %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ ChatFormatting.GREEN + " +" + nextlevelduration));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + TextFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + ChatFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
 							}
 							else
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
 								if(!(Ability.FROZEN.canUpgradeLevel(nbt)))
-									list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+									list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 							}
 						}
 					}
@@ -608,23 +619,23 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ TextFormatting.GREEN + " + %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ TextFormatting.GREEN + " +" + nextlevelduration));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ ChatFormatting.GREEN + " + %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ ChatFormatting.GREEN + " +" + nextlevelduration));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + TextFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + ChatFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
 							}
 							else
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
 								if(!(Ability.TOXIC.canUpgradeLevel(nbt)))
-									list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+									list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 							}
 						}
 					}
@@ -634,15 +645,15 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ TextFormatting.GREEN + " +" + 7.0));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ ChatFormatting.GREEN + " +" + 7.0));
 							}
 						}
 						else
 						{
-							list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration") + ": " + 7.0 + " " + I18n.get("eoarmors.abilities.info.seconds")));
+							list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration") + ": " + 7.0 + " " + I18n.get("eoarmors.abilities.info.seconds")));
 						}
 						if(!(Ability.BEASTIAL.canUpgradeLevel(nbt)) && (!(buttons[i].active)))
-							list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+							list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 					}
 					if (i == 4)//REMEDIAL
 					{
@@ -652,18 +663,18 @@ public class GuiAbilitySelection extends Screen
 							if (buttons[i].active)
 							{
 								heal=1f;
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.heal_amount") + ": 0 " + TextFormatting.GREEN + "+" + heal));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.heal_amount") + ": 0 " + ChatFormatting.GREEN + "+" + heal));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.heal_amount") +": "+ heal + TextFormatting.GREEN + " +" + 1.0));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.heal_amount") +": "+ heal + ChatFormatting.GREEN + " +" + 1.0));
 							else
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.heal_amount") +": "+ heal));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.heal_amount") +": "+ heal));
 						}
 						if(!(Ability.REMEDIAL.canUpgradeLevel(nbt)) && (!(buttons[i].active)))
-								list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+								list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 					}
 					if (i == 5)//HARDENED
 					{
@@ -673,15 +684,15 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ TextFormatting.GREEN + " + %" + chance));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ ChatFormatting.GREEN + " + %" + chance));
 							}
 						}
 						else
 						{
-							list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance")+ ": %" + chance));
+							list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance")+ ": %" + chance));
 						}
 						if(!(Ability.HARDENED.canUpgradeLevel(nbt)) && (!(buttons[i].active)))
-								list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+								list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 					}
 					if (i == 6)//ADRENALINE
 					{
@@ -694,23 +705,23 @@ public class GuiAbilitySelection extends Screen
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ TextFormatting.GREEN + " + %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ TextFormatting.GREEN + " +" + nextlevelduration));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance")+": %0"+ ChatFormatting.GREEN + " + %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": 0 " + I18n.get("eoarmors.abilities.info.seconds")+ ChatFormatting.GREEN + " +" + nextlevelduration));
 							}
 						}
 						else
 						{
 							if (buttons[i].active)
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + TextFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration + " " + I18n.get("eoarmors.abilities.info.seconds") + ChatFormatting.GREEN + " +" + (nextlevelduration-currentduration)));
 							}
 							else
 							{
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
-								list.add(new StringTextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.chance") + ": %" + c));
+								list.add(new TextComponent(I18n.get("eoarmors.abilities.info.duration")+": " + currentduration +" "+ I18n.get("eoarmors.abilities.info.seconds")));
 								if(!(Ability.ADRENALINE.canUpgradeLevel(nbt)))
-									list.add(new StringTextComponent(TextFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
+									list.add(new TextComponent(ChatFormatting.RED + I18n.get("eoarmors.misc.max")+" " + I18n.get("eoarmors.misc.level")));
 							}
 						}
 					}
@@ -719,22 +730,22 @@ public class GuiAbilitySelection extends Screen
 				int explevel = abilities.get(i).getExpLevel(nbt);
 				if(!abilities.get(i).hasAbility(nbt))
 				{
-					list.add(new StringTextComponent(""));
+					list.add(new TextComponent(""));
 					if(abilities.get(i).hasEnoughExp(player, nbt))
-						list.add(new StringTextComponent(TextFormatting.DARK_GREEN + I18n.get("eoarmors.abilities.info.required_exp") + ": " + explevel));
+						list.add(new TextComponent(ChatFormatting.DARK_GREEN + I18n.get("eoarmors.abilities.info.required_exp") + ": " + explevel));
 					else
-						list.add(new StringTextComponent(TextFormatting.DARK_RED + I18n.get("eoarmors.abilities.info.required_exp") + ": " + explevel));
+						list.add(new TextComponent(ChatFormatting.DARK_RED + I18n.get("eoarmors.abilities.info.required_exp") + ": " + explevel));
 				}
 				else if(abilities.get(i).canUpgradeLevel(nbt))
 				{
 					if(Experience.getAbilityTokens(nbt) >= abilities.get(i).getTier())
-						list.add(new StringTextComponent(TextFormatting.DARK_GREEN + I18n.get("eoarmors.abilities.info.required_token") + ": " + abilities.get(i).getTier()));
+						list.add(new TextComponent(ChatFormatting.DARK_GREEN + I18n.get("eoarmors.abilities.info.required_token") + ": " + abilities.get(i).getTier()));
 					else
-						list.add(new StringTextComponent(TextFormatting.DARK_RED + I18n.get("eoarmors.abilities.info.required_token") + ": " + abilities.get(i).getTier()));
+						list.add(new TextComponent(ChatFormatting.DARK_RED + I18n.get("eoarmors.abilities.info.required_token") + ": " + abilities.get(i).getTier()));
 				}
 				
 				//TODO: CUT OFF TEXT???
-				GuiUtils.drawHoveringText(matrixStack, list, mouseX + 3, mouseY + 3, minecraft.screen.width, minecraft.screen.height, 300, font);
+				OldGuiUtils.drawHoveringText(poseStack, list, mouseX + 3, mouseY + 3);
 			}
 		}
 	}

@@ -6,18 +6,18 @@ import io.github.ragnaraven.eoarmors.config.ConfigHolder;
 import io.github.ragnaraven.eoarmors.config.ServerConfig;
 import io.github.ragnaraven.eoarmors.core.util.RandomCollection;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 
 public enum Rarity 
 {
 	DEFAULT("", 0, 0.0, 0.0),
-	BASIC(TextFormatting.WHITE, 0xFFFFFF, ConfigHolder.SERVER.basicChance.get(), ConfigHolder.SERVER.basicDamage.get()),
-	UNCOMMON(TextFormatting.DARK_GREEN, 0x00AA00, ConfigHolder.SERVER.uncommonChance.get(), ConfigHolder.SERVER.uncommonDamage.get()),
-	RARE(TextFormatting.AQUA, 0x55FFFF, ConfigHolder.SERVER.rareChance.get(), ConfigHolder.SERVER.rareDamage.get()),
-	ULTRA_RARE(TextFormatting.DARK_PURPLE, 0xAA00AA, ConfigHolder.SERVER.ultraRareChance.get(), ConfigHolder.SERVER.ultraRareDamage.get()),
-	LEGENDARY(TextFormatting.GOLD, 0xFFAA00, ConfigHolder.SERVER.legendaryChance.get(), ConfigHolder.SERVER.legendaryDamage.get()),
-	ARCHAIC(TextFormatting.LIGHT_PURPLE, 0xFF55FF, ConfigHolder.SERVER.archaicChance.get(), ConfigHolder.SERVER.archaicDamage.get());
+	BASIC(ChatFormatting.WHITE, 0xFFFFFF, ConfigHolder.SERVER.basicChance.get(), ConfigHolder.SERVER.basicDamage.get()),
+	UNCOMMON(ChatFormatting.DARK_GREEN, 0x00AA00, ConfigHolder.SERVER.uncommonChance.get(), ConfigHolder.SERVER.uncommonDamage.get()),
+	RARE(ChatFormatting.AQUA, 0x55FFFF, ConfigHolder.SERVER.rareChance.get(), ConfigHolder.SERVER.rareDamage.get()),
+	ULTRA_RARE(ChatFormatting.DARK_PURPLE, 0xAA00AA, ConfigHolder.SERVER.ultraRareChance.get(), ConfigHolder.SERVER.ultraRareDamage.get()),
+	LEGENDARY(ChatFormatting.GOLD, 0xFFAA00, ConfigHolder.SERVER.legendaryChance.get(), ConfigHolder.SERVER.legendaryDamage.get()),
+	ARCHAIC(ChatFormatting.LIGHT_PURPLE, 0xFF55FF, ConfigHolder.SERVER.archaicChance.get(), ConfigHolder.SERVER.archaicDamage.get());
 	
 	private String color;
 	private int hex;
@@ -49,12 +49,12 @@ public enum Rarity
 	 * @param nbt
 	 * @return
 	 */
-	public static Rarity getRarity(CompoundNBT nbt)
+	public static Rarity getRarity(CompoundTag nbt)
 	{
 		return nbt != null && nbt.contains("RARITY") ? RARITIES[nbt.getInt("RARITY")] : DEFAULT;
 	}
 	
-	public void setRarity(CompoundNBT nbt)
+	public void setRarity(CompoundTag nbt)
 	{
 		if (nbt != null)
 		{
@@ -62,7 +62,7 @@ public enum Rarity
 		}
 	}
 	
-	public static void setRarity(CompoundNBT nbt, String rarityName)
+	public static void setRarity(CompoundTag nbt, String rarityName)
 	{
 		int rarity = Integer.parseInt(rarityName);
 		nbt.putInt("RARITY", rarity);

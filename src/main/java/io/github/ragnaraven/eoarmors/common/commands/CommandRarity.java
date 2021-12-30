@@ -7,16 +7,16 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.github.ragnaraven.eoarmors.core.essentials.Rarity;
 import io.github.ragnaraven.eoarmors.core.util.EAUtils;
 import io.github.ragnaraven.eoarmors.core.util.NBTHelper;
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.commands.CommandSource;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,7 +29,7 @@ public class CommandRarity
 	@SubscribeEvent
 	public static void registerEvent (RegisterCommandsEvent event)
 	{
-		LiteralArgumentBuilder<CommandSource> changerarity = Commands.literal("changerarity")
+		LiteralArgumentBuilder<CommandSourceStack> changerarity = Commands.literal("changerarity")
 				.requires(cmd -> cmd.hasPermission(3))
 				.then(Commands.argument("rarityid", IntegerArgumentType.integer())
 					.executes(cmd -> changeRarity(cmd.getSource(), cmd.getSource().getPlayerOrException(), IntegerArgumentType.getInteger(cmd, "rarityid")))
@@ -38,21 +38,21 @@ public class CommandRarity
 		event.getDispatcher().register(changerarity);
 	}
 	
-	public static int changeRarity(CommandSource src, PlayerEntity player, int rarityid)
+	public static int changeRarity(CommandSourceStack src, Player player, int rarityid)
 	{
 		if((rarityid < 1) || (rarityid > 6))
-			src.sendFailure(new TranslationTextComponent("Rarity ID must be 1, 2, 3, 4, 5 or 6!"));
+			src.sendFailure(new TranslatableComponent("Rarity ID must be 1, 2, 3, 4, 5 or 6!"));
 		else
 		{
 			if (!EAUtils.canEnhance(player.getMainHandItem().getItem()))
-				src.sendFailure(new TranslationTextComponent("Hold a weapon or an armor in your mainhand!"));
+				src.sendFailure(new TranslatableComponent("Hold a weapon or an armor in your mainhand!"));
 			else
 			{
 				ItemStack item = player.getMainHandItem();
-				CompoundNBT nbt = NBTHelper.loadStackNBT(item);
+				CompoundTag nbt = NBTHelper.loadStackNBT(item);
 				Rarity.setRarity(nbt, String.valueOf(rarityid));
 				NBTHelper.saveStackNBT(item, nbt);
-				player.setItemInHand(Hand.MAIN_HAND, item);
+				player.setItemInHand(InteractionHand.MAIN_HAND, item);
 			}
 		}
 		return rarityid;

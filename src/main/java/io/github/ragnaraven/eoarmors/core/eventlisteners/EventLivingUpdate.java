@@ -3,18 +3,17 @@ package io.github.ragnaraven.eoarmors.core.eventlisteners;
 import java.util.Random;
 
 import io.github.ragnaraven.eoarmors.config.ConfigHolder;
-import io.github.ragnaraven.eoarmors.config.ServerConfig;
 import io.github.ragnaraven.eoarmors.core.essentials.Ability;
 import io.github.ragnaraven.eoarmors.core.essentials.Experience;
 import io.github.ragnaraven.eoarmors.core.essentials.Rarity;
 import io.github.ragnaraven.eoarmors.core.util.EAUtils;
 import io.github.ragnaraven.eoarmors.core.util.NBTHelper;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,22 +27,22 @@ public class EventLivingUpdate
 	@SubscribeEvent
 	public void onUpdate(LivingEvent.LivingUpdateEvent event)
 	{
-		if (event.getEntityLiving() instanceof PlayerEntity)
+		if (event.getEntityLiving() instanceof Player)
 		{
-			PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+			Player player = (Player) event.getEntityLiving();
 			
 			if (player != null)
 			{
-				NonNullList<ItemStack> main = player.inventory.items;
+				NonNullList<ItemStack> main = player.getInventory().items;
 
 				//Added ! //
 				//if (!player.getCommandSenderWorld().isClientSide())
 				{
-					for (ItemStack stack : player.inventory.armor)
+					for (ItemStack stack : player.getInventory().armor)
 					{
 						if (stack != null && EAUtils.canEnhanceArmor(stack.getItem()))
 						{
-							CompoundNBT nbt = stack.getTag();
+							CompoundTag nbt = stack.getTag();
 							float heal = Ability.REMEDIAL.getLevel(nbt);
 							if (Ability.REMEDIAL.hasAbility(nbt))
 								if(count < 120)
@@ -62,7 +61,7 @@ public class EventLivingUpdate
 							Item item = stack.getItem();
 
 							if (EAUtils.canEnhance(item)) {
-								CompoundNBT nbt = NBTHelper.loadStackNBT(stack);
+								CompoundTag nbt = NBTHelper.loadStackNBT(stack);
 
 								if (nbt != null) {
 									if (!Experience.isEnabled(nbt)) {

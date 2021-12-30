@@ -7,11 +7,11 @@ import io.github.ragnaraven.eoarmors.core.essentials.Experience;
 import io.github.ragnaraven.eoarmors.core.util.EAUtils;
 import io.github.ragnaraven.eoarmors.core.util.NBTHelper;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.NetworkEvent;
 
 public class PacketGuiAbility
 {
@@ -22,11 +22,11 @@ public class PacketGuiAbility
 		this.index = index;
 	}
 
-	public static void encode(PacketGuiAbility msg, PacketBuffer buffer) {
+	public static void encode(PacketGuiAbility msg, FriendlyByteBuf buffer) {
 		buffer.writeInt(msg.index);
 	}
 
-	public static PacketGuiAbility decode(PacketBuffer buf) {
+	public static PacketGuiAbility decode(FriendlyByteBuf buf) {
 		return new PacketGuiAbility(
 				buf.readInt()
 		);
@@ -35,7 +35,7 @@ public class PacketGuiAbility
 	public static void handle(PacketGuiAbility msg, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork
 		(() ->{
-					PlayerEntity player = ctx.get().getSender();
+					Player player = ctx.get().getSender();
 
 					if (player != null)
 					{
@@ -43,7 +43,7 @@ public class PacketGuiAbility
 
 						if (stack != ItemStack.EMPTY)
 						{
-							CompoundNBT nbt = NBTHelper.loadStackNBT(stack);
+							CompoundTag nbt = NBTHelper.loadStackNBT(stack);
 
 							if (EAUtils.canEnhanceWeapon(stack.getItem()))
 							{

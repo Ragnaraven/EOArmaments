@@ -1,16 +1,17 @@
 package io.github.ragnaraven.eoarmors.core.util;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 
 public class NBTHelper 
 {
-	public static CompoundNBT loadStackNBT(ItemStack stack)
+	public static CompoundTag loadStackNBT(ItemStack stack)
 	{
-		return stack.hasTag() ? stack.getTag() : new CompoundNBT();
+		return stack.hasTag() ? stack.getTag() : new CompoundTag();
 	}
 
-	public static void saveStackNBT(ItemStack stack, CompoundNBT nbt)
+	public static void saveStackNBT(ItemStack stack, CompoundTag nbt)
 	{
 		//if (!stack.hasTag())
 		{

@@ -1,12 +1,13 @@
 package io.github.ragnaraven.eoarmors.init;
 
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+
+import net.minecraft.client.KeyMapping;
 
 public class EOAKeyBinds
 {
-    public static KeyBinding abilityKey = new KeyBinding("key.gui.weapon_interface", 75, "key.eoarmors");
+    public static KeyMapping abilityKey = new KeyMapping("key.gui.weapon_interface", 75, "key.eoarmors");
 
     public static void init(final FMLClientSetupEvent event)
     {

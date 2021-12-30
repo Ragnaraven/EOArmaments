@@ -8,13 +8,12 @@ import io.github.ragnaraven.eoarmors.common.armor.EOAArmorMaterial;
 import io.github.ragnaraven.eoarmors.common.armor.EOAArmorSuitEnderObsidian;
 import io.github.ragnaraven.eoarmors.common.armor.EOAArmorSuitObsidian;
 import io.github.ragnaraven.eoarmors.common.items.tools.EnderObsidianSword;
-import net.minecraft.item.*;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.LazyValue;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
@@ -27,7 +26,7 @@ public class EOAItems
 {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, EnderObsidianArmorsMod.MODID);
 
-	public enum ModItemTier implements IItemTier {
+	public enum ModItemTier implements Tier {
 		EMERALD(	    3, 5268, 9.5f,  5.50f, 12, () -> { return Ingredient.of(Items.EMERALD); } ),
 		OBSIDIAN(		3, 200,  12.0f, 3.50f, 10, () -> { return Ingredient.of(Items.OBSIDIAN); } ),
 		ENDER_OBSIDIAN( 3, 375,  14.5f, 4.25f, 15, () -> { return Ingredient.of(EOAItems.ENDER_OBSIDIAN_PLATE.get()); } );
@@ -37,7 +36,7 @@ public class EOAItems
 		private final float speed;
 		private final float damage;
 		private final int enchantmentValue;
-		private final LazyValue<Ingredient> repairIngredient;
+		private final Supplier<Ingredient> repairIngredient;
 
 		private ModItemTier(int p_i48458_3_, int p_i48458_4_, float p_i48458_5_, float p_i48458_6_, int p_i48458_7_, Supplier<Ingredient> p_i48458_8_) {
 			this.level = p_i48458_3_;
@@ -45,7 +44,7 @@ public class EOAItems
 			this.speed = p_i48458_5_;
 			this.damage = p_i48458_6_;
 			this.enchantmentValue = p_i48458_7_;
-			this.repairIngredient = new LazyValue<>(p_i48458_8_);
+			this.repairIngredient = p_i48458_8_;
 		}
 
 		public int getUses() {
@@ -101,21 +100,21 @@ public class EOAItems
 
 	//Armor
 	public static final EOAArmorSuit ARMOR_EMERALD = new EOAArmorSuit("emerald", EOAArmorMaterial.EMERALD);
-	public static final RegistryObject<Item> ARMOR_EMERALD_HEAD   = ITEMS.register(ARMOR_EMERALD.name_head(), 	() -> { return ARMOR_EMERALD.head().getItem(); });
-	public static final RegistryObject<Item> ARMOR_EMERALD_CHEST  = ITEMS.register(ARMOR_EMERALD.name_chest(), 	() -> { return ARMOR_EMERALD.chest().getItem(); });
-	public static final RegistryObject<Item> ARMOR_EMERALD_LEGS   = ITEMS.register(ARMOR_EMERALD.name_legs(), 	() -> { return ARMOR_EMERALD.legs().getItem(); });
-	public static final RegistryObject<Item> ARMOR_EMERALD_FEET   = ITEMS.register(ARMOR_EMERALD.name_feet(), 	() -> { return ARMOR_EMERALD.feet().getItem(); });
+	public static final RegistryObject<Item> ARMOR_EMERALD_HEAD   = ITEMS.register(ARMOR_EMERALD.name_head(), 	() -> { return ARMOR_EMERALD.head().asItem(); });
+	public static final RegistryObject<Item> ARMOR_EMERALD_CHEST  = ITEMS.register(ARMOR_EMERALD.name_chest(), 	() -> { return ARMOR_EMERALD.chest().asItem(); });
+	public static final RegistryObject<Item> ARMOR_EMERALD_LEGS   = ITEMS.register(ARMOR_EMERALD.name_legs(), 	() -> { return ARMOR_EMERALD.legs().asItem(); });
+	public static final RegistryObject<Item> ARMOR_EMERALD_FEET   = ITEMS.register(ARMOR_EMERALD.name_feet(), 	() -> { return ARMOR_EMERALD.feet().asItem(); });
 
 	public static final EOAArmorSuit ARMOR_OBSIDIAN = new EOAArmorSuitObsidian("obsidian", EOAArmorMaterial.OBSIDIAN);
-	public static final RegistryObject<Item> ARMOR_OBSIDIAN_HEAD   = ITEMS.register(ARMOR_OBSIDIAN.name_head(),   () -> { return ARMOR_OBSIDIAN.head().getItem(); });
-	public static final RegistryObject<Item> ARMOR_OBSIDIAN_CHEST  = ITEMS.register(ARMOR_OBSIDIAN.name_chest(),  () -> { return ARMOR_OBSIDIAN.chest().getItem(); });
-	public static final RegistryObject<Item> ARMOR_OBSIDIAN_LEGS   = ITEMS.register(ARMOR_OBSIDIAN.name_legs(),   () -> { return ARMOR_OBSIDIAN.legs().getItem(); });
-	public static final RegistryObject<Item> ARMOR_OBSIDIAN_FEET   = ITEMS.register(ARMOR_OBSIDIAN.name_feet(),   () -> { return ARMOR_OBSIDIAN.feet().getItem(); });
+	public static final RegistryObject<Item> ARMOR_OBSIDIAN_HEAD   = ITEMS.register(ARMOR_OBSIDIAN.name_head(),   () -> { return ARMOR_OBSIDIAN.head().asItem(); });
+	public static final RegistryObject<Item> ARMOR_OBSIDIAN_CHEST  = ITEMS.register(ARMOR_OBSIDIAN.name_chest(),  () -> { return ARMOR_OBSIDIAN.chest().asItem(); });
+	public static final RegistryObject<Item> ARMOR_OBSIDIAN_LEGS   = ITEMS.register(ARMOR_OBSIDIAN.name_legs(),   () -> { return ARMOR_OBSIDIAN.legs().asItem(); });
+	public static final RegistryObject<Item> ARMOR_OBSIDIAN_FEET   = ITEMS.register(ARMOR_OBSIDIAN.name_feet(),   () -> { return ARMOR_OBSIDIAN.feet().asItem(); });
 
 	public static final EOAArmorSuit ARMOR_ENDER_OBSIDIAN = new EOAArmorSuitEnderObsidian("ender_obsidian", EOAArmorMaterial.ENDER_OBSIDIAN);
-	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_HEAD   = ITEMS.register(ARMOR_ENDER_OBSIDIAN.name_head(), 	() -> { return ARMOR_ENDER_OBSIDIAN.head().getItem(); });
-	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_CHEST  = ITEMS.register(ARMOR_ENDER_OBSIDIAN.name_chest(),	() -> { return ARMOR_ENDER_OBSIDIAN.chest().getItem(); });
-	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_LEGS   = ITEMS.register(ARMOR_ENDER_OBSIDIAN.name_legs(), 	() -> { return ARMOR_ENDER_OBSIDIAN.legs().getItem(); });
-	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_FEET   = ITEMS.register(ARMOR_ENDER_OBSIDIAN.name_feet(), 	() -> { return ARMOR_ENDER_OBSIDIAN.feet().getItem(); });
+	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_HEAD   = ITEMS.register(ARMOR_ENDER_OBSIDIAN.name_head(), 	() -> { return ARMOR_ENDER_OBSIDIAN.head().asItem(); });
+	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_CHEST  = ITEMS.register(ARMOR_ENDER_OBSIDIAN.name_chest(),	() -> { return ARMOR_ENDER_OBSIDIAN.chest().asItem(); });
+	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_LEGS   = ITEMS.register(ARMOR_ENDER_OBSIDIAN.name_legs(), 	() -> { return ARMOR_ENDER_OBSIDIAN.legs().asItem(); });
+	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_FEET   = ITEMS.register(ARMOR_ENDER_OBSIDIAN.name_feet(), 	() -> { return ARMOR_ENDER_OBSIDIAN.feet().asItem(); });
 
 }

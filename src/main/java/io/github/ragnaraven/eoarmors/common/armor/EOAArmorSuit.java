@@ -1,10 +1,10 @@
 package io.github.ragnaraven.eoarmors.common.armor;
 
 import io.github.ragnaraven.eoarmors.EOATabs;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Item;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Item;
 
 /**
  * Created by Ragnaraven on 1/20/2017 at 6:02 PM.
@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 public class EOAArmorSuit
 {
 	protected String name;
-	protected IArmorMaterial armorMaterial;
+	protected ArmorMaterial armorMaterial;
 
 	protected ArmorItem head;
 	protected ArmorItem chest;
@@ -38,14 +38,14 @@ public class EOAArmorSuit
 
 	protected EOAArmorSuit () {}
 
-	public EOAArmorSuit(String name, IArmorMaterial armorMaterial)
+	public EOAArmorSuit(String name, ArmorMaterial armorMaterial)
 	{
 		this.name = "armor_" + name;
 		this.armorMaterial = armorMaterial;
 
-		head   = new ModArmorItem(name, armorMaterial, EquipmentSlotType.HEAD,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL));
-		chest  = new ModArmorItem(name, armorMaterial, EquipmentSlotType.CHEST, new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL));
-		legs   = new ModArmorItem(name, armorMaterial, EquipmentSlotType.LEGS,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL));
-		feet   = new ModArmorItem(name, armorMaterial, EquipmentSlotType.FEET,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL));
+		head   = new ModArmorItem(name, armorMaterial, EquipmentSlot.HEAD,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL));
+		chest  = new ModArmorItem(name, armorMaterial, EquipmentSlot.CHEST, new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL));
+		legs   = new ModArmorItem(name, armorMaterial, EquipmentSlot.LEGS,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL));
+		feet   = new ModArmorItem(name, armorMaterial, EquipmentSlot.FEET,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL));
 	}
 }

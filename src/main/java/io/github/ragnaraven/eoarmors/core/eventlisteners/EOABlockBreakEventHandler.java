@@ -3,21 +3,22 @@ package io.github.ragnaraven.eoarmors.core.eventlisteners;
 import io.github.ragnaraven.eoarmors.EnderObsidianArmorsMod;
 import io.github.ragnaraven.eoarmors.common.blocks.EOABlocks;
 import io.github.ragnaraven.eoarmors.common.items.EOAItems;
-import io.github.ragnaraven.eoarmors.client.render.particles.ParticleEffects;
 import io.github.ragnaraven.eoarmors.config.ConfigHolder;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.world.Dimension;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+
+import java.util.List;
 
 import static io.github.ragnaraven.eoarmors.core.util.EOAHelpers.*;
 
@@ -60,13 +61,15 @@ public class EOABlockBreakEventHandler
 	private static final int FORTUNE_EFFECT_MAX_ADDITION_CHANCE = 64;
 
 	private static final int FORTUNE_EFFECT_QUARTZ_MULTIPLIER = 3;
+	private static final int FORTUNE_EFFECT_NETHER_GOLD_MULTIPLIER = 5;
+
 
 	@SubscribeEvent
 	public static void onBlockBreak(BlockEvent.BreakEvent e)
 	{
 		if (e.getPlayer() != null)
 		{
-			PlayerEntity player = e.getPlayer();
+			Player player = e.getPlayer();
 			
 			int armor = CHECK_ARMOR(player);
 			
@@ -84,7 +87,7 @@ public class EOABlockBreakEventHandler
 						DO_TOOL_HEAL(player);
 						DO_ARMOR_HEAL(e, player);
 						doLavaDrop(e);
-						//doExp(e);
+						doExp(e);
 					}
 				}
 			}
@@ -94,13 +97,13 @@ public class EOABlockBreakEventHandler
 
 	private static void doLavaDrop (final BlockEvent.BreakEvent e)
 	{
-		World world = (World) e.getWorld();
+		Level world = (Level) e.getWorld();
 
 		if(ConfigHolder.SERVER.LAVA_SPAWN_CHANCE.get() != 0)
 		{
 			if (world.isClientSide())
 			{
-				if(!world.dimension().location().equals(Dimension.END.location()))
+				if(!world.dimension().equals(Level.END))
 				{
 					if (EnderObsidianArmorsMod.RANDOM.nextInt(ConfigHolder.SERVER.LAVA_SPAWN_CHANCE.get()) == 0)
 					{
@@ -128,7 +131,7 @@ public class EOABlockBreakEventHandler
 	}
 
 	/**Catch for nullPointer if calling this**/
-	private static void DO_TOOL_HEAL(PlayerEntity player)
+	private static void DO_TOOL_HEAL(Player player)
 	{
 		try
 		{
@@ -142,11 +145,11 @@ public class EOABlockBreakEventHandler
 			//Doesnt matter if pick is 0 here.
 			if(ConfigHolder.SERVER.OBSIDIAN_TO_MINE_FULL_HEALTH_INVENTORY.get() != 0)
 			{
-				for (int i = 0; i < player.inventory.getContainerSize(); i++)
-					if (player.inventory.getItem(i) != ItemStack.EMPTY && player.inventory.getItem(i) != player.getMainHandItem()) //Current item already healed
+				for (int i = 0; i < player.getInventory().getContainerSize(); i++)
+					if (player.getInventory().getItem(i) != ItemStack.EMPTY && player.getInventory().getItem(i) != player.getMainHandItem()) //Current item already healed
 					{
 						//Only heals TOOLS. Not armor in inv. Must be wearing to heal.
-						ItemStack stack = player.inventory.getItem(i);
+						ItemStack stack = player.getInventory().getItem(i);
 						Item item = stack.getItem();
 						if (       item == EOAItems.OBSIDIAN_AXE.get()
 								|| item == EOAItems.ENDER_OBSIDIAN_AXE.get()
@@ -177,7 +180,7 @@ public class EOABlockBreakEventHandler
 	}
 
 	/**Catch for nullPointer if calling this**/
-	private static void DO_ARMOR_HEAL(BlockEvent.BreakEvent e, PlayerEntity player)
+	private static void DO_ARMOR_HEAL(BlockEvent.BreakEvent e, Player player)
 	{
 		if (ConfigHolder.SERVER.HEAL_ARMOR_CHANCE.get() != 0)
 		{
@@ -189,19 +192,17 @@ public class EOABlockBreakEventHandler
 
 				for (int i = 0; i < 4; i++)
 				{
-					armorHeal = player.inventory.armor.get(i).getDamageValue() - ConfigHolder.SERVER.HEAL_ARMOR_DURABILITY.get();
+					armorHeal = player.getInventory().armor.get(i).getDamageValue() - ConfigHolder.SERVER.HEAL_ARMOR_DURABILITY.get();
 					armorHeal = Math.max(armorHeal, 0);
 
-					player.inventory.armor.get(i).setDamageValue(armorHeal);
+					player.getInventory().armor.get(i).setDamageValue(armorHeal);
 				}
 			}
 		}
 	}
 
-	public static ItemStack ON_HARVEST_DROPS(PlayerEntity player, Block block, ItemStack drops)
+	public static List<ItemStack> ON_HARVEST_DROPS(Player player, Block block, List<ItemStack> drops)
 	{
-		World world = (World) player.getCommandSenderWorld();
-
 		int eblockState = -1;
 
 		if (block == Blocks.OBSIDIAN)
@@ -230,7 +231,7 @@ public class EOABlockBreakEventHandler
 						//If here, is wearing eo armor and pick
 						//Only ender obsidian set. Since check pick worked, we dont need to check again.
 						//Add extra
-						if (ENABLE_FORTUNE && EnderObsidianArmorsMod.RANDOM.nextInt(1000) < CHANCE_BUILT_IN_FORTUNE_EFFECT)
+						if (true) //ENABLE_FORTUNE && EnderObsidianArmorsMod.RANDOM.nextInt(1000) < CHANCE_BUILT_IN_FORTUNE_EFFECT)
 						{//If here, apply fortune effect.
 
 							int multiplier = FORTUNE_EFFECT_MULTIPLIER_BASE;
@@ -243,34 +244,59 @@ public class EOABlockBreakEventHandler
 									multiplier++;
 
 							//Apply extras
-							//DEPRECATED? ONLY ONE STACK PER DROP IT SEEMS.
-							//for (ItemStack itemStack : drops)
+							Item selectedDropItem = GET_ORE_DROP(block, drops);
+
+							//Sum up the total number of drops.
+							int total = 0;
+							for (ItemStack itemStack : drops)
+								if(itemStack.getItem() == selectedDropItem)
+									total += itemStack.getCount();
+
+							if (selectedDropItem != null)
 							{
-								if (CHECK_ORE_RELATIONSHIP(block, drops))
+								int count = total * multiplier;
+
+								//Add extra quartz.
+								if (block == Blocks.NETHER_QUARTZ_ORE && selectedDropItem == Items.QUARTZ)
+									count *= FORTUNE_EFFECT_QUARTZ_MULTIPLIER;
+
+								if (block == Blocks.NETHER_GOLD_ORE && selectedDropItem == Items.GOLD_NUGGET)
+									count *= FORTUNE_EFFECT_NETHER_GOLD_MULTIPLIER;
+
+								/*int OUT_count = count;
+								Block OUT_block = block;
+								Item OUT_item = selectedDropItem;*/
+
+								//Remove all stacks with the original item.
+								for(int i = 0; i < drops.size(); i++)
 								{
-									int count = drops.getCount() * multiplier;
-
-									//Add extra quartz.
-									if (block == Blocks.NETHER_QUARTZ_ORE && drops.getItem() == Items.QUARTZ)
-										count *= FORTUNE_EFFECT_QUARTZ_MULTIPLIER;
-
-									//Cap the max to 64.
-									drops.setCount(Math.min(count, 64));
-
-									//Damage pick proportionally
-									player.getMainHandItem().setDamageValue(player.getMainHandItem().getDamageValue() - multiplier * FORTUNE_EFFECT_EXTRA_PICK_HURT);
-
-									//Spawn particles for a magical effect.
-									if (!world.isClientSide())
-										for (int i = 0; i < 15; i++)
-											ParticleEffects.spawnEnderObsidianSpawnParticles(world, player.getX(), player.getY(), player.getZ());
+									ItemStack stack = drops.get(i);
+									if(stack.getItem() == selectedDropItem)
+										drops.remove(stack);
 								}
+
+								//Add stacks while needed.
+								while(count > 0) {
+									int stack = Math.min(64, count);
+									count -= stack;
+									drops.add(new ItemStack(selectedDropItem, stack));
+								}
+
+								//Damage pick proportionally
+								player.getMainHandItem().setDamageValue(player.getMainHandItem().getDamageValue() + multiplier * FORTUNE_EFFECT_EXTRA_PICK_HURT);
+
+								//Spawn particles for a magical effect.
+								/*if (!world.isClientSide())
+									for (int i = 0; i < 15; i++)
+										ParticleEffects.spawnEnderObsidianSpawnParticles(world, player.getX(), player.getY(), player.getZ());*/
 							}
 						}
 						else //If here, they were unlucky, lets see if they are even less lucky
 						{
-							if (EnderObsidianArmorsMod.RANDOM.nextInt(FORTUNE_EFFECT_DROP_0) == 0)
-								return ItemStack.EMPTY;
+							if (EnderObsidianArmorsMod.RANDOM.nextInt(FORTUNE_EFFECT_DROP_0) == 0) {
+								drops.clear();
+								return drops;
+							}
 						}
 					}
 
@@ -286,12 +312,15 @@ public class EOABlockBreakEventHandler
 					if (EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, player) > 0)
 					{
 						//If in end and mining normal obsidian with suit, chance to drop ender
-						if (player.getCommandSenderWorld().dimension().location().equals(Dimension.END.location())
+						if (player.getCommandSenderWorld().dimension().equals(Level.END)
 								&& EnderObsidianArmorsMod.RANDOM.nextInt(ConfigHolder.SERVER.CHANCE_TO_CONVERT_OBSIDIAN_TO_ENDER_OBSIDIAN.get()) == 0)
 						{
 							//System.out.println("EO");
-							drops = new ItemStack(EOABlocks.ENDER_OBSIDIAN.get());
-							drops.setCount(1);
+							var itemStack = new ItemStack(EOABlocks.ENDER_OBSIDIAN.get());
+							itemStack.setCount(1);
+
+							drops.clear();
+							drops.add((itemStack));
 
 							return drops; //If we dropped ender, stop everything else
 						}
@@ -319,41 +348,38 @@ public class EOABlockBreakEventHandler
 		return drops;
 	}
 
-	private static boolean CHECK_ORE_RELATIONSHIP(Block block, ItemStack itemStack)
+	private static Item GET_ORE_DROP (Block block, List<ItemStack> drops)
 	{
-		//WEIRD BUT SUPPORTED ORES
+		/*Block OUTBLOCK2 = block;
+		Item OUTITEM2 = block.asItem();
+		Item OUTITEM22 = drops.get(0).getItem();
+		String x = "";*/
 
+		//Make sure the block mined isnt what was dropped
+		if(drops.contains(new ItemStack(block.asItem())))
+			return null;
 
-		//MC QUARTZ
-		//GC DESH tile.mars item.raw_desh
-		//GC SAPP tile.basic_block_moon item.lunar_sapphire
-		//GC SILIC1 tile.basic_block_core item.basic_item.raw_silicon
-		//GC SILIC2 tile.venus item.basic_item.raw_silicon
-		//GC SOLARDUST tile.venus item.solar_dust
-		//GC QUARTZ tile.venus item.netherquartz
-		//GC CHEESE tile.basic_block_moon item.cheese_curd
-		//GC ILLEMITE tile.asteroids_block item.shard_titanium
+		Item item = drops.get(0).getItem();
 
+		String orenames_raw = block.getRegistryName().toString();
+		orenames_raw = orenames_raw.substring(orenames_raw.indexOf(":") + 1);
+		String dropname = item.getRegistryName().toString();
+		dropname = dropname.substring(dropname.indexOf(":") + 1);
 
-		//boolean isOre = blockName.contains("ore");
-		//boolean dropsNonOre = !blockName.equals(itemName) && !itemName.contains("ore");
+		if(dropname.equals(orenames_raw))
+			return null;
 
-		//System.out.println(blockName + " " + itemName + " " + isOre + " " + dropsNonOre);
+		String orenames = orenames_raw;
+		if(orenames.endsWith("ore")) orenames 		  = orenames.substring(0, orenames.length() - "ore".length());
+		if(orenames.startsWith("deepslate")) orenames = orenames.substring("deepslate".length());
+		orenames = orenames.replaceAll("_", "");
 
-		return block == Blocks.NETHER_QUARTZ_ORE && itemStack.getItem() == Items.QUARTZ;//MC QUARTZ
+		if(dropname.contains(orenames)
+			|| dropname.contains("raw")
+			|| (dropname.contains("nugget") && orenames.contains("nether")))
+			return item;
 
-		/*return (isOre && dropsNonOre)
-			    || (blockName.equals("tile.netherquartz") 	  && itemName.equals("item.netherquartz")) //MC QUARTZ
-				|| (blockName.equals("tile.mars") 			  && itemName.equals("item.raw_desh")) //GC DESH
-				|| (blockName.equals("tile.basic_block_moon") && itemName.equals("item.lunar_sapphire")) //GC SAPPHIRE
-				|| (blockName.equals("tile.basic_block_core") && itemName.equals("item.basic_item.raw_silicon")) //GC SILIC1
-				|| (blockName.equals("tile.venus") 			  && itemName.equals("item.basic_item.raw_silicon")) //GC SILIC2
-				|| (blockName.equals("tile.venus")            && itemName.equals("item.solar_dust")) //GC SOLARDUST
-				|| (blockName.equals("tile.venus")            && itemName.equals("item.netherquartz")) //GC QUARTZ
-				|| (blockName.equals("tile.basic_block_moon") && itemName.equals("item.cheese_curd")) //GC CHEESE
-				|| (blockName.equals("tile.asteroids_block")  && itemName.equals("item.shard_titanium"))//GC ILLEMITE
-		;*/
+		return null;
+		//return block.getRegistryName().toString().endsWith("_ore") && drops.get(0).getItem().getRegistryName().toString().contains("");
 	}
-
-
 }
