@@ -1,6 +1,6 @@
 {
   "replace": false,
   "entries": [
-    "eoarmors:harvest_drops_event"
+    "eoarmaments:harvest_drops_event"
   ]
 }

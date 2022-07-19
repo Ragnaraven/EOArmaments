@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "eoarmaments:blocks/block_ender_obsidian"
+  }
+}

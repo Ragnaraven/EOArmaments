@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "eoarmaments:items/ender_obsidian_pickaxe"
+  }
+}

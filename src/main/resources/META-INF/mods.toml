@@ -1,12 +1,12 @@
 modLoader="javafml"
-loaderVersion="[39,)"
+loaderVersion="[40,)"
 license="All rights reserved"
 [[mods]] #mandatory
-modId="eoarmors" 
+modId="eoarmaments" 
 version="${file.jarVersion}" 
 displayName="Ender Obsidian Armaments"
 logoFile="icon.png" 
-credits="EnhancedArmaments: TheXFactor117, JanneSoon. Thank you for 550 downloads on CurseForge!"
+credits="EnhancedArmaments: TheXFactor117, JanneSoon, Ragnaraven (me). Thank you for 1k downloads on CurseForge!"
 issueTrackerURL="https://github.com/Ragnaraven/EOArmaments/issues"
 updateJSONURL="https://www.curseforge.com/minecraft/mc-mods/ender-obsidian-armaments/files"
 authors="Ragnaraven" 
@@ -16,16 +16,16 @@ This mod adds Obsidian and Ender Obsidian as armor set with set special bonuses 
 It also adds Emerald armor and tools as a tier above diamond.
 .'''
 
-[[dependencies.eoarmors]]
+[[dependencies.eoarmaments]]
 	    modId="forge"
 	    mandatory=true
-	    versionRange="[39,)"
+	    versionRange="[40,)"
 	    ordering="NONE"
 	    side="BOTH"
 
-[[dependencies.eoarmors]]
+[[dependencies.eoarmaments]]
 	    modId="minecraft"
 	    mandatory=true
-	    versionRange="[1.18.1]"
+	    versionRange="[1.18.2, 1.19)"
 	    ordering="NONE"
 	    side="BOTH"
