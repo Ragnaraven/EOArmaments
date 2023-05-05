@@ -56,7 +56,7 @@ public class EOABlockBreakEventHandler
 	//Redo this to be smarter, maybe add config, if requested.
 	private static final int CHANCE_BUILT_IN_FORTUNE_EFFECT = 350; //out 1000
 	private static final int FORTUNE_EFFECT_MULTIPLIER_BASE = 2;
-	private static final int FORTUNE_EFFECT_EXTRA_PICK_HURT = 5;
+	private static final int FORTUNE_EFFECT_EXTRA_PICK_HURT = 0;// 5;
 	private static final int FORTUNE_EFFECT_DROP_0 = 16;
 	private static final int FORTUNE_EFFECT_MULTIPLIER_ADDITIONAL_RANDOM = 3; //Higher number = less chance to get the max
 	private static final int FORTUNE_EFFECT_MAX_ADDITION_CHANCE = 64;
@@ -77,7 +77,7 @@ public class EOABlockBreakEventHandler
 			if(armor == -1)
 				return; //-1 means no match for set.
 
-			//If here, player is wearing all of obsidian or enderObsidian armor. Can be checked by armor val
+			//If here, player is wearing all obsidian or enderObsidian armor. Can be checked by armor val
 			try
 			{
 				//Either set

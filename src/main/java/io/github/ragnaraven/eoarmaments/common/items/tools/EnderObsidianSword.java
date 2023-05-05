@@ -82,7 +82,7 @@ public class EnderObsidianSword extends SwordItem
 								player.moveTo(telePosition[0], telePosition[1] + 1, telePosition[2]);
 
 								//Calc damage
-								int damage = distance / TP_DISTANCE_DAMAGE_DIVIDER;
+								/*int damage = distance / TP_DISTANCE_DAMAGE_DIVIDER;
 								damage = damage == 0 ? 1 : damage;
 
 								//Harm armor
@@ -94,7 +94,7 @@ public class EnderObsidianSword extends SwordItem
 									//Harm sword
 									if(!world.isClientSide())
 										itemStack.hurt(damage, EnderObsidianArmorsMod.RANDOM, (ServerPlayer) player);
-								}
+								}*/
 
 								finalizeTeleport(player, telePosition[0], telePosition[1], telePosition[2]);
 							}

@@ -27,8 +27,8 @@ public class EOAItems
 
 	public enum ModItemTier implements Tier {
 		EMERALD(	    3, 5268, 9.5f,  5.50f, 12, () -> { return Ingredient.of(Items.EMERALD); } ),
-		OBSIDIAN(		3, 200,  12.0f, 3.50f, 10, () -> { return Ingredient.of(Items.OBSIDIAN); } ),
-		ENDER_OBSIDIAN( 3, 375,  14.5f, 4.25f, 15, () -> { return Ingredient.of(EOAItems.ENDER_OBSIDIAN_PLATE.get()); } );
+		OBSIDIAN(		3, 500,  12.0f, 3.50f, 10, () -> { return Ingredient.of(Items.OBSIDIAN); } ),
+		ENDER_OBSIDIAN( 3, 2500,  14.5f, 4.25f, 15, () -> { return Ingredient.of(EOAItems.ENDER_OBSIDIAN_PLATE.get()); } );
 
 		private final int level;
 		private final int uses;
