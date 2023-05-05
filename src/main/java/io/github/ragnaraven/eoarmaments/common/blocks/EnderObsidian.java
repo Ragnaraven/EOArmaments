@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class EnderObsidian extends BlockBase
 {
-	public EnderObsidian(BlockBehaviour.Properties properties) {
+	public EnderObsidian(Properties properties) {
 		super(properties);
 	}
 

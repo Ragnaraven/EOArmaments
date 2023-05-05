@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import io.github.ragnaraven.eoarmaments.EnderObsidianArmorsMod;
 import io.github.ragnaraven.eoarmaments.config.ConfigHolder;
 import io.github.ragnaraven.eoarmaments.core.essentials.Ability;
 import io.github.ragnaraven.eoarmaments.core.essentials.Experience;
@@ -11,6 +12,7 @@ import io.github.ragnaraven.eoarmaments.core.essentials.Rarity;
 import io.github.ragnaraven.eoarmaments.core.util.EAUtils;
 import io.github.ragnaraven.eoarmaments.core.util.NBTHelper;
 
+import io.github.ragnaraven.eoarmaments.network.PacketGuiAbility;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -162,7 +164,7 @@ public class GuiAbilitySelection extends Screen
 							{
 								if (button == weaponAbilities[i])
 								{
-									//EnderObsidianArmorsMod.network.sendToServer(new PacketGuiAbility(i));
+									EnderObsidianArmorsMod.network.sendToServer(new PacketGuiAbility(i));
 								}
 							}
 						}
@@ -172,7 +174,7 @@ public class GuiAbilitySelection extends Screen
 							{
 								if (button == armorAbilities[i])
 								{
-									//EnderObsidianArmorsMod.network.sendToServer(new PacketGuiAbility(i));
+									EnderObsidianArmorsMod.network.sendToServer(new PacketGuiAbility(i));
 								}
 							}
 						}

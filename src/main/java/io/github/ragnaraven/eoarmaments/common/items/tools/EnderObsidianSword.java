@@ -33,11 +33,10 @@ public class EnderObsidianSword extends SwordItem
 	public static final int TP_HELPER_DISTANCE_AROUND = 3;
 	public static final int TP_DISTANCE_DAMAGE_DIVIDER = 12;
 	
-	public EnderObsidianSword(Tier itemTier, int damage, float speed, Item.Properties properties)
+	public EnderObsidianSword(Tier itemTier, int damage, float speed, Properties properties)
 	{
 		super(itemTier, damage, speed, properties);
 	}
-
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {

@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
  */
 public class BlockBase extends Block
 {
-	public BlockBase(BlockBehaviour.Properties properties) {
+	public BlockBase(Properties properties) {
 		super(properties);
 	}
 }

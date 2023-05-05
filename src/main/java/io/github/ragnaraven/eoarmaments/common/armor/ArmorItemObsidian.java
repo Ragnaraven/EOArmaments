@@ -19,7 +19,7 @@ import static io.github.ragnaraven.eoarmaments.core.util.EOAHelpers.LEVEL_OBSIDI
 @Mod.EventBusSubscriber
 public class ArmorItemObsidian extends ModArmorItem
 {
-	public ArmorItemObsidian(String name, ArmorMaterial armorMaterial, EquipmentSlot equipmentSlotType, Item.Properties properties)
+	public ArmorItemObsidian(String name, ArmorMaterial armorMaterial, EquipmentSlot equipmentSlotType, Properties properties)
 	{
 		super(name, armorMaterial, equipmentSlotType, properties);
 	}

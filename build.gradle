@@ -17,10 +17,8 @@ plugins {
 }
 
 apply plugin: 'net.minecraftforge.gradle'
-//apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-
-version = '3.1.0'
+version = '3.1.1'
 group = 'io.github.ragnaraven.eoarmaments' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'eoarmaments'
 
@@ -42,11 +40,9 @@ minecraft {
     //
     // Use non-default mappings at your own risk. They may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-
     mappings channel: 'official', version: '1.18.2'
-    //mappings channel: 'parchment', version: '2022.06.26-1.18.2'
 
-    //accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -87,7 +83,7 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', 'eoarmaments'
 
             mods {
-                eoarmaments {
+                examplemod {
                     source sourceSets.main
                 }
             }
@@ -128,7 +124,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            // Specify the eoarmaments for data generation, where to output the resulting resource, and where to look for existing resources.
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', 'eoarmaments', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
@@ -157,7 +153,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.0'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -170,7 +166,6 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
@@ -179,7 +174,7 @@ jar {
         attributes([
                 "Specification-Title"     : "eoarmaments",
                 "Specification-Vendor"    : "eoarmamentsragnaraven",
-                "Specification-Version"   : "3.1.0", // We are version 1 of ourselves
+                "Specification-Version"   : "3.1.1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "eoarmamentsragnaraven",

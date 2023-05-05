@@ -13,6 +13,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 
+import java.rmi.ServerError;
 import java.util.List;
 
 public class CustomizeToEOMining extends LootModifier {
@@ -35,7 +36,9 @@ public class CustomizeToEOMining extends LootModifier {
                 return EOABlockBreakEventHandler.ON_HARVEST_DROPS(playerEntity, block, generatedLoot);
             }
         }
-        catch (Exception e) {}
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return generatedLoot;
     }

@@ -19,7 +19,7 @@ import static io.github.ragnaraven.eoarmaments.core.util.EOAHelpers.*;
  */
 public class ArmorItemEnderObsidian extends ModArmorItem
 {
-	public ArmorItemEnderObsidian(String name, ArmorMaterial armorMaterial, EquipmentSlot equipmentSlotType, Item.Properties properties)
+	public ArmorItemEnderObsidian(String name, ArmorMaterial armorMaterial, EquipmentSlot equipmentSlotType, Properties properties)
 	{
 		super(name, armorMaterial, equipmentSlotType, properties);
 	}

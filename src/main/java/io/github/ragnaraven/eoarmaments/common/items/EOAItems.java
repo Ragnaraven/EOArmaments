@@ -98,20 +98,20 @@ public class EOAItems
 	public static final RegistryObject<Item> ENDER_OBSIDIAN_BLOCK_ITEM = ITEMS.register("block_ender_obsidian", () -> new BlockItem(EOABlocks.ENDER_OBSIDIAN.get(), new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL)));
 
 	//Armor
-	public static final RegistryObject<Item> ARMOR_EMERALD_HEAD   = ITEMS.register( "armor_emerald_head", 	() -> new ModArmorItem("armor_emerald_head",  EOAArmorMaterial.EMERALD, EquipmentSlot.HEAD,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
-	public static final RegistryObject<Item> ARMOR_EMERALD_CHEST  = ITEMS.register( "armor_emerald_chest", 	() -> new ModArmorItem("armor_emerald_chest", EOAArmorMaterial.EMERALD, EquipmentSlot.CHEST, new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
-	public static final RegistryObject<Item> ARMOR_EMERALD_LEGS   = ITEMS.register( "armor_emerald_legs", 	() -> new ModArmorItem("armor_emerald_legs",  EOAArmorMaterial.EMERALD, EquipmentSlot.LEGS,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
-	public static final RegistryObject<Item> ARMOR_EMERALD_FEET   = ITEMS.register( "armor_emerald_feet", 	() -> new ModArmorItem("armor_emerald_feet",  EOAArmorMaterial.EMERALD, EquipmentSlot.FEET,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
+	public static final RegistryObject<Item> ARMOR_EMERALD_HEAD   = ITEMS.register( "armor_emerald_head", 	() -> new ModArmorItem("emerald",  EOAArmorMaterial.EMERALD, EquipmentSlot.HEAD,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
+	public static final RegistryObject<Item> ARMOR_EMERALD_CHEST  = ITEMS.register( "armor_emerald_chest", 	() -> new ModArmorItem("emerald", EOAArmorMaterial.EMERALD, EquipmentSlot.CHEST, new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
+	public static final RegistryObject<Item> ARMOR_EMERALD_LEGS   = ITEMS.register( "armor_emerald_legs", 	() -> new ModArmorItem("emerald",  EOAArmorMaterial.EMERALD, EquipmentSlot.LEGS,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
+	public static final RegistryObject<Item> ARMOR_EMERALD_FEET   = ITEMS.register( "armor_emerald_feet", 	() -> new ModArmorItem("emerald",  EOAArmorMaterial.EMERALD, EquipmentSlot.FEET,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
 
-	public static final RegistryObject<Item> ARMOR_OBSIDIAN_HEAD   = ITEMS.register( "armor_obsidian_head", 	() -> new ModArmorItem("armor_obsidian_head",  EOAArmorMaterial.OBSIDIAN, EquipmentSlot.HEAD,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
-	public static final RegistryObject<Item> ARMOR_OBSIDIAN_CHEST  = ITEMS.register( "armor_obsidian_chest", 	() -> new ModArmorItem("armor_obsidian_chest", EOAArmorMaterial.OBSIDIAN, EquipmentSlot.CHEST, new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
-	public static final RegistryObject<Item> ARMOR_OBSIDIAN_LEGS   = ITEMS.register( "armor_obsidian_legs", 	() -> new ModArmorItem("armor_obsidian_legs",  EOAArmorMaterial.OBSIDIAN, EquipmentSlot.LEGS,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
-	public static final RegistryObject<Item> ARMOR_OBSIDIAN_FEET   = ITEMS.register( "armor_obsidian_feet", 	() -> new ModArmorItem("armor_obsidian_feet",  EOAArmorMaterial.OBSIDIAN, EquipmentSlot.FEET,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
+	public static final RegistryObject<Item> ARMOR_OBSIDIAN_HEAD   = ITEMS.register( "armor_obsidian_head", 	() -> new ArmorItemObsidian("obsidian",  EOAArmorMaterial.OBSIDIAN, EquipmentSlot.HEAD,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
+	public static final RegistryObject<Item> ARMOR_OBSIDIAN_CHEST  = ITEMS.register( "armor_obsidian_chest", 	() -> new ArmorItemObsidian("obsidian", EOAArmorMaterial.OBSIDIAN, EquipmentSlot.CHEST, new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
+	public static final RegistryObject<Item> ARMOR_OBSIDIAN_LEGS   = ITEMS.register( "armor_obsidian_legs", 	() -> new ArmorItemObsidian("obsidian",  EOAArmorMaterial.OBSIDIAN, EquipmentSlot.LEGS,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
+	public static final RegistryObject<Item> ARMOR_OBSIDIAN_FEET   = ITEMS.register( "armor_obsidian_feet", 	() -> new ArmorItemObsidian("obsidian",  EOAArmorMaterial.OBSIDIAN, EquipmentSlot.FEET,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
 
-	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_HEAD   = ITEMS.register( "armor_ender_obsidian_head", 	() -> new ModArmorItem("armor_ender_obsidian_head",  EOAArmorMaterial.ENDER_OBSIDIAN, EquipmentSlot.HEAD,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
-	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_CHEST  = ITEMS.register( "armor_ender_obsidian_chest", 	() -> new ModArmorItem("armor_ender_obsidian_chest", EOAArmorMaterial.ENDER_OBSIDIAN, EquipmentSlot.CHEST, new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
-	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_LEGS   = ITEMS.register( "armor_ender_obsidian_legs", 	() -> new ModArmorItem("armor_ender_obsidian_legs",  EOAArmorMaterial.ENDER_OBSIDIAN, EquipmentSlot.LEGS,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
-	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_FEET   = ITEMS.register( "armor_ender_obsidian_feet", 	() -> new ModArmorItem("armor_ender_obsidian_feet",  EOAArmorMaterial.ENDER_OBSIDIAN, EquipmentSlot.FEET,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
+	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_HEAD   = ITEMS.register( "armor_ender_obsidian_head", 	() -> new ArmorItemEnderObsidian("ender_obsidian",  EOAArmorMaterial.ENDER_OBSIDIAN, EquipmentSlot.HEAD,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
+	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_CHEST  = ITEMS.register( "armor_ender_obsidian_chest", 	() -> new ArmorItemEnderObsidian("ender_obsidian", EOAArmorMaterial.ENDER_OBSIDIAN, EquipmentSlot.CHEST, new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
+	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_LEGS   = ITEMS.register( "armor_ender_obsidian_legs", 	() -> new ArmorItemEnderObsidian("ender_obsidian",  EOAArmorMaterial.ENDER_OBSIDIAN, EquipmentSlot.LEGS,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
+	public static final RegistryObject<Item> ARMOR_ENDER_OBSIDIAN_FEET   = ITEMS.register( "armor_ender_obsidian_feet", 	() -> new ArmorItemEnderObsidian("ender_obsidian",  EOAArmorMaterial.ENDER_OBSIDIAN, EquipmentSlot.FEET,  new Item.Properties().tab(EOATabs.TAB_EOAUNIVERSAL) ));
 
 
 }

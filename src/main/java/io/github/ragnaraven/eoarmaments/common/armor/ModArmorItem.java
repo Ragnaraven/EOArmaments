@@ -12,7 +12,7 @@ public class ModArmorItem extends ArmorItem
 {
     protected String name;
 
-    public ModArmorItem(String name, ArmorMaterial armorMaterial, EquipmentSlot equipmentSlotType, Item.Properties properties)
+    public ModArmorItem(String name, ArmorMaterial armorMaterial, EquipmentSlot equipmentSlotType, Properties properties)
     {
         super(armorMaterial, equipmentSlotType, properties);
 
@@ -23,9 +23,9 @@ public class ModArmorItem extends ArmorItem
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type)
     {
         if(slot == EquipmentSlot.LEGS)
-            return EnderObsidianArmorsMod.MODID + ":textures/models/armor/armor_" + name + "_layer_1.png";
+            return EnderObsidianArmorsMod.MODID + ":textures/models/armor/" + name + "_layer_2.png";
         else
-            return EnderObsidianArmorsMod.MODID + ":textures/models/armor/armor_" + name + "_layer_0.png";
+            return EnderObsidianArmorsMod.MODID + ":textures/models/armor/" + name + "_layer_1.png";
     }
     /*
     @Override
