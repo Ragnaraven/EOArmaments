@@ -229,7 +229,7 @@ public class GuiAbilitySelection extends Screen
 				else if (abilities.get(i).getType().equals("passive"))
 				{
 					k++;
-					drawCenteredString(poseStack, font, abilities.get(i).getName(nbt), width / 2 + 150, 135 + (k * 12), abilities.get(i).getHex());
+					drawCenteredString(poseStack, font, I18n.get(abilities.get(i).getName(nbt)), width / 2 + 150, 135 + (k * 12), abilities.get(i).getHex());
 				}
 			}
 		}
@@ -273,10 +273,8 @@ public class GuiAbilitySelection extends Screen
 		{
 			if (buttons[i].isHoveredOrFocused())//checker.checkHover(mouseX, mouseY))
 			{
-				System.out.println(abilities.get(i).getColor() + I18n.get("eoarmaments.ability." + abilities.get(i).getName()) + " (" + abilities.get(i).getTypeName() + abilities.get(i).getColor() + ")");
-
 				List<TextComponent> list = new ArrayList<>();
-				list.add(new TextComponent(abilities.get(i).getColor() + I18n.get("eoarmaments.ability." + abilities.get(i).getName()) + " (" + abilities.get(i).getTypeName() + abilities.get(i).getColor() + ")"));
+				list.add(new TextComponent(abilities.get(i).getColor() + I18n.get("eoarmaments.ability." + abilities.get(i).getName()) + " (" +  I18n.get(abilities.get(i).getTypeName()) + abilities.get(i).getColor() + ")"));
 				list.add(new TextComponent(""));
 				list.add(new TextComponent(I18n.get("eoarmaments.abilities.info." + abilities.get(i).getName())));
 				list.add(new TextComponent(""));
