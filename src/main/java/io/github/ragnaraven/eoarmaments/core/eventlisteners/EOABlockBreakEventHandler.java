@@ -55,8 +55,10 @@ public class EOABlockBreakEventHandler
 	public static boolean ENABLE_FORTUNE = true;
 	//Redo this to be smarter, maybe add config, if requested.
 	private static final int CHANCE_BUILT_IN_FORTUNE_EFFECT = 350; //out 1000
-	private static final int FORTUNE_EFFECT_MULTIPLIER_BASE = 2;
-	private static final int FORTUNE_EFFECT_EXTRA_PICK_HURT = 0;// 5;
+	private static final float FORTUNE_EFFECT_MULTIPLIER_BASE = 2f;
+	private static final float FORTUNE_EFFECT_MULTIPLIER_ADDITIONS = 0.5f;
+	private static final float FORTUNE_EFFECT_MULTIPLIER_ADDITIONS_RANDOM = 0.5f;
+	private static final int FORTUNE_EFFECT_EXTRA_PICK_HURT = 5;
 	private static final int FORTUNE_EFFECT_DROP_0 = 16;
 	private static final int FORTUNE_EFFECT_MULTIPLIER_ADDITIONAL_RANDOM = 3; //Higher number = less chance to get the max
 	private static final int FORTUNE_EFFECT_MAX_ADDITION_CHANCE = 64;
@@ -232,17 +234,20 @@ public class EOABlockBreakEventHandler
 						//If here, is wearing eo armor and pick
 						//Only ender obsidian set. Since check pick worked, we dont need to check again.
 						//Add extra
-						if (true) //ENABLE_FORTUNE && EnderObsidianArmorsMod.RANDOM.nextInt(1000) < CHANCE_BUILT_IN_FORTUNE_EFFECT)
+						if (ENABLE_FORTUNE) //&& EnderObsidianArmorsMod.RANDOM.nextInt(1000) < CHANCE_BUILT_IN_FORTUNE_EFFECT)
 						{//If here, apply fortune effect.
 
-							int multiplier = FORTUNE_EFFECT_MULTIPLIER_BASE;
+							float multiplier = FORTUNE_EFFECT_MULTIPLIER_BASE;
 
 							int extra = EnderObsidianArmorsMod.RANDOM.nextInt(FORTUNE_EFFECT_MAX_ADDITION_CHANCE);
 
 							//Currently a 1 in 32 chance for 5x multiplier
 							for (int i = FORTUNE_EFFECT_MAX_ADDITION_CHANCE / FORTUNE_EFFECT_MULTIPLIER_ADDITIONAL_RANDOM; i > 0; i /= FORTUNE_EFFECT_MULTIPLIER_ADDITIONAL_RANDOM)
-								if (extra < i)
-									multiplier++;
+								if (extra < i) {
+									float mult = FORTUNE_EFFECT_MULTIPLIER_ADDITIONS;
+									mult += EnderObsidianArmorsMod.RANDOM.nextFloat(FORTUNE_EFFECT_MULTIPLIER_ADDITIONS_RANDOM);
+									multiplier += mult;
+								}
 
 							//Apply extras
 							Item selectedDropItem = GET_ORE_DROP(block, drops);
@@ -255,7 +260,9 @@ public class EOABlockBreakEventHandler
 
 							if (selectedDropItem != null)
 							{
-								int count = total * multiplier;
+								int count = (int) (total * multiplier);
+
+								System.out.println("COUNT " + count + " MULT" + multiplier);
 
 								//Add extra quartz.
 								if (block == Blocks.NETHER_QUARTZ_ORE && selectedDropItem == Items.QUARTZ)
@@ -284,7 +291,7 @@ public class EOABlockBreakEventHandler
 								}
 
 								//Damage pick proportionally
-								player.getMainHandItem().setDamageValue(player.getMainHandItem().getDamageValue() + multiplier * FORTUNE_EFFECT_EXTRA_PICK_HURT);
+								//WONT WORK NOW THAT MULT MAY BE < 1 player.getMainHandItem().setDamageValue((int) (player.getMainHandItem().getDamageValue() + multiplier * FORTUNE_EFFECT_EXTRA_PICK_HURT));
 
 								//Spawn particles for a magical effect.
 								for (int i = 0; i < 15; i++)

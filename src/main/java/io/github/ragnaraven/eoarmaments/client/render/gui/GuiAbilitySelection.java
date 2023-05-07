@@ -273,6 +273,8 @@ public class GuiAbilitySelection extends Screen
 		{
 			if (buttons[i].isHoveredOrFocused())//checker.checkHover(mouseX, mouseY))
 			{
+				System.out.println(abilities.get(i).getColor() + I18n.get("eoarmaments.ability." + abilities.get(i).getName()) + " (" + abilities.get(i).getTypeName() + abilities.get(i).getColor() + ")");
+
 				List<TextComponent> list = new ArrayList<>();
 				list.add(new TextComponent(abilities.get(i).getColor() + I18n.get("eoarmaments.ability." + abilities.get(i).getName()) + " (" + abilities.get(i).getTypeName() + abilities.get(i).getColor() + ")"));
 				list.add(new TextComponent(""));

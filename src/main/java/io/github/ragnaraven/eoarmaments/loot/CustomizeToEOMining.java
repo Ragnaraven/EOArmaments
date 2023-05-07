@@ -1,6 +1,7 @@
 package io.github.ragnaraven.eoarmaments.loot;
 
 import com.google.gson.JsonObject;
+import io.github.ragnaraven.eoarmaments.EnderObsidianArmorsMod;
 import io.github.ragnaraven.eoarmaments.core.eventlisteners.EOABlockBreakEventHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +13,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
+import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
 
 import java.rmi.ServerError;
 import java.util.List;
@@ -19,21 +22,21 @@ import java.util.List;
 public class CustomizeToEOMining extends LootModifier {
 
     public CustomizeToEOMining(LootItemCondition[] conditionsIn) {
-        super(conditionsIn == null ? new LootItemCondition[]{} : conditionsIn);
+        super(conditionsIn);
     }
 
     @Override
-    protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context)
+    protected @NotNull List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context)
     {
         try {
-            Player playerEntity = (Player) context.getParamOrNull(LootContextParams.THIS_ENTITY);
-            BlockState blockState = context.getParamOrNull(LootContextParams.BLOCK_STATE);
+            if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof Player playerEntity) {
+                BlockState blockState = context.getParamOrNull(LootContextParams.BLOCK_STATE);
 
-            if(playerEntity != null && blockState != null)
-            {
-                Block block = blockState.getBlock();
+                if (blockState != null) {
+                    Block block = blockState.getBlock();
 
-                return EOABlockBreakEventHandler.ON_HARVEST_DROPS(playerEntity, block, generatedLoot);
+                    return EOABlockBreakEventHandler.ON_HARVEST_DROPS(playerEntity, block, generatedLoot);
+                }
             }
         }
         catch (Exception e) {
@@ -51,7 +54,7 @@ public class CustomizeToEOMining extends LootModifier {
 
         @Override
         public CustomizeToEOMining read(ResourceLocation location, JsonObject object, LootItemCondition[] conditionsIn) {
-            return new CustomizeToEOMining(conditionsIn == null ? new LootItemCondition[]{} : conditionsIn);
+            return new CustomizeToEOMining(conditionsIn);
         }
 
         @Override

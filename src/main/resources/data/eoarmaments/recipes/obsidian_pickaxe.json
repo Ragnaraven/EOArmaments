@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "eoarmaments:obsidian_pickaxe"
+  },
+  "pattern": [
+    "mmm",
+    " s ",
+    " s "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "m": {
+      "item": "eoarmaments:obsidian_plate"
+    }
+  }
+}
