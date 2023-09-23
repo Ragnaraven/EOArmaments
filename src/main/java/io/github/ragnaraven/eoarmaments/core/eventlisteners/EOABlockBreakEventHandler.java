@@ -64,7 +64,7 @@ public class EOABlockBreakEventHandler
 	private static final int FORTUNE_EFFECT_MAX_ADDITION_CHANCE = 64;
 
 	private static final int FORTUNE_EFFECT_QUARTZ_MULTIPLIER = 3;
-	private static final int FORTUNE_EFFECT_NETHER_GOLD_MULTIPLIER = 5;
+	private static final int FORTUNE_EFFECT_NETHER_GOLD_MULTIPLIER = 10;
 
 
 	@SubscribeEvent
@@ -383,7 +383,9 @@ public class EOABlockBreakEventHandler
 
 		if(dropname.contains(orenames)
 			|| dropname.contains("raw")
-			|| (dropname.contains("nugget") && orenames.contains("nether")))
+			|| (dropname.contains("nugget") && orenames.contains("nether"))
+			|| (dropname.contains("quartz") && orenames.contains("nether"))
+		)
 			return item;
 
 		return null;
