@@ -37,10 +37,10 @@ public class TierInit {
     public static final ForgeTier ENDER_OBSIDIAN = new ForgeTier(
             4,
             5000,
-            25f,
+            128f,
             4.5f,
             20,
             ForgeHooks.getTagFromVanillaTier(Tiers.DIAMOND),
-            () -> Ingredient.of(Items.OBSIDIAN)
+            () -> Ingredient.of(ItemInit.ENDER_OBSIDIAN_PLATE.get())
     );
 }
