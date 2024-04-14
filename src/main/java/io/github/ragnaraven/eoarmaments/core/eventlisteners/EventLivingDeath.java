@@ -12,7 +12,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,13 +21,13 @@ import net.minecraftforge.fml.common.Mod;
  * level, abilities, and so on.
  *
  */
-@Mod.EventBusSubscriber(modid = EnderObsidianArmorsMod.MODID)
+@Mod.EventBusSubscriber(modid = EnderObsidianArmorsMod.MOD_ID)
 public class EventLivingDeath
 {
 	@SubscribeEvent
 	public static void onLivingDeath(LivingDeathEvent event)
 	{
-		if (event.getSource().getDirectEntity() instanceof Player && !(event.getSource().getDirectEntity() instanceof FakePlayer))
+		if (event.getSource().getDirectEntity() instanceof Player)
 		{
 			Player player = (Player) event.getSource().getDirectEntity();
 			
@@ -107,9 +106,9 @@ public class EventLivingDeath
 	{
 		if (Experience.getLevel(nbt) < (ConfigHolder.SERVER.maxLevel.get()))
 		{
-			if (event.getEntityLiving() != null)
+			if (event.getEntity() != null)
 			{
-				LivingEntity target = event.getEntityLiving();
+				LivingEntity target = event.getEntity();
 				int bonusExperience = 0;
 				
 				if (target.getMaxHealth() < 10) bonusExperience = 3;

@@ -8,6 +8,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
@@ -26,11 +28,11 @@ public class EAUtils
 					|| item == Items.CHAINMAIL_BOOTS || item == Items.CHAINMAIL_CHESTPLATE || item == Items.CHAINMAIL_HELMET || item == Items.CHAINMAIL_LEGGINGS)
 				return false;
 
-		if(ConfigHolder.SERVER.extraItems.get().size() != 0)
+		if(!ConfigHolder.SERVER.extraItems.get().isEmpty())
 		{
 			boolean allowed=false;
 			for(int k = 0; k < ConfigHolder.SERVER.extraItems.get().size(); k++)
-				if(ConfigHolder.SERVER.extraItems.get().get(k).equals(item.getRegistryName().getPath()))
+				if(ConfigHolder.SERVER.extraItems.get().get(k).equals(item.getName(new ItemStack(item)).getString()))
 					allowed=true;
 			return allowed || item instanceof SwordItem || item instanceof AxeItem || item instanceof HoeItem || item instanceof BowItem || item instanceof ArmorItem;
 		}
@@ -60,28 +62,15 @@ public class EAUtils
 	
 	public static boolean isDamageSourceAllowed(DamageSource damageSource)
 	{
-		return !(damageSource == DamageSource.FALL ||
-				damageSource == DamageSource.DROWN ||
-				damageSource == DamageSource.CACTUS ||
-				damageSource == DamageSource.STARVE ||
-				damageSource == DamageSource.IN_WALL ||
-				damageSource == DamageSource.IN_FIRE ||
-				damageSource == DamageSource.OUT_OF_WORLD) || damageSource.getDirectEntity() instanceof LivingEntity;
-	}
-	
-	public static Entity getEntityByUniqueId(UUID uniqueId)
-	{
-		return ((ServerLevel) Minecraft.getInstance().player.getCommandSenderWorld()).getEntity(uniqueId);
-
-		//TODO: CRASH CHECK IF SERVER WORLD FAILS?
-
-	    /*for (Entity entity : Minecraft.getInstance().player.getCommandSenderWorld().getEntityByUuid())
-	    	{
-	    		if (entity.getUUID().equals(uniqueId))
-	                return entity;
-	    	}
-
-	    return null;*/
+		return !(
+				damageSource.is(DamageTypes.FALL) ||
+				damageSource.is(DamageTypes.DROWN) ||
+				damageSource.is(DamageTypes.CACTUS) ||
+				damageSource.is(DamageTypes.STARVE) ||
+				damageSource.is(DamageTypes.IN_WALL) ||
+				damageSource.is(DamageTypes.IN_FIRE) ||
+				damageSource.is(DamageTypes.FELL_OUT_OF_WORLD)
+			) || damageSource.getDirectEntity() instanceof LivingEntity;
 	}
 	
 	public static boolean containsString (List<Component> tooltip, String string)

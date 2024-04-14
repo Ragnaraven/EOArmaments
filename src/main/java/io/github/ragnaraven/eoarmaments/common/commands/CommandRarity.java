@@ -12,7 +12,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,11 +40,11 @@ public class CommandRarity
 	public static int changeRarity(CommandSourceStack src, Player player, int rarityid)
 	{
 		if((rarityid < 1) || (rarityid > 6))
-			src.sendFailure(new TranslatableComponent("Rarity ID must be 1, 2, 3, 4, 5 or 6!"));
+			src.sendFailure(Component.translatable("Rarity ID must be 1, 2, 3, 4, 5 or 6!"));
 		else
 		{
 			if (!EAUtils.canEnhance(player.getMainHandItem().getItem()))
-				src.sendFailure(new TranslatableComponent("Hold a weapon or an armor in your mainhand!"));
+				src.sendFailure(Component.translatable("Hold a weapon or an armor in your mainhand!"));
 			else
 			{
 				ItemStack item = player.getMainHandItem();

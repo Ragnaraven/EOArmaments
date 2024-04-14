@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "eoarmaments:items/ender_obsidian_sword"
+    "layer0": "eoarmaments:item/ender_obsidian_sword"
   }
 }

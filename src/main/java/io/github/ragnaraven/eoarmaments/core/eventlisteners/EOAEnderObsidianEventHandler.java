@@ -2,13 +2,13 @@ package io.github.ragnaraven.eoarmaments.core.eventlisteners;
 
 import io.github.ragnaraven.eoarmaments.EnderObsidianArmorsMod;
 import io.github.ragnaraven.eoarmaments.client.render.particles.ParticleEffects;
-import io.github.ragnaraven.eoarmaments.common.blocks.EOABlocks;
+import io.github.ragnaraven.eoarmaments.init.BlockInit;
 import io.github.ragnaraven.eoarmaments.core.util.RangedInt;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
  *
  * This class manages the spawning of EnderObsidian.
  */
-@Mod.EventBusSubscriber(modid = EnderObsidianArmorsMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = EnderObsidianArmorsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EOAEnderObsidianEventHandler
 {
 	//public static final RangedInt CHANCE_SPAWN_ENDER_OBSIDIAN_EVENT_MOD = new RangedInt(0, 1000,263, RangedInt.EMODES.ALWAYS);
@@ -31,8 +31,8 @@ public class EOAEnderObsidianEventHandler
 	@SubscribeEvent
 	public static void enderObsidianSpawnWaterEventCheck(BlockEvent.NeighborNotifyEvent event)
 	{
-		Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
-		Level world = (Level) event.getWorld();
+		Block block = event.getLevel().getBlockState(event.getPos()).getBlock();
+		Level world = (Level) event.getLevel();
 		BlockPos pos = event.getPos();
 		
 		//Only in the end should any of this happen
@@ -81,7 +81,7 @@ public class EOAEnderObsidianEventHandler
 
 	public static void spawnEnderObsidian(Level world, BlockPos pos)
 	{
-		world.setBlockAndUpdate(pos, EOABlocks.ENDER_OBSIDIAN.get().defaultBlockState());
+		world.setBlockAndUpdate(pos, BlockInit.ENDER_OBSIDIAN.get().defaultBlockState());
 		
 		if(world.isClientSide())
 			for(int i = 0; i < 5; i++)

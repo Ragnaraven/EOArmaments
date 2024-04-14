@@ -22,10 +22,8 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
@@ -34,7 +32,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Collection;
 
-@Mod.EventBusSubscriber(modid = EnderObsidianArmorsMod.MODID)
+@Mod.EventBusSubscriber(modid = EnderObsidianArmorsMod.MOD_ID)
 public class EventLivingHurt
 {
 	//this needs to be a player capability or this will be really random in Multiplayer!
@@ -62,16 +60,16 @@ public class EventLivingHurt
 	@SubscribeEvent
 	public static void onArrowShoot(ArrowLooseEvent event)
 	{
-		bowfriendlyhand = event.getPlayer().getUsedItemHand();
+		bowfriendlyhand = event.getEntity().getUsedItemHand();
 	}
 	
 	@SubscribeEvent
 	public static void onHurt(LivingHurtEvent event)
 	{
-		if (event.getSource().getDirectEntity() instanceof Player && !(event.getSource().getDirectEntity() instanceof FakePlayer)) //PLAYER IS ATTACKER
+		if (event.getSource().getDirectEntity() instanceof Player)
 		{
 			Player player = (Player) event.getSource().getDirectEntity();
-			LivingEntity target = event.getEntityLiving();
+			LivingEntity target = event.getEntity();
 			ItemStack stack;
 			if(bowfriendlyhand == null)
 				stack = player.getItemInHand(player.getUsedItemHand());
@@ -92,9 +90,9 @@ public class EventLivingHurt
 					}
 			}
 		}
-		else if (event.getEntityLiving() instanceof Player)
+		else if (event.getEntity() instanceof Player)
 		{//PLAYER IS GETTING HURT
-			Player player = (Player) event.getEntityLiving();
+			Player player = (Player) event.getEntity();
 			Entity target = event.getSource().getDirectEntity();
 			
 			for (ItemStack stack : player.getInventory().armor)
@@ -207,7 +205,7 @@ public class EventLivingHurt
 					
 					if (!(target instanceof Animal))
 					{
-						world.explode(target, target.position().x, target.position().y, target.position().z, multiplier, Explosion.BlockInteraction.BREAK);
+						world.explode(target, target.position().x, target.position().y, target.position().z, multiplier, Level.ExplosionInteraction.MOB); //TODO: ERROR CHECK Ragnaraven
 					}
 			}
 			

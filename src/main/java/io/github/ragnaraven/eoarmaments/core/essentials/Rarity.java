@@ -7,6 +7,7 @@ import io.github.ragnaraven.eoarmaments.core.util.RandomCollection;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 
 public enum Rarity 
 {
@@ -38,7 +39,7 @@ public enum Rarity
 	 * @param random
 	 * @return
 	 */
-	public static Rarity getRandomRarity(Random random)
+	public static Rarity getRandomRarity(RandomSource random)
 	{
 		return RANDOM_RARITIES.next(random);
 	}

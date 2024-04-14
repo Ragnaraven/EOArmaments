@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import io.github.ragnaraven.eoarmaments.config.ConfigHolder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 public enum Ability
@@ -177,11 +177,11 @@ public enum Ability
 	public String getName(CompoundTag nbt)
 	{
 		if (getLevel(nbt) == 2)
-			return new TextComponent("eoarmaments.ability." + this.toString()).getString() + " II";
+			return Component.translatable("eoarmaments.ability." + this.toString()).getString() + " II";
 		else if (getLevel(nbt) == 3)
-			return new TextComponent("eoarmaments.ability." + this.toString()).getString() + " III";
+			return Component.translatable("eoarmaments.ability." + this.toString()).getString() + " III";
 		else
-			return new TextComponent("eoarmaments.ability." + this.toString()).getString();
+			return Component.translatable("eoarmaments.ability." + this.toString()).getString();
 	}
 	
 	public String getType()
@@ -191,7 +191,7 @@ public enum Ability
 	
 	public String getTypeName()
 	{
-		return new TextComponent("eoarmaments.ability.type." + type.toString()).getString();
+		return Component.translatable("eoarmaments.ability.type." + type.toString()).getString();
 	}
 	
 	public String getCategory()

@@ -2,9 +2,10 @@ package io.github.ragnaraven.eoarmaments.core.eventlisteners;
 
 import io.github.ragnaraven.eoarmaments.EnderObsidianArmorsMod;
 import io.github.ragnaraven.eoarmaments.client.render.particles.ParticleEffects;
-import io.github.ragnaraven.eoarmaments.common.blocks.EOABlocks;
-import io.github.ragnaraven.eoarmaments.common.items.EOAItems;
+import io.github.ragnaraven.eoarmaments.init.BlockInit;
+import io.github.ragnaraven.eoarmaments.init.ItemInit;
 import io.github.ragnaraven.eoarmaments.config.ConfigHolder;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,9 +15,10 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
 
 
 import java.util.List;
@@ -28,7 +30,7 @@ import static io.github.ragnaraven.eoarmaments.core.util.EOAHelpers.*;
  *
  * This class handles all tool healing events, as well as ender obsidian creation
  */
-@Mod.EventBusSubscriber(modid = EnderObsidianArmorsMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = EnderObsidianArmorsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EOABlockBreakEventHandler
 {
 	//On mine lava
@@ -100,7 +102,7 @@ public class EOABlockBreakEventHandler
 
 	private static void doLavaDrop (final BlockEvent.BreakEvent e)
 	{
-		Level world = (Level) e.getWorld();
+		Level world = (Level) e.getLevel();
 
 		if(ConfigHolder.SERVER.LAVA_SPAWN_CHANCE.get() != 0)
 		{
@@ -154,20 +156,20 @@ public class EOABlockBreakEventHandler
 						//Only heals TOOLS. Not armor in inv. Must be wearing to heal.
 						ItemStack stack = player.getInventory().getItem(i);
 						Item item = stack.getItem();
-						if (       item == EOAItems.OBSIDIAN_AXE.get()
-								|| item == EOAItems.ENDER_OBSIDIAN_AXE.get()
+						if (       item == ItemInit.OBSIDIAN_AXE.get()
+								|| item == ItemInit.ENDER_OBSIDIAN_AXE.get()
 
-								|| item == EOAItems.OBSIDIAN_PICKAXE.get()
-								|| item == EOAItems.ENDER_OBSIDIAN_PICKAXE.get()
+								|| item == ItemInit.OBSIDIAN_PICKAXE.get()
+								|| item == ItemInit.ENDER_OBSIDIAN_PICKAXE.get()
 
-								|| item == EOAItems.OBSIDIAN_SHOVEL.get()
-								|| item == EOAItems.ENDER_OBSIDIAN_SHOVEL.get()
+								|| item == ItemInit.OBSIDIAN_SHOVEL.get()
+								|| item == ItemInit.ENDER_OBSIDIAN_SHOVEL.get()
 
-								|| item == EOAItems.OBSIDIAN_HOE.get()
-								|| item == EOAItems.ENDER_OBSIDIAN_HOE.get()
+								|| item == ItemInit.OBSIDIAN_HOE.get()
+								|| item == ItemInit.ENDER_OBSIDIAN_HOE.get()
 
-								|| item == EOAItems.OBSIDIAN_SWORD.get()
-								|| item == EOAItems.ENDER_OBSIDIAN_SWORD.get())
+								|| item == ItemInit.OBSIDIAN_SWORD.get()
+								|| item == ItemInit.ENDER_OBSIDIAN_SWORD.get())
 						{
 							int otherHeal = stack.getMaxDamage() / (ConfigHolder.SERVER.OBSIDIAN_TO_MINE_FULL_HEALTH_PICKAXE.get() + ConfigHolder.SERVER.OBSIDIAN_TO_MINE_FULL_HEALTH_INVENTORY.get());
 							otherHeal = Math.max(otherHeal, 0);
@@ -204,14 +206,14 @@ public class EOABlockBreakEventHandler
 		}
 	}
 
-	public static List<ItemStack> ON_HARVEST_DROPS(Player player, Block block, List<ItemStack> drops)
+	public static @NotNull ObjectArrayList<ItemStack> ON_HARVEST_DROPS(Player player, Block block, ObjectArrayList<ItemStack> drops)
 	{
 		int eblockState = -1;
 
 		if (block == Blocks.OBSIDIAN)
 			eblockState = LEVEL_OBSIDIAN;
 
-		if (block == EOABlocks.ENDER_OBSIDIAN.get())
+		if (block == BlockInit.ENDER_OBSIDIAN.get())
 			eblockState = LEVEL_ENDER_OBSIDIAN;
 
 		int pick = CHECK_PICK(player);
@@ -295,7 +297,7 @@ public class EOABlockBreakEventHandler
 
 								//Spawn particles for a magical effect.
 								for (int i = 0; i < 15; i++)
-									ParticleEffects.spawnEnderObsidianSpawnParticles(player.level, player.getX(), player.getY(), player.getZ());
+									ParticleEffects.spawnEnderObsidianSpawnParticles(player.level(), player.getX(), player.getY(), player.getZ());
 							}
 						}
 						else //If here, they were unlucky, lets see if they are even less lucky
@@ -323,7 +325,7 @@ public class EOABlockBreakEventHandler
 								&& EnderObsidianArmorsMod.RANDOM.nextInt(ConfigHolder.SERVER.CHANCE_TO_CONVERT_OBSIDIAN_TO_ENDER_OBSIDIAN.get()) == 0)
 						{
 							//System.out.println("EO");
-							var itemStack = new ItemStack(EOABlocks.ENDER_OBSIDIAN.get());
+							var itemStack = new ItemStack(BlockInit.ENDER_OBSIDIAN.get());
 							itemStack.setCount(1);
 
 							drops.clear();
@@ -368,9 +370,9 @@ public class EOABlockBreakEventHandler
 
 		Item item = drops.get(0).getItem();
 
-		String orenames_raw = block.getRegistryName().toString();
+		String orenames_raw = block.getName().toString();
 		orenames_raw = orenames_raw.substring(orenames_raw.indexOf(":") + 1);
-		String dropname = item.getRegistryName().toString();
+		String dropname = item.getName(new ItemStack(item)).toString();
 		dropname = dropname.substring(dropname.indexOf(":") + 1);
 
 		if(dropname.equals(orenames_raw))

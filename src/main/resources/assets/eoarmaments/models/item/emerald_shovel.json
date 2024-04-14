@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "eoarmaments:items/emerald_shovel"
+    "layer0": "eoarmaments:item/emerald_shovel"
   }
 }

@@ -4,8 +4,7 @@ import io.github.ragnaraven.eoarmaments.config.ConfigHolder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -20,7 +19,7 @@ public class Experience
 			newLevel = currentLevel + 1;
 			currentLevel++;
 			Experience.setAbilityTokens(nbt, Experience.getAbilityTokens(nbt) + 1);
-			player.sendMessage(new TextComponent(stack.getDisplayName().getString() + ChatFormatting.GRAY + " " + new TranslatableComponent("eoarmaments.misc.level.leveledup").getString() + " " + ChatFormatting.GOLD + "" + newLevel + ChatFormatting.GRAY + "!"), Util.NIL_UUID);
+			player.displayClientMessage(Component.translatable(stack.getDisplayName().getString() + ChatFormatting.GRAY + " " + Component.translatable("eoarmaments.misc.level.leveledup").getString() + " " + ChatFormatting.GOLD + "" + newLevel + ChatFormatting.GRAY + "!"), false); //TODO: test Ragnaraven
 		}
 		
 		return newLevel;

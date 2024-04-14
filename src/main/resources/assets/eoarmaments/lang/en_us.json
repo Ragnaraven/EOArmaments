@@ -1,5 +1,5 @@
 {
-  "itemGroup.EOAUniversalTab": "Ender Obsidian and Armors",
+  "itemGroup.eoa_universal_tab": "Ender Obsidian and Armors",
 
   "item.eoarmaments.obsidian_plate": "Obsidian Plate",
   "item.eoarmaments.ender_obsidian_plate": "Ender Obsidian Plate",
@@ -37,8 +37,8 @@
   "item.eoarmaments.ender_obsidian_sword": "Ender Obsidian Sword",
 
 
-  "key.eoarmaments":"Enhanced Armaments",
-  "key.gui.weapon_interface":"Armament Key",
+  "key.categories.eoarmaments":"Enhanced Armaments",
+  "key.eoarmaments.gui.weapon_interface": "Weapon Interface",
 
   "eoarmaments.rarity.DEFAULT":"Default",
   "eoarmaments.rarity.BASIC":"Basic",

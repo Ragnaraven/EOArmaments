@@ -1,6 +1,6 @@
 package io.github.ragnaraven.eoarmaments.core.util;
 
-import io.github.ragnaraven.eoarmaments.common.items.EOAItems;
+import io.github.ragnaraven.eoarmaments.init.ItemInit;
 import io.github.ragnaraven.eoarmaments.common.armor.ArmorItemEnderObsidian;
 import io.github.ragnaraven.eoarmaments.common.armor.ArmorItemObsidian;
 import net.minecraft.world.entity.player.Player;
@@ -44,9 +44,9 @@ public class EOAHelpers {
     {
         int pick = -1; //0 is obsidian, 1 is enderObsidian
 
-        if(player.getMainHandItem().getItem() == EOAItems.OBSIDIAN_PICKAXE.get())
+        if(player.getMainHandItem().getItem() == ItemInit.OBSIDIAN_PICKAXE.get())
             pick = LEVEL_OBSIDIAN;
-        else if(player.getMainHandItem().getItem() == EOAItems.ENDER_OBSIDIAN_PICKAXE.get())
+        else if(player.getMainHandItem().getItem() == ItemInit.ENDER_OBSIDIAN_PICKAXE.get())
             pick = LEVEL_ENDER_OBSIDIAN;
 
         return pick;
@@ -56,9 +56,9 @@ public class EOAHelpers {
     public static boolean CHECK_PICK_AGAINST_SET (int armor, Player player)
     {
         if (armor == LEVEL_OBSIDIAN)
-            return player.getMainHandItem().getItem() == EOAItems.OBSIDIAN_PICKAXE.get();
+            return player.getMainHandItem().getItem() == ItemInit.OBSIDIAN_PICKAXE.get();
         else if (armor == LEVEL_ENDER_OBSIDIAN)
-            return player.getMainHandItem().getItem() == EOAItems.ENDER_OBSIDIAN_PICKAXE.get();
+            return player.getMainHandItem().getItem() == ItemInit.ENDER_OBSIDIAN_PICKAXE.get();
 
         return false;
     }
@@ -67,14 +67,14 @@ public class EOAHelpers {
     public static boolean CHECK_ARMOR_SET_AGAINST_HELD_TOOLS (int armor, Player player)
     {
         if (armor == 0)
-            return player.getMainHandItem().getItem() == EOAItems.OBSIDIAN_AXE.get()
-                    || (player.getMainHandItem().getItem() == EOAItems.OBSIDIAN_PICKAXE.get())
-                    || (player.getMainHandItem().getItem() == EOAItems.OBSIDIAN_SHOVEL.get());
+            return player.getMainHandItem().getItem() == ItemInit.OBSIDIAN_AXE.get()
+                    || (player.getMainHandItem().getItem() == ItemInit.OBSIDIAN_PICKAXE.get())
+                    || (player.getMainHandItem().getItem() == ItemInit.OBSIDIAN_SHOVEL.get());
 
         else if (armor == 1)
-            return player.getMainHandItem().getItem() == EOAItems.ENDER_OBSIDIAN_AXE.get()
-                    || (player.getMainHandItem().getItem() == EOAItems.ENDER_OBSIDIAN_PICKAXE.get())
-                    || (player.getMainHandItem().getItem() == EOAItems.ENDER_OBSIDIAN_SHOVEL.get());
+            return player.getMainHandItem().getItem() == ItemInit.ENDER_OBSIDIAN_AXE.get()
+                    || (player.getMainHandItem().getItem() == ItemInit.ENDER_OBSIDIAN_PICKAXE.get())
+                    || (player.getMainHandItem().getItem() == ItemInit.ENDER_OBSIDIAN_SHOVEL.get());
 
         return false;
 

@@ -6,6 +6,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,23 +18,21 @@ import static io.github.ragnaraven.eoarmaments.core.util.EOAHelpers.*;
 /**
  * Created by Ragnaraven on 7/15/2017 at 8:16 PM.
  */
-public class ArmorItemEnderObsidian extends ModArmorItem
+public class ArmorItemEnderObsidian extends ArmorItem
 {
-	public ArmorItemEnderObsidian(String name, ArmorMaterial armorMaterial, EquipmentSlot equipmentSlotType, Properties properties)
+	public ArmorItemEnderObsidian(ArmorMaterial armorMaterial, Type equipmentSlotType, Properties properties)
 	{
-		super(name, armorMaterial, equipmentSlotType, properties);
+		super(armorMaterial, equipmentSlotType, properties);
 	}
 
 	@Override
-	public boolean isValidRepairItem(ItemStack p_82789_1_, ItemStack p_82789_2_)
-	{
+	public boolean isValidRepairItem(ItemStack pToRepair, ItemStack pRepair) {
 		return false;
 	}
 
 	@Override
-	public void onArmorTick(ItemStack stack, Level world, Player player)
-	{
-		super.onArmorTick(stack, world, player);
+	public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) { //TODO test Ragnaraven
+		super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
 
 		int armor = CHECK_ARMOR(player);
 
@@ -60,5 +59,4 @@ public class ArmorItemEnderObsidian extends ModArmorItem
 				ParticleEffects.spawnEnderObsidianParticles(player, 1);
 		}
 	}
-
 }

@@ -17,12 +17,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -37,7 +36,7 @@ import net.minecraftforge.fml.common.Mod;
  * Displays information about the weapon when hovered over in an inventory.
  *
  */
-@Mod.EventBusSubscriber(modid = EnderObsidianArmorsMod.MODID)
+@Mod.EventBusSubscriber(modid = EnderObsidianArmorsMod.MOD_ID)
 public class EventItemTooltip
 {
 	/**
@@ -69,28 +68,28 @@ public class EventItemTooltip
 
 				// level
 				if (level >= ConfigHolder.SERVER.maxLevel.get())
-					tooltip.add(new TextComponent(I18n.get("eoarmaments.misc.level") + ": " + ChatFormatting.RED + I18n.get("eoarmaments.misc.max")));
+					tooltip.add(Component.translatable(I18n.get("eoarmaments.misc.level") + ": " + ChatFormatting.RED + I18n.get("eoarmaments.misc.max")));
 				else
-					tooltip.add(new TextComponent(I18n.get("eoarmaments.misc.level") + ": " + ChatFormatting.WHITE + level));
+					tooltip.add(Component.translatable(I18n.get("eoarmaments.misc.level") + ": " + ChatFormatting.WHITE + level));
 
 				// experience
 				if (level >= ConfigHolder.SERVER.maxLevel.get())
-					tooltip.add(new TextComponent(I18n.get("eoarmaments.misc.experience") + ": " + I18n.get("eoarmaments.misc.max")));
+					tooltip.add(Component.translatable(I18n.get("eoarmaments.misc.experience") + ": " + I18n.get("eoarmaments.misc.max")));
 				else
-					tooltip.add(new TextComponent(I18n.get("eoarmaments.misc.experience") + ": " + experience + " / " + maxExperience));
+					tooltip.add(Component.translatable(I18n.get("eoarmaments.misc.experience") + ": " + experience + " / " + maxExperience));
 
 				// durability
 				if (ConfigHolder.SERVER.showDurabilityInTooltip.get())
 				{
-					tooltip.add(new TextComponent(I18n.get("eoarmaments.misc.durability") + ": " + (stack.getMaxDamage() - stack.getDamageValue()) + " / " + stack.getMaxDamage()));
+					tooltip.add(Component.translatable(I18n.get("eoarmaments.misc.durability") + ": " + (stack.getMaxDamage() - stack.getDamageValue()) + " / " + stack.getMaxDamage()));
 				}
 
 				// abilities
-				tooltip.add(new TextComponent(""));
+				tooltip.add(Component.translatable(""));
 				if (Screen.hasShiftDown())
 				{
-					tooltip.add(new TextComponent(rarity.getColor() + "" + ChatFormatting.ITALIC + I18n.get("eoarmaments.misc.abilities")));
-					tooltip.add(new TextComponent(""));
+					tooltip.add(Component.translatable(rarity.getColor() + "" + ChatFormatting.ITALIC + I18n.get("eoarmaments.misc.abilities")));
+					tooltip.add(Component.translatable(""));
 
 					if (EAUtils.canEnhanceWeapon(item))
 					{
@@ -98,7 +97,7 @@ public class EventItemTooltip
 						{
 							if (ability.hasAbility(nbt))
 							{
-								tooltip.add(new TranslatableComponent("-" + ability.getColor() + ability.getName(nbt)));
+								tooltip.add(Component.translatable("-" + ability.getColor() + ability.getName(nbt)));
 							}
 						}
 					}
@@ -108,13 +107,13 @@ public class EventItemTooltip
 						{
 							if (ability.hasAbility(nbt))
 							{
-								tooltip.add(new TranslatableComponent("-" + ability.getColor() + ability.getName(nbt)));
+								tooltip.add(Component.translatable("-" + ability.getColor() + ability.getName(nbt)));
 							}
 						}
 					}
 				}
 				else
-					tooltip.add(new TextComponent(rarity.getColor() + "" + ChatFormatting.ITALIC + I18n.get("eoarmaments.misc.abilities.shift")));
+					tooltip.add(Component.translatable(rarity.getColor() + "" + ChatFormatting.ITALIC + I18n.get("eoarmaments.misc.abilities.shift")));
 			}
 		}
 	}
@@ -122,18 +121,18 @@ public class EventItemTooltip
 	private static void changeTooltips(List<Component> tooltip, ItemStack stack, Rarity rarity)
 	{
 		// rarity after the name
-		tooltip.set(0, new TextComponent(stack.getDisplayName().getString() + rarity.getColor() + " (" + ChatFormatting.ITALIC + I18n.get("eoarmaments.rarity." + rarity.getName()) + ")"));
+		tooltip.set(0, Component.translatable(stack.getDisplayName().getString() + rarity.getColor() + " (" + ChatFormatting.ITALIC + I18n.get("eoarmaments.rarity." + rarity.getName()) + ")"));
 		
 		if (EAUtils.containsString(tooltip, "When in main hand:") && !(stack.getItem() instanceof BowItem))
 		{
-			Multimap<Attribute, AttributeModifier> map = stack.getItem().getAttributeModifiers(EquipmentSlot.MAINHAND.MAINHAND, stack);
+			Multimap<Attribute, AttributeModifier> map = stack.getItem().getAttributeModifiers(EquipmentSlot.MAINHAND, stack);
 			Collection<AttributeModifier> damageCollection = map.get(Attributes.ATTACK_DAMAGE);
 			AttributeModifier damageModifier = (AttributeModifier) damageCollection.toArray()[0];
 			double damage = ((damageModifier.getAmount() + 1) * rarity.getEffect()) + damageModifier.getAmount() + 1;
 			String d = String.format("%.1f", damage);
 			
 			if(rarity.getEffect() != 0)
-				tooltip.set(EAUtils.lineContainsString(tooltip, "When in main hand:") + 2, new TextComponent(rarity.getColor() + " " + d + ChatFormatting.GRAY +" "+ I18n.get("eoarmaments.misc.tooltip.attackdamage")));
+				tooltip.set(EAUtils.lineContainsString(tooltip, "When in main hand:") + 2, Component.translatable(rarity.getColor() + " " + d + ChatFormatting.GRAY +" "+ I18n.get("eoarmaments.misc.tooltip.attackdamage")));
 		}
 		
 		if (EAUtils.containsString(tooltip, "When on head:") || EAUtils.containsString(tooltip, "When on body:") || EAUtils.containsString(tooltip, "When on legs:") || EAUtils.containsString(tooltip, "When on feet:"))
@@ -146,13 +145,13 @@ public class EventItemTooltip
 			if(EAUtils.containsString(tooltip, "When on legs:")) line = EAUtils.lineContainsString(tooltip, "When on legs:");
 			if(EAUtils.containsString(tooltip, "When on feet:")) line = EAUtils.lineContainsString(tooltip, "When on feet:");
 			if(percentage != 0)
-				tooltip.add(line + 1, new TextComponent(" " + ChatFormatting.BLUE + "+" + rarity.getColor() + percentage + ChatFormatting.BLUE + "% " + I18n.get("eoarmaments.misc.rarity.armorreduction")));
+				tooltip.add(line + 1, Component.translatable(" " + ChatFormatting.BLUE + "+" + rarity.getColor() + percentage + ChatFormatting.BLUE + "% " + I18n.get("eoarmaments.misc.rarity.armorreduction")));
 		}
 		
 		if(EAUtils.canEnhanceRanged(stack.getItem()) && rarity.getEffect() != 0)
 		{
 			String b = String.format("%.1f", rarity.getEffect()/3*100);
-			tooltip.add(1, new TextComponent(I18n.get("eoarmaments.misc.rarity.arrowpercentage") + " " + rarity.getColor() + "+" + b + "%"));
+			tooltip.add(1, Component.translatable(I18n.get("eoarmaments.misc.rarity.arrowpercentage") + " " + rarity.getColor() + "+" + b + "%"));
 		}
 	}
 }

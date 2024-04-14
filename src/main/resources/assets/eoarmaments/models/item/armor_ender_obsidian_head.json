@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "eoarmaments:items/ender_obsidian_head"
+    "layer0": "eoarmaments:item/ender_obsidian_head"
   }
 }

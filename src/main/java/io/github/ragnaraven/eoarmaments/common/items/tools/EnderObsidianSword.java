@@ -3,6 +3,7 @@ package io.github.ragnaraven.eoarmaments.common.items.tools;
 import io.github.ragnaraven.eoarmaments.EnderObsidianArmorsMod;
 import io.github.ragnaraven.eoarmaments.client.render.particles.ParticleEffects;
 import io.github.ragnaraven.eoarmaments.core.util.EOAHelpers;
+import io.github.ragnaraven.eoarmaments.core.util.Vec3Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -63,7 +64,7 @@ public class EnderObsidianSword extends SwordItem
 					HitResult position = rayTrace(player, TP_RANGE);
 					//if (position.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY)
 					{
-						BlockPos pos = new BlockPos(position.getLocation());
+						BlockPos pos = Vec3Util.vec3ToBlockPos(position.getLocation());
 
 						if(Level.isInSpawnableBounds(pos))
 						{

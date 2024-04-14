@@ -1,9 +1,9 @@
 package io.github.ragnaraven.eoarmaments.loot;
 
-import com.google.gson.JsonObject;
-import io.github.ragnaraven.eoarmaments.EnderObsidianArmorsMod;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.ragnaraven.eoarmaments.core.eventlisteners.EOABlockBreakEventHandler;
-import net.minecraft.resources.ResourceLocation;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -11,23 +11,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
-import java.rmi.ServerError;
-import java.util.List;
-
 public class CustomizeToEOMining extends LootModifier {
+    public static final Codec<CustomizeToEOMining> CODEC = RecordCodecBuilder.create(instance ->
+            codecStart(instance).apply(instance, CustomizeToEOMining::new)
+    );
 
     public CustomizeToEOMining(LootItemCondition[] conditionsIn) {
         super(conditionsIn);
     }
 
     @Override
-    protected @NotNull List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context)
-    {
+    protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         try {
             if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof Player playerEntity) {
                 BlockState blockState = context.getParamOrNull(LootContextParams.BLOCK_STATE);
@@ -46,20 +44,8 @@ public class CustomizeToEOMining extends LootModifier {
         return generatedLoot;
     }
 
-    public static class Serializer extends GlobalLootModifierSerializer<CustomizeToEOMining> {
-
-        public Serializer() {
-            super();
-        }
-
-        @Override
-        public CustomizeToEOMining read(ResourceLocation location, JsonObject object, LootItemCondition[] conditionsIn) {
-            return new CustomizeToEOMining(conditionsIn);
-        }
-
-        @Override
-        public JsonObject write(CustomizeToEOMining instance) {
-            return null;
-        }
+    @Override
+    public Codec<? extends IGlobalLootModifier> codec() {
+        return CODEC;
     }
 }
