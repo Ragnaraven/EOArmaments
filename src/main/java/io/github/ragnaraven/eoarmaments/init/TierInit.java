@@ -26,7 +26,7 @@ public class TierInit {
 
     public static final ForgeTier OBSIDIAN = new ForgeTier(
             4,
-            2500,
+            2000,
             15.0f,
             3.5f,
             10,
@@ -36,7 +36,7 @@ public class TierInit {
 
     public static final ForgeTier ENDER_OBSIDIAN = new ForgeTier(
             4,
-            5000,
+            3000,
             128f,
             4.5f,
             20,
